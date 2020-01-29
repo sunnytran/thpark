@@ -1,5 +1,4 @@
-# Online-Music-Library-Database-Project
-A place for musicians to post songs, and where listeners can listen to tracks.
+# Theme-Park-Management-System-Database-Project
 
 Team Information - https://docs.google.com/spreadsheets/d/17_FFCro4WTE8n7NICMeMUmBagxfW4iWU0G2M5F5uiqU/edit
 
@@ -40,6 +39,3 @@ If you are doing backend work, you will want to make sure your code and database
 
 ## Git
 I don't know too much about branching and merging, but I think it's necessary to prevent accidently overwriting someones code. Here's an article I found how to use Git's branching functionality: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
-
-## Other
-- I found a tutorial on making an audio player with html5 https://webdesign.tutsplus.com/tutorials/create-a-customized-html5-audio-player--webdesign-7081

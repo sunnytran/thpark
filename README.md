@@ -9,7 +9,7 @@ A place for musicians to post songs, and where listeners can listen to tracks.
 For front end, a general knowledge of HTML, CSS, and Javascript is useful (no need to memorize every term, use a cheet sheet!)
 If you know C++, Java, or Python, Javascript should be very easy to learn as it is simple and forgiving
 
-Some other things to may want to look at:
+### Some other things to may want to look at:
 - Bootstrap https://getbootstrap.com/, helps organize html and css elements
 - ReactJS https://reactjs.org/, Here is a small project I made with ReactJs if you want to see what the code might look like: https://github.com/AndrewVieira/web-calculator
 

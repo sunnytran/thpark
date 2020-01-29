@@ -13,7 +13,7 @@ If you know C++, Java, or Python, Javascript should be very easy to learn as it 
 - Bootstrap https://getbootstrap.com/, helps organize html and css elements
 - ReactJS https://reactjs.org/, Here is a small project I made with ReactJs if you want to see what the code might look like: https://github.com/AndrewVieira/web-calculator
 
-Some Resources that we may use:
+### Some Resources that we may use:
 - w3schools https://www.w3schools.com/, Has tutorials and references for html, css, javascript, and much more. I use this a lot!
 - Mozilla Firefox Devloper https://developer.mozilla.org/en-US/, Another website that has tutorials and references
 - CSS Tricks https://css-tricks.com/, shows you how to do some cool effects and design with CSS
@@ -32,3 +32,6 @@ Some Resources that we may use:
 - PostgreSQL
 - MySQL
 - I don't know much on this topic... Much more research needed
+
+## Git
+I don't know too much about branching and merging, but I think it's necessary to prevent accidently overwriting someones code. Here's an article I found how to use Git's branching functionality: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging

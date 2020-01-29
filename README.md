@@ -37,3 +37,6 @@ If you know C++, Java, or Python, Javascript should be very easy to learn as it 
 
 ## Git
 I don't know too much about branching and merging, but I think it's necessary to prevent accidently overwriting someones code. Here's an article I found how to use Git's branching functionality: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+
+## Other
+- I found a tutorial on making an audio player with html5 https://webdesign.tutsplus.com/tutorials/create-a-customized-html5-audio-player--webdesign-7081

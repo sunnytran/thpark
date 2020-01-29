@@ -35,6 +35,9 @@ If you know C++, Java, or Python, Javascript should be very easy to learn as it 
 - MySQL
 - I don't know much on this topic... Much more research needed
 
+### Server OS
+If you are doing backend work, you will want to make sure your code and database work with the server os. Linux OSs are the most commonly used os for backend (Ubuntu, Debian, Fedora, etc...), but we could still use a different operating system like Windows. A Linux os might be the better choice though because it is free. The OS we choose will be important if we choose C/C++ for backend because some libraries that work in Window for C/C++ may not work in Linux and vice versa. With languages like Python or Java this should be less of a problem.
+
 ## Git
 I don't know too much about branching and merging, but I think it's necessary to prevent accidently overwriting someones code. Here's an article I found how to use Git's branching functionality: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
 

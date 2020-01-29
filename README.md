@@ -1,5 +1,6 @@
 # Online-Music-Library-Database-Project
 A place for musicians to post songs, and where listeners can listen to tracks.
+Team Information - https://docs.google.com/spreadsheets/d/17_FFCro4WTE8n7NICMeMUmBagxfW4iWU0G2M5F5uiqU/edit
 
 ## Things to Do
 - Research - project topic, tools we might use (frontend, backend, databases), Github and Git, asthetic design

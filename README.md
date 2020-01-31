@@ -3,6 +3,7 @@
 Team Information - https://docs.google.com/spreadsheets/d/17_FFCro4WTE8n7NICMeMUmBagxfW4iWU0G2M5F5uiqU/edit
 
 ## Things to Do
+- Rename to thpark until we find a name
 - Research - project topic, tools we might use (frontend, backend, databases), Github and Git, asthetic design
 - Requirements - https://docs.google.com/document/d/1TJcsjRqCJuuR4YRm3Q-0Q3vTW1bsBURwJpG5dSwuCvI/edit?usp=sharing
 

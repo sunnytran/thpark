@@ -1,14 +1,11 @@
 
-import Link from 'next/link'
+import Header from '../components/Header'
 
 export default function Index() {
 	return (
 		<div>
+			<Header />
 			<p>Welcome</p>
-			
-			<Link href="/login">
-				<a>Login</a>
-			</Link>
 		</div>
 	)
 }

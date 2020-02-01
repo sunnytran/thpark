@@ -26,18 +26,21 @@ If you know C++, Java, or Python, Javascript should be very easy to learn as it 
 
 ## Some Backend and Databases to Consider
 ### Backends
-- C/C++: (I don't know any, feel free to add suggestions)
+- Java, C/C++ - There's no specific backends, you just use the language and an interface to connect with dbms
 - Python: Django https://www.djangoproject.com/, Flask https://flask.palletsprojects.com/en/1.1.x/
-- Java: (I don't know any, feel free to add suggestions)
-- Javascript: NodeJS https://nodejs.org/en/
+- Javascript: NodeJS https://nodejs.org/en/, ExpressJS (used with NodeJS) https://expressjs.com/
 
-### Databases
-- PostgreSQL
-- MySQL
-- I don't know much on this topic... Much more research needed
+### Database Management Systems (Free Ones)
+- PostgreSQL https://www.postgresql.org/
+- MySQL https://www.mysql.com/
+- Microsfot SQL Server https://www.microsoft.com/en-us/sql-server/sql-server-downloads
+- And much more...
 
-### Server OS
-If you are doing backend work, you will want to make sure your code and database work with the server os. Linux OSs are the most commonly used os for backend (Ubuntu, Debian, Fedora, etc...), but we could still use a different operating system like Windows. A Linux os might be the better choice though because it is free. The OS we choose will be important if we choose C/C++ for backend because some libraries that work in Window for C/C++ may not work in Linux and vice versa. With languages like Python or Java this should be less of a problem.
+### Server OS (Where the backend and database run on!)
+- Linux Based Servers (Ubuntu, Debian, Fedora, etc...) https://en.wikipedia.org/wiki/List_of_Linux_distributions
+- Windows Server https://www.microsoft.com/en-us/cloud-platform/windows-server
+- MacOS Server https://www.apple.com/macos/server/
+- FreeBSD Server https://www.freebsd.org/
 
 ## Git
 I don't know too much about branching and merging, but I think it's necessary to prevent accidently overwriting someones code. Here's an article I found how to use Git's branching functionality: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging

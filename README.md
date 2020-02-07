@@ -1,5 +1,7 @@
 # Theme-Park-Management-System-Database-Project
 
+npm run dev to run project <--
+
 Team Information - https://docs.google.com/spreadsheets/d/17_FFCro4WTE8n7NICMeMUmBagxfW4iWU0G2M5F5uiqU/edit
 
 ## Things to Do

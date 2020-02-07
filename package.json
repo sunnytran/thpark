@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-  	"dev": "next",
-	"build": "next build",
-	"start": "next start"
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "next start"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/AndrewVieira/Theme-Park-Management-System-Database-Project#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "next": "^9.2.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"

@@ -8,7 +8,7 @@ Team Information - https://docs.google.com/spreadsheets/d/17_FFCro4WTE8n7NICMeMU
 - Rename to thpark until we find a name
 - Research - project topic, tools we might use (frontend, backend, databases), Github and Git, asthetic design
 - Requirements (due Feb. 18th) - https://docs.google.com/document/d/1TJcsjRqCJuuR4YRm3Q-0Q3vTW1bsBURwJpG5dSwuCvI/edit?usp=sharing
-- Schema (due Feb. 18th) - https://drive.google.com/file/d/1EXaurxZ3R2g3FaYmWZr2iskbevvRyzDn/view?usp=sharing
+- Schema (due Feb. 18th) - https://drive.google.com/file/d/1FbZ7VEMFTgYqHduh2PW3cddNS5oLi2fm/view?usp=sharing
 
 ## Some Front End Resources
 For front end, a general knowledge of HTML, CSS, and Javascript is useful (no need to memorize every term, use a cheet sheet!)

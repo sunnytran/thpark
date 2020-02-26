@@ -1,7 +1,8 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+const express = require('express');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
 const session = require('express-session');
-const path = require("path");
+const path = require('path');
 
 const dev = process.env.NODE_ENV !== 'production';
 const next = require('next');
@@ -13,13 +14,16 @@ const { parse } = require('url');
 app.prepare().then(() => {
 	const server = express();
 
+	server.use(logger('dev'));
+
 	server.use(bodyParser.json());
-	server.use(session({
-		secret: 'secret',
-		resave: false,
-		saveUninitialized: false,
-		cookie: { maxAge: 60000 }
-	}));
+	server.use(bodyParser.urlencoded({ extended: false }));
+	//server.use(session({
+		//secret: 'secret',
+		//resave: false,
+		//saveUninitialized: false,
+		//cookie: { maxAge: 60000 }
+	//}));
 
 	//server.use('/api', apiRoutes);
 

@@ -5,7 +5,7 @@ export default function Index() {
 	return (
 		<div>
 			<Layout>
-				<p>Welcome to thpark</p>
+				<p>Welcome to thpm</p>
 			</Layout>
 		</div>
 	);

@@ -18,6 +18,7 @@ npm run dev to run project <--
 - Cheat Sheet: https://docs.google.com/spreadsheets/d/1Pk8DjehUrvOqf-8uLE6U_Ur1cjBSC73q30X_FryjGzs/edit?usp=sharing
 - https://www.tutorialspoint.com/postgresql/index.htm
 - https://www.postgresqltutorial.com/
+- PostgreSQL Commands: https://www.postgresql.org/docs/current/sql-commands.html
 
 ## Some Front End Resources
 For front end, a general knowledge of HTML, CSS, and Javascript is useful (no need to memorize every term, use a cheet sheet!)

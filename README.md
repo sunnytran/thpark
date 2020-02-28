@@ -19,6 +19,7 @@ npm run dev to run project <--
 - https://www.tutorialspoint.com/postgresql/index.htm
 - https://www.postgresqltutorial.com/
 - PostgreSQL Commands: https://www.postgresql.org/docs/current/sql-commands.html
+- PostgreSQL pg_dump (exporting and importing) on Windows: https://get.enterprisedb.com/docs/Tutorial_Windows_PP_Backup_Restore.pdf
 
 ## Some Front End Resources
 For front end, a general knowledge of HTML, CSS, and Javascript is useful (no need to memorize every term, use a cheet sheet!)

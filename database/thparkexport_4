@@ -1,0 +1,622 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.2
+-- Dumped by pg_dump version 12.2
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: theme_park; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA theme_park;
+
+
+ALTER SCHEMA theme_park OWNER TO postgres;
+
+--
+-- Name: access; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.access AS ENUM (
+    'none',
+    'basic',
+    'manager',
+    'adimin'
+);
+
+
+ALTER TYPE public.access OWNER TO postgres;
+
+--
+-- Name: event_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.event_type AS ENUM (
+    'magic_show',
+    'musical',
+    'party',
+    'parade',
+    'holiday'
+);
+
+
+ALTER TYPE public.event_type OWNER TO postgres;
+
+--
+-- Name: issue_severity; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.issue_severity AS ENUM (
+    'low',
+    'moderate',
+    'high'
+);
+
+
+ALTER TYPE public.issue_severity OWNER TO postgres;
+
+--
+-- Name: issue_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.issue_type AS ENUM (
+    'breakdown',
+    'cleanup',
+    'legal'
+);
+
+
+ALTER TYPE public.issue_type OWNER TO postgres;
+
+--
+-- Name: ride_status; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.ride_status AS ENUM (
+    'running',
+    'maintenance',
+    'construction'
+);
+
+
+ALTER TYPE public.ride_status OWNER TO postgres;
+
+--
+-- Name: ride_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.ride_type AS ENUM (
+    'ferris_wheel',
+    'bumper_cars',
+    'roller_coaster',
+    'carousels',
+    'water',
+    'swing',
+    'slide',
+    'pendulum',
+    'drop_tower',
+    'scrambler',
+    'other'
+);
+
+
+ALTER TYPE public.ride_type OWNER TO postgres;
+
+--
+-- Name: sale_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.sale_type AS ENUM (
+    'ticket',
+    'food',
+    'gift'
+);
+
+
+ALTER TYPE public.sale_type OWNER TO postgres;
+
+--
+-- Name: shop_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.shop_type AS ENUM (
+    'ticket_store',
+    'restaurant',
+    'gift_shop'
+);
+
+
+ALTER TYPE public.shop_type OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: attends; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.attends (
+    event_id uuid NOT NULL,
+    customer_id uuid,
+    "timestamp" timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.attends OWNER TO postgres;
+
+--
+-- Name: customer; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.customer (
+    customer_id uuid NOT NULL,
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    park_rating integer,
+    CONSTRAINT customer_park_rating_check CHECK (((park_rating >= 1) AND (park_rating <= 10)))
+);
+
+
+ALTER TABLE public.customer OWNER TO postgres;
+
+--
+-- Name: employee; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.employee (
+    employee_id uuid NOT NULL,
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    username text NOT NULL,
+    password text NOT NULL,
+    access_level public.access DEFAULT 'none'::public.access
+);
+
+
+ALTER TABLE public.employee OWNER TO postgres;
+
+--
+-- Name: event; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.event (
+    event_id uuid NOT NULL,
+    event_name text NOT NULL,
+    event_type public.event_type NOT NULL,
+    date date NOT NULL,
+    location text NOT NULL
+);
+
+
+ALTER TABLE public.event OWNER TO postgres;
+
+--
+-- Name: rainouts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.rainouts (
+    date date NOT NULL
+);
+
+
+ALTER TABLE public.rainouts OWNER TO postgres;
+
+--
+-- Name: ride; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ride (
+    name text NOT NULL,
+    type public.ride_type NOT NULL,
+    creation_date date NOT NULL,
+    location text NOT NULL,
+    status public.ride_status NOT NULL,
+    last_inspection date,
+    insurance_expiration_date date
+);
+
+
+ALTER TABLE public.ride OWNER TO postgres;
+
+--
+-- Name: ride_issue; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ride_issue (
+    issue_id uuid NOT NULL,
+    type public.issue_type NOT NULL,
+    severity public.issue_severity NOT NULL,
+    start_timestamp timestamp without time zone NOT NULL,
+    end_timestamp timestamp without time zone,
+    resolved boolean DEFAULT false,
+    ride_name text NOT NULL,
+    resolved_by uuid
+);
+
+
+ALTER TABLE public.ride_issue OWNER TO postgres;
+
+--
+-- Name: rides_on; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.rides_on (
+    ride_name text NOT NULL,
+    customer_id uuid,
+    "timestamp" timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.rides_on OWNER TO postgres;
+
+--
+-- Name: sale; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sale (
+    transaction_id uuid NOT NULL,
+    type public.sale_type NOT NULL,
+    amount real NOT NULL,
+    "timestamp" timestamp without time zone,
+    customer_id uuid,
+    sale_from text NOT NULL
+);
+
+
+ALTER TABLE public.sale OWNER TO postgres;
+
+--
+-- Name: shop; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.shop (
+    shop_name text NOT NULL,
+    location text NOT NULL,
+    creation_date date NOT NULL,
+    shop_type public.shop_type NOT NULL
+);
+
+
+ALTER TABLE public.shop OWNER TO postgres;
+
+--
+-- Name: works_at_event; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.works_at_event (
+    employee_id uuid NOT NULL,
+    event_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.works_at_event OWNER TO postgres;
+
+--
+-- Name: works_at_ride; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.works_at_ride (
+    employee_id uuid NOT NULL,
+    ride_name text NOT NULL
+);
+
+
+ALTER TABLE public.works_at_ride OWNER TO postgres;
+
+--
+-- Name: works_at_shop; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.works_at_shop (
+    employee_id uuid NOT NULL,
+    shop_name text NOT NULL
+);
+
+
+ALTER TABLE public.works_at_shop OWNER TO postgres;
+
+--
+-- Data for Name: attends; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.attends (event_id, customer_id, "timestamp") FROM stdin;
+\.
+
+
+--
+-- Data for Name: customer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.customer (customer_id, first_name, last_name, park_rating) FROM stdin;
+\.
+
+
+--
+-- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.employee (employee_id, first_name, last_name, username, password, access_level) FROM stdin;
+\.
+
+
+--
+-- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.event (event_id, event_name, event_type, date, location) FROM stdin;
+\.
+
+
+--
+-- Data for Name: rainouts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rainouts (date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ride; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ride (name, type, creation_date, location, status, last_inspection, insurance_expiration_date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ride_issue; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ride_issue (issue_id, type, severity, start_timestamp, end_timestamp, resolved, ride_name, resolved_by) FROM stdin;
+\.
+
+
+--
+-- Data for Name: rides_on; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rides_on (ride_name, customer_id, "timestamp") FROM stdin;
+\.
+
+
+--
+-- Data for Name: sale; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sale (transaction_id, type, amount, "timestamp", customer_id, sale_from) FROM stdin;
+\.
+
+
+--
+-- Data for Name: shop; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.shop (shop_name, location, creation_date, shop_type) FROM stdin;
+\.
+
+
+--
+-- Data for Name: works_at_event; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.works_at_event (employee_id, event_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: works_at_ride; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.works_at_ride (employee_id, ride_name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: works_at_shop; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.works_at_shop (employee_id, shop_name) FROM stdin;
+\.
+
+
+--
+-- Name: customer customer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customer
+    ADD CONSTRAINT customer_pkey PRIMARY KEY (customer_id);
+
+
+--
+-- Name: employee employee_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_pkey PRIMARY KEY (employee_id);
+
+
+--
+-- Name: employee employee_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_username_key UNIQUE (username);
+
+
+--
+-- Name: event event_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event
+    ADD CONSTRAINT event_pkey PRIMARY KEY (event_id);
+
+
+--
+-- Name: rainouts rainouts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rainouts
+    ADD CONSTRAINT rainouts_pkey PRIMARY KEY (date);
+
+
+--
+-- Name: ride_issue ride_issue_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride_issue
+    ADD CONSTRAINT ride_issue_pkey PRIMARY KEY (issue_id);
+
+
+--
+-- Name: ride ride_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride
+    ADD CONSTRAINT ride_pkey PRIMARY KEY (name);
+
+
+--
+-- Name: sale sale_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sale
+    ADD CONSTRAINT sale_pkey PRIMARY KEY (transaction_id);
+
+
+--
+-- Name: shop shop_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.shop
+    ADD CONSTRAINT shop_pkey PRIMARY KEY (shop_name);
+
+
+--
+-- Name: attends attends_customer_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.attends
+    ADD CONSTRAINT attends_customer_fkey FOREIGN KEY (customer_id) REFERENCES public.customer(customer_id) ON UPDATE CASCADE;
+
+
+--
+-- Name: attends attends_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.attends
+    ADD CONSTRAINT attends_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.event(event_id) ON UPDATE CASCADE;
+
+
+--
+-- Name: ride_issue ride_issue_resolved_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride_issue
+    ADD CONSTRAINT ride_issue_resolved_by_fkey FOREIGN KEY (resolved_by) REFERENCES public.employee(employee_id) ON UPDATE CASCADE;
+
+
+--
+-- Name: ride_issue ride_issue_ride_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride_issue
+    ADD CONSTRAINT ride_issue_ride_name_fkey FOREIGN KEY (ride_name) REFERENCES public.ride(name) ON UPDATE CASCADE;
+
+
+--
+-- Name: rides_on rides_on_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rides_on
+    ADD CONSTRAINT rides_on_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customer(customer_id) ON UPDATE CASCADE;
+
+
+--
+-- Name: rides_on rides_on_ride_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rides_on
+    ADD CONSTRAINT rides_on_ride_name_fkey FOREIGN KEY (ride_name) REFERENCES public.ride(name) ON UPDATE CASCADE;
+
+
+--
+-- Name: sale sale_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sale
+    ADD CONSTRAINT sale_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customer(customer_id) ON UPDATE CASCADE;
+
+
+--
+-- Name: sale sale_sale_from_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sale
+    ADD CONSTRAINT sale_sale_from_fkey FOREIGN KEY (sale_from) REFERENCES public.shop(shop_name) ON UPDATE CASCADE;
+
+
+--
+-- Name: works_at_event works_at_event_employee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_event
+    ADD CONSTRAINT works_at_event_employee_id_fkey FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_event works_at_event_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_event
+    ADD CONSTRAINT works_at_event_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.event(event_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_ride works_at_ride_employee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_ride
+    ADD CONSTRAINT works_at_ride_employee_id_fkey FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_ride works_at_ride_ride_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_ride
+    ADD CONSTRAINT works_at_ride_ride_name_fkey FOREIGN KEY (ride_name) REFERENCES public.ride(name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_shop works_at_shop_employee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_shop
+    ADD CONSTRAINT works_at_shop_employee_id_fkey FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_shop works_at_shop_shop_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_shop
+    ADD CONSTRAINT works_at_shop_shop_name_fkey FOREIGN KEY (shop_name) REFERENCES public.shop(shop_name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

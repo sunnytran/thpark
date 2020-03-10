@@ -1,0 +1,863 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.2
+-- Dumped by pg_dump version 12.2
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
+--
+-- Name: access; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.access AS ENUM (
+    'none',
+    'basic',
+    'manager',
+    'admin'
+);
+
+
+ALTER TYPE public.access OWNER TO postgres;
+
+--
+-- Name: event_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.event_type AS ENUM (
+    'magic_show',
+    'musical',
+    'party',
+    'parade',
+    'holiday'
+);
+
+
+ALTER TYPE public.event_type OWNER TO postgres;
+
+--
+-- Name: issue_severity; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.issue_severity AS ENUM (
+    'low',
+    'moderate',
+    'high'
+);
+
+
+ALTER TYPE public.issue_severity OWNER TO postgres;
+
+--
+-- Name: issue_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.issue_type AS ENUM (
+    'breakdown',
+    'cleanup',
+    'legal'
+);
+
+
+ALTER TYPE public.issue_type OWNER TO postgres;
+
+--
+-- Name: ride_status; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.ride_status AS ENUM (
+    'running',
+    'maintenance',
+    'construction'
+);
+
+
+ALTER TYPE public.ride_status OWNER TO postgres;
+
+--
+-- Name: ride_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.ride_type AS ENUM (
+    'ferris_wheel',
+    'bumper_cars',
+    'roller_coaster',
+    'carousels',
+    'water',
+    'swing',
+    'slide',
+    'pendulum',
+    'drop_tower',
+    'scrambler',
+    'other'
+);
+
+
+ALTER TYPE public.ride_type OWNER TO postgres;
+
+--
+-- Name: sale_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.sale_type AS ENUM (
+    'ticket',
+    'food',
+    'gift',
+    'game'
+);
+
+
+ALTER TYPE public.sale_type OWNER TO postgres;
+
+--
+-- Name: shop_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.shop_type AS ENUM (
+    'ticket_store',
+    'restaurant',
+    'gift_shop',
+    'game'
+);
+
+
+ALTER TYPE public.shop_type OWNER TO postgres;
+
+--
+-- Name: check_customer_id_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_customer_id_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."customer_id" IS DISTINCT FROM OLD."customer_id"
+  THEN
+    RAISE EXCEPTION '"customer_id" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_customer_id_change() OWNER TO postgres;
+
+--
+-- Name: check_employee_id_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_employee_id_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."employee_id" IS DISTINCT FROM OLD."employee_id"
+  THEN
+    RAISE EXCEPTION '"employee_id" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_employee_id_change() OWNER TO postgres;
+
+--
+-- Name: check_event_id_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_event_id_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."event_id" IS DISTINCT FROM OLD."event_id"
+  THEN
+    RAISE EXCEPTION '"event_id" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_event_id_change() OWNER TO postgres;
+
+--
+-- Name: check_issue_id_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_issue_id_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."issue_id" IS DISTINCT FROM OLD."issue_id"
+  THEN
+    RAISE EXCEPTION '"issue_id" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_issue_id_change() OWNER TO postgres;
+
+--
+-- Name: check_resolved_by_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_resolved_by_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+ IF NEW."resolved_by" IS NOT NULL
+ THEN
+  NEW."resolved" := true;
+ END IF;
+ RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_resolved_by_change() OWNER TO postgres;
+
+--
+-- Name: check_transaction_id_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_transaction_id_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."transaction_id" IS DISTINCT FROM OLD."transaction_id"
+  THEN
+    RAISE EXCEPTION '"transaction_id" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_transaction_id_change() OWNER TO postgres;
+
+--
+-- Name: check_username_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_username_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."username" IS DISTINCT FROM OLD."username"
+  THEN
+    RAISE EXCEPTION '"username" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_username_change() OWNER TO postgres;
+
+--
+-- Name: encrypt_password(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.encrypt_password() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+ NEW."password" := crypt(NEW."password", gen_salt('bf', 8));
+ RETURN NEW;
+END
+$$;
+
+
+ALTER FUNCTION public.encrypt_password() OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: attends; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.attends (
+    event_id uuid NOT NULL,
+    customer_id uuid,
+    "timestamp" timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.attends OWNER TO postgres;
+
+--
+-- Name: customer; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.customer (
+    customer_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    park_rating integer,
+    CONSTRAINT customer_park_rating_check CHECK (((park_rating >= 1) AND (park_rating <= 10)))
+);
+
+
+ALTER TABLE public.customer OWNER TO postgres;
+
+--
+-- Name: employee; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.employee (
+    employee_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    username text NOT NULL,
+    password text NOT NULL,
+    access_level public.access DEFAULT 'none'::public.access NOT NULL
+);
+
+
+ALTER TABLE public.employee OWNER TO postgres;
+
+--
+-- Name: event; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.event (
+    event_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    event_name text NOT NULL,
+    event_type public.event_type NOT NULL,
+    date date NOT NULL,
+    location text NOT NULL
+);
+
+
+ALTER TABLE public.event OWNER TO postgres;
+
+--
+-- Name: rainouts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.rainouts (
+    date date NOT NULL
+);
+
+
+ALTER TABLE public.rainouts OWNER TO postgres;
+
+--
+-- Name: ride; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ride (
+    ride_name text NOT NULL,
+    ride_type public.ride_type NOT NULL,
+    creation_date date NOT NULL,
+    location text NOT NULL,
+    ride_status public.ride_status NOT NULL,
+    last_inspection date,
+    insurance_expiration_date date
+);
+
+
+ALTER TABLE public.ride OWNER TO postgres;
+
+--
+-- Name: ride_issue; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ride_issue (
+    issue_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    type public.issue_type NOT NULL,
+    severity public.issue_severity NOT NULL,
+    start_timestamp timestamp without time zone NOT NULL,
+    end_timestamp timestamp without time zone,
+    resolved boolean DEFAULT false NOT NULL,
+    ride_name text NOT NULL,
+    resolved_by uuid
+);
+
+
+ALTER TABLE public.ride_issue OWNER TO postgres;
+
+--
+-- Name: rides_on; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.rides_on (
+    ride_name text NOT NULL,
+    customer_id uuid,
+    "timestamp" timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.rides_on OWNER TO postgres;
+
+--
+-- Name: sale; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sale (
+    transaction_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    sale_type public.sale_type NOT NULL,
+    sale_item text NOT NULL,
+    sale_amount real NOT NULL,
+    "timestamp" timestamp without time zone NOT NULL,
+    customer_id uuid,
+    sale_from text NOT NULL
+);
+
+
+ALTER TABLE public.sale OWNER TO postgres;
+
+--
+-- Name: shop; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.shop (
+    shop_name text NOT NULL,
+    location text NOT NULL,
+    creation_date date NOT NULL,
+    shop_type public.shop_type NOT NULL
+);
+
+
+ALTER TABLE public.shop OWNER TO postgres;
+
+--
+-- Name: works_at_event; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.works_at_event (
+    employee_id uuid NOT NULL,
+    event_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.works_at_event OWNER TO postgres;
+
+--
+-- Name: works_at_ride; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.works_at_ride (
+    employee_id uuid NOT NULL,
+    ride_name text NOT NULL
+);
+
+
+ALTER TABLE public.works_at_ride OWNER TO postgres;
+
+--
+-- Name: works_at_shop; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.works_at_shop (
+    employee_id uuid NOT NULL,
+    shop_name text NOT NULL
+);
+
+
+ALTER TABLE public.works_at_shop OWNER TO postgres;
+
+--
+-- Data for Name: attends; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.attends (event_id, customer_id, "timestamp") FROM stdin;
+\.
+
+
+--
+-- Data for Name: customer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.customer (customer_id, first_name, last_name, park_rating) FROM stdin;
+\.
+
+
+--
+-- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.employee (employee_id, first_name, last_name, username, password, access_level) FROM stdin;
+db66ad3e-1ec3-4171-a2a2-47e2414ce1d9	Sunny	Tran	st14	$2a$08$9Ux853.SYYov/xxZiafPDeW7aqsR.Qw5nlRyqPJKoOJz45wUFlL1u	admin
+b8376c9b-0af4-48dc-9707-afe6212ef9bb	Andrew	Vieira	av21	$2a$08$CLpqZGwEhI1YHUqxeHEzeuj79NEG6UEQ5QkclxRFmyQaYA2O6Zk5a	admin
+6b56eade-4efb-402b-8fd8-16d829ddd93c	Erin	Nebres	en05	$2a$08$JNZZbjkr0WYIE7DdPVsiAu8CPYkQX1o.TMC7ou1hchvbfwBShKsLu	admin
+b8d1acdf-817b-4b83-96b9-c24abc3e994a	Laura	Owens	lo98	$2a$08$ts19ZKQ7NcgFDNaoWtgx4u42CgTdgCGpIcxqZFd.JoulAQS/YCuoi	manager
+2d6f3436-d89b-48b4-bbb6-27d784acb813	Hector	Mendez	hm30	$2a$08$ngEmXJOk2Ss8Ze2LKLZpoezfSmoTl.37o9HYp26JVd2jDtVfI9bbS	manager
+575b7d60-c8f4-46aa-b071-948ea67653cd	Sam	Carlson	sc45	$2a$08$S0gZDWft/06//H/.P8c9yebU./KppoW5q2Spmj20vGOaDrgMLZ6fe	manager
+cce6e81a-7e17-401b-a312-5bbef54a2410	Brock	Lee	bl12	$2a$08$Os9iNdfyLthHnLdOAWywtuVIzfw4tLHRriyLll3o/MAhVTTblOL66	none
+21529f4c-3853-43f2-a3f4-b3c12463267c	Teresa	Cortez	tc37	$2a$08$5p2ro9Vpsx6hQokAGtHJ9.MthEhQITicLtyJ1A4fkCjaDXAhj7lAu	basic
+1b39d872-7829-457c-85f8-f216ff0ed135	Timmy	Watts	tw64	$2a$08$fnaNHWTTO2rzAOhUgla0M.rAN6RmhIhpLA95x6pk4gct1spw00jRy	basic
+0388545a-940b-4e16-8fda-23af362c74ea	Helen	Lindsey	hl53	$2a$08$B4HN3q7lhb506pTkB0lvsuOBcHUHk4nJBvYpRhbOdBd8Ooo7TjQyS	basic
+550e60b8-987f-48b8-8798-efc6bf112b9c	Hui	Chang	hc19	$2a$08$wra0KHwBrRqSSHJ3yFcetuMdQWLyvbmwgLC0P9fDwb1rNJhiMgseC	basic
+6cf9acfc-ddbb-48d3-b521-fd82289b31e5	Abba	Hassan	ah15	$2a$08$mJ4WRHeCR1S.Z3tG1bf/Fe9o6UCHE/A93/PRCbXTCHrkeGvrWrIt2	basic
+12fddce4-fd2d-4fe8-af87-5d0061498532	Donna	Moreno	dm83	$2a$08$28bfuQHjCbZASxSbW6v9sufEU9bliNJRaXgMdl.Q0wVPOKcvssRKi	basic
+e58b0851-ac71-4085-b46c-36f60a3da596	Esai	Hernandez	eh77	$2a$08$txSkeyy7acqKgEc3uy3KuO0Yeypb8uSwGAvTlWNsO3vwWuJlAyOgW	admin
+238c7310-2c73-405c-a150-313646c1321f	William	Lam	wl32	$2a$08$3eb6hA2vV3VfyjqQKu5h5evjEKY9koBD.4UF1eTbUStC00k6Px.aS	admin
+\.
+
+
+--
+-- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.event (event_id, event_name, event_type, date, location) FROM stdin;
+\.
+
+
+--
+-- Data for Name: rainouts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rainouts (date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ride; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ride (ride_name, ride_type, creation_date, location, ride_status, last_inspection, insurance_expiration_date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ride_issue; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ride_issue (issue_id, type, severity, start_timestamp, end_timestamp, resolved, ride_name, resolved_by) FROM stdin;
+\.
+
+
+--
+-- Data for Name: rides_on; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rides_on (ride_name, customer_id, "timestamp") FROM stdin;
+\.
+
+
+--
+-- Data for Name: sale; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sale (transaction_id, sale_type, sale_item, sale_amount, "timestamp", customer_id, sale_from) FROM stdin;
+\.
+
+
+--
+-- Data for Name: shop; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.shop (shop_name, location, creation_date, shop_type) FROM stdin;
+\.
+
+
+--
+-- Data for Name: works_at_event; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.works_at_event (employee_id, event_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: works_at_ride; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.works_at_ride (employee_id, ride_name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: works_at_shop; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.works_at_shop (employee_id, shop_name) FROM stdin;
+\.
+
+
+--
+-- Name: customer customer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customer
+    ADD CONSTRAINT customer_pkey PRIMARY KEY (customer_id);
+
+
+--
+-- Name: employee employee_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_pkey PRIMARY KEY (employee_id);
+
+
+--
+-- Name: employee employee_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_username_key UNIQUE (username);
+
+
+--
+-- Name: event event_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event
+    ADD CONSTRAINT event_pkey PRIMARY KEY (event_id);
+
+
+--
+-- Name: rainouts rainouts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rainouts
+    ADD CONSTRAINT rainouts_pkey PRIMARY KEY (date);
+
+
+--
+-- Name: ride_issue ride_issue_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride_issue
+    ADD CONSTRAINT ride_issue_pkey PRIMARY KEY (issue_id);
+
+
+--
+-- Name: ride ride_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride
+    ADD CONSTRAINT ride_pkey PRIMARY KEY (ride_name);
+
+
+--
+-- Name: sale sale_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sale
+    ADD CONSTRAINT sale_pkey PRIMARY KEY (transaction_id);
+
+
+--
+-- Name: shop shop_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.shop
+    ADD CONSTRAINT shop_pkey PRIMARY KEY (shop_name);
+
+
+--
+-- Name: customer customer_id_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER customer_id_update_trigger BEFORE UPDATE OF customer_id ON public.customer FOR EACH ROW EXECUTE FUNCTION public.check_customer_id_change();
+
+
+--
+-- Name: employee employee_id_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER employee_id_update_trigger BEFORE UPDATE OF employee_id ON public.employee FOR EACH ROW EXECUTE FUNCTION public.check_employee_id_change();
+
+
+--
+-- Name: employee encrypt_password_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER encrypt_password_trigger BEFORE INSERT ON public.employee FOR EACH ROW EXECUTE FUNCTION public.encrypt_password();
+
+
+--
+-- Name: employee encrypt_password_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER encrypt_password_update_trigger BEFORE UPDATE ON public.employee FOR EACH ROW EXECUTE FUNCTION public.encrypt_password();
+
+
+--
+-- Name: event issue_id_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER issue_id_update_trigger BEFORE UPDATE OF event_id ON public.event FOR EACH ROW EXECUTE FUNCTION public.check_event_id_change();
+
+
+--
+-- Name: ride_issue issue_id_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER issue_id_update_trigger BEFORE UPDATE OF issue_id ON public.ride_issue FOR EACH ROW EXECUTE FUNCTION public.check_issue_id_change();
+
+
+--
+-- Name: ride_issue resolved_by_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER resolved_by_update_trigger AFTER UPDATE OF resolved_by ON public.ride_issue FOR EACH ROW EXECUTE FUNCTION public.check_resolved_by_change();
+
+
+--
+-- Name: sale transaction_id_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER transaction_id_update_trigger BEFORE UPDATE OF transaction_id ON public.sale FOR EACH ROW EXECUTE FUNCTION public.check_transaction_id_change();
+
+
+--
+-- Name: employee username_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER username_update_trigger BEFORE UPDATE OF username ON public.employee FOR EACH ROW EXECUTE FUNCTION public.check_username_change();
+
+
+--
+-- Name: attends attends_customer_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.attends
+    ADD CONSTRAINT attends_customer_fkey FOREIGN KEY (customer_id) REFERENCES public.customer(customer_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: attends attends_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.attends
+    ADD CONSTRAINT attends_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.event(event_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: ride_issue ride_issue_resolved_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride_issue
+    ADD CONSTRAINT ride_issue_resolved_by_fkey FOREIGN KEY (resolved_by) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: ride_issue ride_issue_ride_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride_issue
+    ADD CONSTRAINT ride_issue_ride_name_fkey FOREIGN KEY (ride_name) REFERENCES public.ride(ride_name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: rides_on rides_on_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rides_on
+    ADD CONSTRAINT rides_on_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customer(customer_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: rides_on rides_on_ride_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rides_on
+    ADD CONSTRAINT rides_on_ride_name_fkey FOREIGN KEY (ride_name) REFERENCES public.ride(ride_name) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: sale sale_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sale
+    ADD CONSTRAINT sale_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customer(customer_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: sale sale_sale_from_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sale
+    ADD CONSTRAINT sale_sale_from_fkey FOREIGN KEY (sale_from) REFERENCES public.shop(shop_name) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: works_at_event works_at_event_employee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_event
+    ADD CONSTRAINT works_at_event_employee_id_fkey FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_event works_at_event_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_event
+    ADD CONSTRAINT works_at_event_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.event(event_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_ride works_at_ride_employee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_ride
+    ADD CONSTRAINT works_at_ride_employee_id_fkey FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_ride works_at_ride_ride_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_ride
+    ADD CONSTRAINT works_at_ride_ride_name_fkey FOREIGN KEY (ride_name) REFERENCES public.ride(ride_name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_shop works_at_shop_employee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_shop
+    ADD CONSTRAINT works_at_shop_employee_id_fkey FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_shop works_at_shop_shop_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_shop
+    ADD CONSTRAINT works_at_shop_shop_name_fkey FOREIGN KEY (shop_name) REFERENCES public.shop(shop_name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -504,6 +504,17 @@ COPY public.attends (event_id, customer_id, "timestamp") FROM stdin;
 --
 
 COPY public.customer (customer_id, first_name, last_name, park_rating) FROM stdin;
+79a450f6-61ec-44ea-86cf-94561321a446	Ike	Mike	\N
+780e6ca3-f109-45b5-9429-9b03fe74abf5	Kim	Jong-Un	8
+9e4bfab4-e708-47b4-bc7c-a55846da0462	Megan	Smith	7
+e680475d-b3c7-43e9-a2f4-3c43377681db	Paul	Lee	\N
+24304f31-99f5-4241-94d7-da354be57a04	Sandy	Church	1
+9afe72d0-8928-441e-9c6a-63c3c432415f	Mahatma	Gandhi	9
+55b45cb1-704a-4a07-b909-3773c8336bf7	Robin	Banks	5
+6ea1813d-69ca-4b5b-9cb4-04271519981b	Joe	King	7
+4ae50583-8df3-40f1-88e4-22d08f6420c9	Hedda	Hare	7
+bf835566-8231-45f4-b98c-aa1ec02aa35b	Kay	Oss	6
+f3398ecf-ce16-402a-ad3a-94f3cd822e26	Sir	Vyvin	8
 \.
 
 
@@ -543,6 +554,16 @@ COPY public.event (event_id, event_name, event_type, date, location) FROM stdin;
 --
 
 COPY public.rainouts (date) FROM stdin;
+2017-04-08
+2017-04-23
+2017-07-25
+2018-04-12
+2018-05-02
+2018-07-19
+2019-03-22
+2019-05-17
+2019-07-09
+2020-03-01
 \.
 
 
@@ -551,6 +572,16 @@ COPY public.rainouts (date) FROM stdin;
 --
 
 COPY public.ride (ride_name, ride_type, creation_date, location, ride_status, last_inspection, insurance_expiration_date) FROM stdin;
+Vroom	bumper_cars	2016-10-10		running	2019-08-12	2021-08-12
+Scrambler	scrambler	2018-02-19		running	2020-02-18	2022-02-18
+Big Time	pendulum	2020-03-15		construction	\N	\N
+Monster Coaster	roller_coaster	2018-09-21		maintenance	2019-09-22	2021-09-22
+Shark Slide	water	2019-05-01		maintenance	2020-01-15	2021-01-14
+Little Slide	slide	2018-05-24		running	\N	\N
+Caterpillar	roller_coaster	2016-08-10		running	2020-03-02	2022-03-02
+The Great Wheel	ferris_wheel	2016-08-10		maintenance	2020-03-02	2022-03-02
+Tower of Doom	drop_tower	2016-09-21		maintenance	2020-02-21	2022-02-21
+Merry-Go-Round	carousels	2016-10-12		running	2020-12-12	2022-12-12
 \.
 
 

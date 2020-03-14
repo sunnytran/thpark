@@ -1,0 +1,976 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.2
+-- Dumped by pg_dump version 12.2
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
+--
+-- Name: access; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.access AS ENUM (
+    'none',
+    'basic',
+    'manager',
+    'admin'
+);
+
+
+ALTER TYPE public.access OWNER TO postgres;
+
+--
+-- Name: event_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.event_type AS ENUM (
+    'magic_show',
+    'musical',
+    'party',
+    'parade',
+    'holiday'
+);
+
+
+ALTER TYPE public.event_type OWNER TO postgres;
+
+--
+-- Name: issue_severity; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.issue_severity AS ENUM (
+    'low',
+    'moderate',
+    'high'
+);
+
+
+ALTER TYPE public.issue_severity OWNER TO postgres;
+
+--
+-- Name: issue_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.issue_type AS ENUM (
+    'breakdown',
+    'cleanup',
+    'legal'
+);
+
+
+ALTER TYPE public.issue_type OWNER TO postgres;
+
+--
+-- Name: ride_status; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.ride_status AS ENUM (
+    'running',
+    'maintenance',
+    'construction'
+);
+
+
+ALTER TYPE public.ride_status OWNER TO postgres;
+
+--
+-- Name: ride_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.ride_type AS ENUM (
+    'ferris_wheel',
+    'bumper_cars',
+    'roller_coaster',
+    'carousels',
+    'water',
+    'swing',
+    'slide',
+    'pendulum',
+    'drop_tower',
+    'scrambler',
+    'other'
+);
+
+
+ALTER TYPE public.ride_type OWNER TO postgres;
+
+--
+-- Name: sale_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.sale_type AS ENUM (
+    'ticket',
+    'food',
+    'gift',
+    'game'
+);
+
+
+ALTER TYPE public.sale_type OWNER TO postgres;
+
+--
+-- Name: shop_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.shop_type AS ENUM (
+    'ticket_store',
+    'restaurant',
+    'gift_shop',
+    'game'
+);
+
+
+ALTER TYPE public.shop_type OWNER TO postgres;
+
+--
+-- Name: check_customer_id_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_customer_id_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."customer_id" IS DISTINCT FROM OLD."customer_id"
+  THEN
+    RAISE EXCEPTION '"customer_id" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_customer_id_change() OWNER TO postgres;
+
+--
+-- Name: check_employee_id_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_employee_id_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."employee_id" IS DISTINCT FROM OLD."employee_id"
+  THEN
+    RAISE EXCEPTION '"employee_id" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_employee_id_change() OWNER TO postgres;
+
+--
+-- Name: check_event_id_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_event_id_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."event_id" IS DISTINCT FROM OLD."event_id"
+  THEN
+    RAISE EXCEPTION '"event_id" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_event_id_change() OWNER TO postgres;
+
+--
+-- Name: check_issue_id_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_issue_id_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."issue_id" IS DISTINCT FROM OLD."issue_id"
+  THEN
+    RAISE EXCEPTION '"issue_id" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_issue_id_change() OWNER TO postgres;
+
+--
+-- Name: check_resolved_by_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_resolved_by_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+ IF NEW."resolved_by" IS NOT NULL
+ THEN
+  NEW."resolved" := true;
+ END IF;
+ RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_resolved_by_change() OWNER TO postgres;
+
+--
+-- Name: check_transaction_id_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_transaction_id_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."transaction_id" IS DISTINCT FROM OLD."transaction_id"
+  THEN
+    RAISE EXCEPTION '"transaction_id" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_transaction_id_change() OWNER TO postgres;
+
+--
+-- Name: check_username_change(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.check_username_change() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."username" IS DISTINCT FROM OLD."username"
+  THEN
+    RAISE EXCEPTION '"username" column cannot get updated';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.check_username_change() OWNER TO postgres;
+
+--
+-- Name: encrypt_password(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.encrypt_password() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+ NEW."password" := crypt(NEW."password", gen_salt('bf', 8));
+ RETURN NEW;
+END
+$$;
+
+
+ALTER FUNCTION public.encrypt_password() OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: attends; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.attends (
+    event_id uuid NOT NULL,
+    customer_id uuid,
+    "timestamp" timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.attends OWNER TO postgres;
+
+--
+-- Name: customer; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.customer (
+    customer_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    park_rating integer,
+    CONSTRAINT customer_park_rating_check CHECK (((park_rating >= 1) AND (park_rating <= 10)))
+);
+
+
+ALTER TABLE public.customer OWNER TO postgres;
+
+--
+-- Name: employee; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.employee (
+    employee_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    username text NOT NULL,
+    password text NOT NULL,
+    access_level public.access DEFAULT 'none'::public.access NOT NULL
+);
+
+
+ALTER TABLE public.employee OWNER TO postgres;
+
+--
+-- Name: event; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.event (
+    event_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    event_name text NOT NULL,
+    event_type public.event_type NOT NULL,
+    date date NOT NULL,
+    location text NOT NULL
+);
+
+
+ALTER TABLE public.event OWNER TO postgres;
+
+--
+-- Name: rainouts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.rainouts (
+    date date NOT NULL
+);
+
+
+ALTER TABLE public.rainouts OWNER TO postgres;
+
+--
+-- Name: ride; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ride (
+    ride_name text NOT NULL,
+    ride_type public.ride_type NOT NULL,
+    creation_date date NOT NULL,
+    location text NOT NULL,
+    ride_status public.ride_status NOT NULL,
+    last_inspection date,
+    insurance_expiration_date date
+);
+
+
+ALTER TABLE public.ride OWNER TO postgres;
+
+--
+-- Name: ride_issue; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ride_issue (
+    issue_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    type public.issue_type NOT NULL,
+    severity public.issue_severity NOT NULL,
+    start_timestamp timestamp without time zone NOT NULL,
+    end_timestamp timestamp without time zone,
+    resolved boolean DEFAULT false NOT NULL,
+    ride_name text NOT NULL,
+    resolved_by uuid
+);
+
+
+ALTER TABLE public.ride_issue OWNER TO postgres;
+
+--
+-- Name: rides_on; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.rides_on (
+    ride_name text NOT NULL,
+    customer_id uuid,
+    "timestamp" timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.rides_on OWNER TO postgres;
+
+--
+-- Name: sale; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.sale (
+    transaction_id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    sale_type public.sale_type NOT NULL,
+    sale_item text NOT NULL,
+    sale_amount real NOT NULL,
+    "timestamp" timestamp without time zone NOT NULL,
+    customer_id uuid,
+    sale_from text NOT NULL
+);
+
+
+ALTER TABLE public.sale OWNER TO postgres;
+
+--
+-- Name: shop; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.shop (
+    shop_name text NOT NULL,
+    location text NOT NULL,
+    creation_date date NOT NULL,
+    shop_type public.shop_type NOT NULL
+);
+
+
+ALTER TABLE public.shop OWNER TO postgres;
+
+--
+-- Name: works_at_event; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.works_at_event (
+    employee_id uuid NOT NULL,
+    event_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.works_at_event OWNER TO postgres;
+
+--
+-- Name: works_at_ride; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.works_at_ride (
+    employee_id uuid NOT NULL,
+    ride_name text NOT NULL
+);
+
+
+ALTER TABLE public.works_at_ride OWNER TO postgres;
+
+--
+-- Name: works_at_shop; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.works_at_shop (
+    employee_id uuid NOT NULL,
+    shop_name text NOT NULL
+);
+
+
+ALTER TABLE public.works_at_shop OWNER TO postgres;
+
+--
+-- Data for Name: attends; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.attends (event_id, customer_id, "timestamp") FROM stdin;
+9717dcd8-ac02-4de6-9fc3-bcce84e847f1	6ea1813d-69ca-4b5b-9cb4-04271519981b	2019-07-12 11:10:00
+9717dcd8-ac02-4de6-9fc3-bcce84e847f1	55b45cb1-704a-4a07-b909-3773c8336bf7	2019-07-12 11:10:00
+9717dcd8-ac02-4de6-9fc3-bcce84e847f1	9afe72d0-8928-441e-9c6a-63c3c432415f	2019-07-12 11:10:00
+9717dcd8-ac02-4de6-9fc3-bcce84e847f1	24304f31-99f5-4241-94d7-da354be57a04	2019-07-12 11:10:00
+d022fde3-afff-4bff-aa79-56fb92257142	79a450f6-61ec-44ea-86cf-94561321a446	2018-07-20 16:50:00
+d022fde3-afff-4bff-aa79-56fb92257142	9e4bfab4-e708-47b4-bc7c-a55846da0462	2018-07-20 16:50:00
+d022fde3-afff-4bff-aa79-56fb92257142	24304f31-99f5-4241-94d7-da354be57a04	2018-07-20 16:50:00
+d022fde3-afff-4bff-aa79-56fb92257142	bf835566-8231-45f4-b98c-aa1ec02aa35b	2018-07-20 16:50:00
+44c1b7a2-277a-4dbf-b889-bd10f5f9976c	55b45cb1-704a-4a07-b909-3773c8336bf7	2019-10-31 14:44:23
+44c1b7a2-277a-4dbf-b889-bd10f5f9976c	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-10-31 16:50:01
+44c1b7a2-277a-4dbf-b889-bd10f5f9976c	4ae50583-8df3-40f1-88e4-22d08f6420c9	2019-10-31 16:52:22
+\.
+
+
+--
+-- Data for Name: customer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.customer (customer_id, first_name, last_name, park_rating) FROM stdin;
+79a450f6-61ec-44ea-86cf-94561321a446	Ike	Mike	\N
+780e6ca3-f109-45b5-9429-9b03fe74abf5	Kim	Jong-Un	8
+9e4bfab4-e708-47b4-bc7c-a55846da0462	Megan	Smith	7
+e680475d-b3c7-43e9-a2f4-3c43377681db	Paul	Lee	\N
+24304f31-99f5-4241-94d7-da354be57a04	Sandy	Church	1
+9afe72d0-8928-441e-9c6a-63c3c432415f	Mahatma	Gandhi	9
+55b45cb1-704a-4a07-b909-3773c8336bf7	Robin	Banks	5
+6ea1813d-69ca-4b5b-9cb4-04271519981b	Joe	King	7
+4ae50583-8df3-40f1-88e4-22d08f6420c9	Hedda	Hare	7
+bf835566-8231-45f4-b98c-aa1ec02aa35b	Kay	Oss	6
+f3398ecf-ce16-402a-ad3a-94f3cd822e26	Sir	Vyvin	8
+\.
+
+
+--
+-- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.employee (employee_id, first_name, last_name, username, password, access_level) FROM stdin;
+db66ad3e-1ec3-4171-a2a2-47e2414ce1d9	Sunny	Tran	st14	$2a$08$9Ux853.SYYov/xxZiafPDeW7aqsR.Qw5nlRyqPJKoOJz45wUFlL1u	admin
+b8376c9b-0af4-48dc-9707-afe6212ef9bb	Andrew	Vieira	av21	$2a$08$CLpqZGwEhI1YHUqxeHEzeuj79NEG6UEQ5QkclxRFmyQaYA2O6Zk5a	admin
+6b56eade-4efb-402b-8fd8-16d829ddd93c	Erin	Nebres	en05	$2a$08$JNZZbjkr0WYIE7DdPVsiAu8CPYkQX1o.TMC7ou1hchvbfwBShKsLu	admin
+b8d1acdf-817b-4b83-96b9-c24abc3e994a	Laura	Owens	lo98	$2a$08$ts19ZKQ7NcgFDNaoWtgx4u42CgTdgCGpIcxqZFd.JoulAQS/YCuoi	manager
+2d6f3436-d89b-48b4-bbb6-27d784acb813	Hector	Mendez	hm30	$2a$08$ngEmXJOk2Ss8Ze2LKLZpoezfSmoTl.37o9HYp26JVd2jDtVfI9bbS	manager
+575b7d60-c8f4-46aa-b071-948ea67653cd	Sam	Carlson	sc45	$2a$08$S0gZDWft/06//H/.P8c9yebU./KppoW5q2Spmj20vGOaDrgMLZ6fe	manager
+cce6e81a-7e17-401b-a312-5bbef54a2410	Brock	Lee	bl12	$2a$08$Os9iNdfyLthHnLdOAWywtuVIzfw4tLHRriyLll3o/MAhVTTblOL66	none
+21529f4c-3853-43f2-a3f4-b3c12463267c	Teresa	Cortez	tc37	$2a$08$5p2ro9Vpsx6hQokAGtHJ9.MthEhQITicLtyJ1A4fkCjaDXAhj7lAu	basic
+1b39d872-7829-457c-85f8-f216ff0ed135	Timmy	Watts	tw64	$2a$08$fnaNHWTTO2rzAOhUgla0M.rAN6RmhIhpLA95x6pk4gct1spw00jRy	basic
+0388545a-940b-4e16-8fda-23af362c74ea	Helen	Lindsey	hl53	$2a$08$B4HN3q7lhb506pTkB0lvsuOBcHUHk4nJBvYpRhbOdBd8Ooo7TjQyS	basic
+550e60b8-987f-48b8-8798-efc6bf112b9c	Hui	Chang	hc19	$2a$08$wra0KHwBrRqSSHJ3yFcetuMdQWLyvbmwgLC0P9fDwb1rNJhiMgseC	basic
+6cf9acfc-ddbb-48d3-b521-fd82289b31e5	Abba	Hassan	ah15	$2a$08$mJ4WRHeCR1S.Z3tG1bf/Fe9o6UCHE/A93/PRCbXTCHrkeGvrWrIt2	basic
+12fddce4-fd2d-4fe8-af87-5d0061498532	Donna	Moreno	dm83	$2a$08$28bfuQHjCbZASxSbW6v9sufEU9bliNJRaXgMdl.Q0wVPOKcvssRKi	basic
+e58b0851-ac71-4085-b46c-36f60a3da596	Esai	Hernandez	eh77	$2a$08$txSkeyy7acqKgEc3uy3KuO0Yeypb8uSwGAvTlWNsO3vwWuJlAyOgW	admin
+238c7310-2c73-405c-a150-313646c1321f	William	Lam	wl32	$2a$08$3eb6hA2vV3VfyjqQKu5h5evjEKY9koBD.4UF1eTbUStC00k6Px.aS	admin
+\.
+
+
+--
+-- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.event (event_id, event_name, event_type, date, location) FROM stdin;
+4d5a3a02-2509-404f-ac21-3c684039470f	Halloween Festival	holiday	2017-10-31	Everywhere
+12749119-9fb7-4d77-82e9-694796148f08	Halloween Festival	holiday	2018-10-31	Everywhere
+44c1b7a2-277a-4dbf-b889-bd10f5f9976c	Halloween Festival	holiday	2019-10-31	Everywhere
+d022fde3-afff-4bff-aa79-56fb92257142	Park Play	musical	2018-07-20	Theater
+3d542060-9542-420e-a883-92e70769f55e	Park Play	musical	2018-07-22	Theater
+9717dcd8-ac02-4de6-9fc3-bcce84e847f1	The Great Genie	magic_show	2019-07-12	Theater
+91659b10-e516-42ed-a989-7b1aa9a8c8e5	The Great Genie	magic_show	2019-07-14	Theater
+fdf92c02-bd0b-4da7-a9ea-7257f5881a25	City Parade	parade	2017-10-31	Everywhere
+57ff0ecf-f95b-49cc-ad67-aac3e3945e37	Park 5 Year Anniversary	party	2020-05-01	Everywhere
+\.
+
+
+--
+-- Data for Name: rainouts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rainouts (date) FROM stdin;
+2017-04-08
+2017-04-23
+2017-07-25
+2018-04-12
+2018-05-02
+2018-07-19
+2019-03-22
+2019-05-17
+2019-07-09
+2020-03-01
+\.
+
+
+--
+-- Data for Name: ride; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ride (ride_name, ride_type, creation_date, location, ride_status, last_inspection, insurance_expiration_date) FROM stdin;
+Scrambler	scrambler	2018-02-19	North Quadrant	running	2020-02-18	2022-02-18
+Big Time	pendulum	2020-03-15	West Quadrant	construction	\N	\N
+Shark Slide	water	2019-05-01	West Quadrant	maintenance	2020-01-15	2021-01-14
+Monster Coaster	roller_coaster	2018-09-21	West Quadrant	maintenance	2019-09-22	2021-09-22
+Little Slide	slide	2018-05-24	West Quadrant	running	\N	\N
+Vroom	bumper_cars	2016-10-10	East Quadrant	running	2019-08-12	2021-08-12
+Caterpillar	roller_coaster	2016-08-10	East Quadrant	running	2020-03-02	2022-03-02
+The Great Wheel	ferris_wheel	2016-08-10	East Quadrant	maintenance	2020-03-02	2022-03-02
+Tower of Doom	drop_tower	2016-09-21	East Quadrant	maintenance	2020-02-21	2022-02-21
+Merry-Go-Round	carousels	2016-10-12	East Quadrant	running	2020-12-12	2022-12-12
+\.
+
+
+--
+-- Data for Name: ride_issue; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ride_issue (issue_id, type, severity, start_timestamp, end_timestamp, resolved, ride_name, resolved_by) FROM stdin;
+70897ac0-140f-4cb7-916a-5c336ab9b8b1	legal	high	2020-03-10 10:11:12	\N	f	Monster Coaster	\N
+c5cadacc-8472-4e71-b168-0020a68b4fa8	breakdown	moderate	2020-03-09 09:12:20	\N	f	Shark Slide	\N
+64cbe981-6f28-4993-9f50-ee1ca73cb17a	breakdown	high	2020-03-08 22:22:22	\N	f	The Great Wheel	\N
+24ac5518-4b53-4009-8812-0fc7035b1565	breakdown	high	2020-02-09 09:12:20	\N	f	Tower of Doom	\N
+ae8af202-183b-4285-a151-4684ebab50b8	breakdown	moderate	2018-05-09 11:22:11	2018-05-22 12:00:00	t	Vroom	1b39d872-7829-457c-85f8-f216ff0ed135
+8b91ac9e-7467-4a69-a4c7-77078800e51d	breakdown	moderate	2017-07-09 14:08:50	2017-07-18 10:00:00	t	Caterpillar	1b39d872-7829-457c-85f8-f216ff0ed135
+402666e4-89a7-4750-b12c-7967a11b13b6	breakdown	high	2018-04-09 14:09:33	2018-04-11 14:00:00	t	Tower of Doom	1b39d872-7829-457c-85f8-f216ff0ed135
+b7e5d532-d866-409f-b8b3-088402edb0f4	cleanup	low	2019-08-09 12:33:00	2019-08-09 18:20:00	t	Caterpillar	\N
+95978412-3710-44ee-a614-06fb7329ff1f	legal	low	2017-02-09 15:45:43	2017-03-12 11:00:00	t	Merry-Go-Round	\N
+56f94f2f-20b9-4baf-9524-127c8ae918ce	breakdown	moderate	2018-05-06 09:56:31	2018-05-24 12:00:00	t	Scrambler	1b39d872-7829-457c-85f8-f216ff0ed135
+\.
+
+
+--
+-- Data for Name: rides_on; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rides_on (ride_name, customer_id, "timestamp") FROM stdin;
+Vroom	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 10:20:00
+Scrambler	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 10:30:00
+Scrambler	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 10:40:00
+Monster Coaster	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 10:50:00
+Caterpillar	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 11:20:00
+The Great Wheel	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 11:30:00
+Tower of Doom	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 12:50:00
+Tower of Doom	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 13:11:00
+Monster Coaster	bf835566-8231-45f4-b98c-aa1ec02aa35b	2019-07-02 11:10:00
+Monster Coaster	bf835566-8231-45f4-b98c-aa1ec02aa35b	2019-07-02 11:22:00
+Monster Coaster	bf835566-8231-45f4-b98c-aa1ec02aa35b	2019-07-02 11:44:00
+Vroom	bf835566-8231-45f4-b98c-aa1ec02aa35b	2019-07-02 12:03:00
+The Great Wheel	bf835566-8231-45f4-b98c-aa1ec02aa35b	2019-07-02 12:41:00
+\.
+
+
+--
+-- Data for Name: sale; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sale (transaction_id, sale_type, sale_item, sale_amount, "timestamp", customer_id, sale_from) FROM stdin;
+c44fb37b-4cd1-4fad-a198-ee142da756dc	ticket	Park Ticket	60	2015-05-01 10:10:10	79a450f6-61ec-44ea-86cf-94561321a446	Park Ticket Booth
+c60c3101-500a-451c-bcbb-c4a0653c2eea	ticket	Park Ticket	60	2015-08-16 13:30:00	780e6ca3-f109-45b5-9429-9b03fe74abf5	Park Ticket Booth
+8c486650-902f-489c-b734-a3a1a8e14538	ticket	Park Ticket	60	2015-11-18 09:24:50	9e4bfab4-e708-47b4-bc7c-a55846da0462	Park Ticket Booth
+c2eb3c1a-d439-460e-b6f6-9d6c92f9eb03	ticket	Park Ticket	60	2016-03-14 11:33:49	e680475d-b3c7-43e9-a2f4-3c43377681db	Park Ticket Booth
+6be9b29b-0f11-4f60-9944-96701fef7806	ticket	Park Ticket	60	2016-07-20 09:09:38	24304f31-99f5-4241-94d7-da354be57a04	Park Ticket Booth
+22f9c179-7b64-4b33-ae01-9c7b11832788	ticket	Park Ticket	60	2016-11-10 12:56:12	9afe72d0-8928-441e-9c6a-63c3c432415f	Park Ticket Booth
+6080b0ac-9633-49f3-9f71-34261e58e819	ticket	Park Ticket	60	2017-04-24 10:44:19	55b45cb1-704a-4a07-b909-3773c8336bf7	Park Ticket Booth
+9771c3d9-1331-46a9-828b-4c8b84ec287e	ticket	Park Ticket	60	2017-09-06 14:00:43	6ea1813d-69ca-4b5b-9cb4-04271519981b	Park Ticket Booth
+93550e75-676c-485b-a57c-0d3c1d2aee03	ticket	Park Ticket	60	2018-02-28 09:10:14	4ae50583-8df3-40f1-88e4-22d08f6420c9	Park Ticket Booth
+fddc90d0-618b-4840-9a96-ac5d57e24ed3	ticket	Park Ticket	60	2019-07-02 11:01:11	bf835566-8231-45f4-b98c-aa1ec02aa35b	Park Ticket Booth
+59ce29e3-4c0b-4766-a609-5b279765cc9d	ticket	Park Ticket	60	2019-08-08 10:02:20	f3398ecf-ce16-402a-ad3a-94f3cd822e26	Park Ticket Booth
+22912677-b510-4a5e-ad57-6ec874d54285	food	Cotton Candy	2.5	2015-08-16 13:32:01	780e6ca3-f109-45b5-9429-9b03fe74abf5	Cotton Candy Stand
+5e532393-f2b3-4c8f-9063-592bd9904e3e	food	Cotton Candy	2.5	2015-08-16 14:11:22	780e6ca3-f109-45b5-9429-9b03fe74abf5	Cotton Candy Stand
+a663d079-8b47-44f6-8f77-c4668ffea417	food	Cotton Candy	2.5	2015-08-16 15:16:16	780e6ca3-f109-45b5-9429-9b03fe74abf5	Cotton Candy Stand
+\.
+
+
+--
+-- Data for Name: shop; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.shop (shop_name, location, creation_date, shop_type) FROM stdin;
+Ice Cream World	South Quadrant	2016-05-13	restaurant
+Boogie Burgers	South Quadrant	2017-08-15	restaurant
+Park Ticket Booth	South Quadrant	2015-05-01	ticket_store
+Always Taco Tuesday	North Quadrant	2020-03-02	restaurant
+Fish and Chips	North Quadrant	2017-07-07	restaurant
+Park Games Galore	North Quadrant	2017-08-15	game
+Animal Toys	North Quadrant	2017-08-15	gift_shop
+Cotton Candy Stand	East Quadrant	2016-06-04	restaurant
+Candy Store	East Quadrant	2017-08-15	restaurant
+Trinkets	East Quadrant	2017-08-15	gift_shop
+\.
+
+
+--
+-- Data for Name: works_at_event; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.works_at_event (employee_id, event_id) FROM stdin;
+21529f4c-3853-43f2-a3f4-b3c12463267c	44c1b7a2-277a-4dbf-b889-bd10f5f9976c
+0388545a-940b-4e16-8fda-23af362c74ea	44c1b7a2-277a-4dbf-b889-bd10f5f9976c
+2d6f3436-d89b-48b4-bbb6-27d784acb813	44c1b7a2-277a-4dbf-b889-bd10f5f9976c
+550e60b8-987f-48b8-8798-efc6bf112b9c	44c1b7a2-277a-4dbf-b889-bd10f5f9976c
+12fddce4-fd2d-4fe8-af87-5d0061498532	44c1b7a2-277a-4dbf-b889-bd10f5f9976c
+\.
+
+
+--
+-- Data for Name: works_at_ride; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.works_at_ride (employee_id, ride_name) FROM stdin;
+575b7d60-c8f4-46aa-b071-948ea67653cd	Monster Coaster
+575b7d60-c8f4-46aa-b071-948ea67653cd	Tower of Doom
+cce6e81a-7e17-401b-a312-5bbef54a2410	Caterpillar
+cce6e81a-7e17-401b-a312-5bbef54a2410	The Great Wheel
+cce6e81a-7e17-401b-a312-5bbef54a2410	Merry-Go-Round
+\.
+
+
+--
+-- Data for Name: works_at_shop; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.works_at_shop (employee_id, shop_name) FROM stdin;
+12fddce4-fd2d-4fe8-af87-5d0061498532	Ice Cream World
+6cf9acfc-ddbb-48d3-b521-fd82289b31e5	Park Ticket Booth
+0388545a-940b-4e16-8fda-23af362c74ea	Trinkets
+6cf9acfc-ddbb-48d3-b521-fd82289b31e5	Park Games Galore
+550e60b8-987f-48b8-8798-efc6bf112b9c	Cotton Candy Stand
+\.
+
+
+--
+-- Name: customer customer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customer
+    ADD CONSTRAINT customer_pkey PRIMARY KEY (customer_id);
+
+
+--
+-- Name: employee employee_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_pkey PRIMARY KEY (employee_id);
+
+
+--
+-- Name: employee employee_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_username_key UNIQUE (username);
+
+
+--
+-- Name: event event_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event
+    ADD CONSTRAINT event_pkey PRIMARY KEY (event_id);
+
+
+--
+-- Name: rainouts rainouts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rainouts
+    ADD CONSTRAINT rainouts_pkey PRIMARY KEY (date);
+
+
+--
+-- Name: ride_issue ride_issue_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride_issue
+    ADD CONSTRAINT ride_issue_pkey PRIMARY KEY (issue_id);
+
+
+--
+-- Name: ride ride_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride
+    ADD CONSTRAINT ride_pkey PRIMARY KEY (ride_name);
+
+
+--
+-- Name: sale sale_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sale
+    ADD CONSTRAINT sale_pkey PRIMARY KEY (transaction_id);
+
+
+--
+-- Name: shop shop_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.shop
+    ADD CONSTRAINT shop_pkey PRIMARY KEY (shop_name);
+
+
+--
+-- Name: customer customer_id_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER customer_id_update_trigger BEFORE UPDATE OF customer_id ON public.customer FOR EACH ROW EXECUTE FUNCTION public.check_customer_id_change();
+
+
+--
+-- Name: employee employee_id_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER employee_id_update_trigger BEFORE UPDATE OF employee_id ON public.employee FOR EACH ROW EXECUTE FUNCTION public.check_employee_id_change();
+
+
+--
+-- Name: employee encrypt_password_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER encrypt_password_trigger BEFORE INSERT ON public.employee FOR EACH ROW EXECUTE FUNCTION public.encrypt_password();
+
+
+--
+-- Name: employee encrypt_password_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER encrypt_password_update_trigger BEFORE UPDATE ON public.employee FOR EACH ROW EXECUTE FUNCTION public.encrypt_password();
+
+
+--
+-- Name: event issue_id_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER issue_id_update_trigger BEFORE UPDATE OF event_id ON public.event FOR EACH ROW EXECUTE FUNCTION public.check_event_id_change();
+
+
+--
+-- Name: ride_issue issue_id_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER issue_id_update_trigger BEFORE UPDATE OF issue_id ON public.ride_issue FOR EACH ROW EXECUTE FUNCTION public.check_issue_id_change();
+
+
+--
+-- Name: ride_issue resolved_by_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER resolved_by_update_trigger AFTER UPDATE OF resolved_by ON public.ride_issue FOR EACH ROW EXECUTE FUNCTION public.check_resolved_by_change();
+
+
+--
+-- Name: sale transaction_id_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER transaction_id_update_trigger BEFORE UPDATE OF transaction_id ON public.sale FOR EACH ROW EXECUTE FUNCTION public.check_transaction_id_change();
+
+
+--
+-- Name: employee username_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER username_update_trigger BEFORE UPDATE OF username ON public.employee FOR EACH ROW EXECUTE FUNCTION public.check_username_change();
+
+
+--
+-- Name: attends attends_customer_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.attends
+    ADD CONSTRAINT attends_customer_fkey FOREIGN KEY (customer_id) REFERENCES public.customer(customer_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: attends attends_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.attends
+    ADD CONSTRAINT attends_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.event(event_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: ride_issue ride_issue_resolved_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride_issue
+    ADD CONSTRAINT ride_issue_resolved_by_fkey FOREIGN KEY (resolved_by) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: ride_issue ride_issue_ride_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ride_issue
+    ADD CONSTRAINT ride_issue_ride_name_fkey FOREIGN KEY (ride_name) REFERENCES public.ride(ride_name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: rides_on rides_on_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rides_on
+    ADD CONSTRAINT rides_on_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customer(customer_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: rides_on rides_on_ride_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rides_on
+    ADD CONSTRAINT rides_on_ride_name_fkey FOREIGN KEY (ride_name) REFERENCES public.ride(ride_name) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: sale sale_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sale
+    ADD CONSTRAINT sale_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customer(customer_id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: sale sale_sale_from_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sale
+    ADD CONSTRAINT sale_sale_from_fkey FOREIGN KEY (sale_from) REFERENCES public.shop(shop_name) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: works_at_event works_at_event_employee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_event
+    ADD CONSTRAINT works_at_event_employee_id_fkey FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_event works_at_event_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_event
+    ADD CONSTRAINT works_at_event_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.event(event_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_ride works_at_ride_employee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_ride
+    ADD CONSTRAINT works_at_ride_employee_id_fkey FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_ride works_at_ride_ride_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_ride
+    ADD CONSTRAINT works_at_ride_ride_name_fkey FOREIGN KEY (ride_name) REFERENCES public.ride(ride_name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_shop works_at_shop_employee_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_shop
+    ADD CONSTRAINT works_at_shop_employee_id_fkey FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: works_at_shop works_at_shop_shop_name_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.works_at_shop
+    ADD CONSTRAINT works_at_shop_shop_name_fkey FOREIGN KEY (shop_name) REFERENCES public.shop(shop_name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

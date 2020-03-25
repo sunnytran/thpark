@@ -31,6 +31,8 @@ app.prepare().then(() => {
 		return handle(req, res);
 	});
 
+	//Port is important to work on heroku! Please don't change this
+	//-Andrew
 	var PORT = process.env.PORT || 3000;
 	server.listen(PORT, (err) => {
 		if (err)

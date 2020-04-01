@@ -10,11 +10,13 @@ const app = next({dev});
 const handle = app.getRequestHandler();
 const { parse } = require('url');
 
-//Controllers
+//Controllers - Where the SQL queries are made in the code
 const login = require('./server/controllers/login');
+const rides = require('./server/controllers/rides');
+const staff = require('./server/controllers/staff');
 
 //Database Connection---------------------------------------------------
-//This where we connect to the database
+//This is where we connect to the database
 //This will require that the database is on your postgres and with the
 //correct parameters filled in  - Andrew
 const promise = require('bluebird');
@@ -53,13 +55,17 @@ app.prepare().then(() => {
 	server.use(bodyParser.json());
 	server.use(bodyParser.urlencoded({ extended: false }));
 
+	server.post('/api/login', login.handleLogin(db));
+
+	server.get('/api/rides', rides.handleRideGet(db));
+	server.post('/api/rides', rides.handleRidePost(db));
+
+	server.get('/api/staff', staff.handleStaffGet(db));
+	server.post('/api/staff', staff.handleStaffPost(db));
+
 	server.get('*', (req, res) => {
 		return handle(req, res);
 	});
-
-	//server.get('/staff', staff.handleStaffGet(db));
-
-	server.post('/login', login.handleLogin(db));
 
 	//Port is important to work on heroku! Please don't change this
 	//-Andrew

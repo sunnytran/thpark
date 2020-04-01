@@ -1,13 +1,13 @@
 
 import Layout from '../components/Layout';
 
-const Index = (props) => (
+const Tickets = (props) => (
 	<Layout>
 		<div>
-			<h1>Home</h1>
+			<h1>Tickets</h1>
 		</div>
 	</Layout>
 );
 
-export default Index;
+export default Tickets;
 

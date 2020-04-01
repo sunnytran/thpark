@@ -9,11 +9,12 @@ const handleLogin = (db) => (req, res) => {
 		}
 		else {
 			res.status(400).json('Wrong credentials');
+			//res.status(400).json(req.body);
 		}
 	})
 	.catch(function(error) {
 		//console.log('ERROR: ', error);
-		res.status(400).json('Wrong credentials');
+		//res.status(400).json('Wrong credentials');
 	})
 	.finally(db.$pool.end);	
 }

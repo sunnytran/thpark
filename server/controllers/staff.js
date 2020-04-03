@@ -12,7 +12,6 @@ const handleStaffGet = (db) => (req, res) => {
 		//console.log('ERROR: ', error);
 		res.status(400).json('');
 	})
-	.finally(db.$pool.end);	
 }
 
 const handleStaffPost = (db) => (req, res) => {

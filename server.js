@@ -59,6 +59,8 @@ app.prepare().then(() => {
 
 	server.get('/api/rides', rides.handleRideGet(db));
 	server.post('/api/rides', rides.handleRidePost(db));
+	server.put('/api/rides', rides.handleRidePut(db));
+	server.delete('/api/rides', rides.handleRideDelete(db));
 
 	server.get('/api/staff', staff.handleStaffGet(db));
 	server.post('/api/staff', staff.handleStaffPost(db));

@@ -58,7 +58,12 @@ const db = pgp(cn);
 .finally(db.$pool.end);*/
 //---------------------------------------------------------------------
 
-//If a request is commented out, its for security purposes
+/**********************************************************************
+* IMPORTANT!
+* If a request is commented out, it has not been secured with
+* authentication yet. Be aware of the risks on uncommenting and using
+* the code on the heroku server.
+***********************************************************************/
 app.prepare().then(() => {
 	const server = express();
 	server.use(logger('dev'));

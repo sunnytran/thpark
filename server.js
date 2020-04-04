@@ -58,6 +58,7 @@ const db = pgp(cn);
 .finally(db.$pool.end);*/
 //---------------------------------------------------------------------
 
+//If a request is commented out, its for security purposes
 app.prepare().then(() => {
 	const server = express();
 	server.use(logger('dev'));
@@ -68,12 +69,12 @@ app.prepare().then(() => {
 	server.post('/api/login', login.handleLogin(db));
 
 	server.get('/api/rides', rides.handleRideGet(db));
-	server.post('/api/rides', rides.handleRidePost(db));
-	server.put('/api/rides', rides.handleRidePut(db));
-	server.delete('/api/rides', rides.handleRideDelete(db));
+	//server.post('/api/rides', rides.handleRidePost(db));
+	//server.put('/api/rides', rides.handleRidePut(db));
+	//server.delete('/api/rides', rides.handleRideDelete(db));
 
 	server.get('/api/staff', staff.handleStaffGet(db));
-	server.post('/api/staff', staff.handleStaffPost(db));
+	//server.post('/api/staff', staff.handleStaffPost(db));
 
 	server.get('*', (req, res) => {
 		return handle(req, res);

@@ -11,7 +11,7 @@ class Staff extends React.Component {
 
 	componentDidMount(){
 		//fetch("http://localhost:3000/api/staff")
-		fetch("https://tpmanagement.app/api/staff")
+		fetch("https://www.tpmanagement.app/api/staff")
 		.then(res => res.json())
 		.then (
 			(result)=> {

@@ -28,7 +28,21 @@ const handleStaffPost = (db) => (req, res) => {
 	})
 }
 
+const handleStaffDelete = (db) => (req, res) => {
+	const employee_id = {employee_id: req.body.employee_id};
+	db.none('DELETE FROM employee WHERE employee_id=${employee_id}', employee_id)
+	.then (function(data){
+		console.log('Data: ', data);
+		res.json(data);
+	})
+	.catch(function(error) {
+		console.log('ERROR: ', error);
+		res.status(400).json('Invalid Input');
+	})
+}
+
 module.exports = {
 	handleStaffGet: handleStaffGet,
-	handleStaffPost: handleStaffPost
+	handleStaffPost: handleStaffPost,
+	handleStaffDelete: handleStaffDelete
 }

@@ -16,7 +16,6 @@ const handleLogin = (db) => (req, res) => {
 		//console.log('ERROR: ', error);
 		res.status(400).json('Wrong credentials');
 	})
-	.finally(db.$pool.end);	
 }
 
 module.exports = {

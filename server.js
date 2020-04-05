@@ -13,6 +13,8 @@ const { parse } = require('url');
 //Controllers - Where the SQL queries are made in the code
 const login = require('./server/controllers/login');
 const rides = require('./server/controllers/rides');
+const tickets = require('./server/controllers/tickets');
+const rainouts = require('./server/controllers/rainouts');
 const staff = require('./server/controllers/staff');
 
 //Database Connection---------------------------------------------------
@@ -64,9 +66,24 @@ const db = pgp(cn);
 * authentication yet. Be aware of the risks on uncommenting and using
 * the code on the heroku server.
 ***********************************************************************/
+const allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+};
+
 app.prepare().then(() => {
 	const server = express();
 	server.use(logger('dev'));
+	server.use(allowCrossDomain);
 
 	server.use(bodyParser.json());
 	server.use(bodyParser.urlencoded({ extended: false }));
@@ -78,8 +95,14 @@ app.prepare().then(() => {
 	//server.put('/api/rides', rides.handleRidePut(db));
 	//server.delete('/api/rides', rides.handleRideDelete(db));
 
+	server.post('/api/tickets', tickets.handleTicketPost(db));
+
+	server.get('/api/rainouts', rainouts.handleRainoutsGet(db));
+	server.post('/api/rainouts', rainouts.handleRainoutsPost(db));
+
 	server.get('/api/staff', staff.handleStaffGet(db));
 	//server.post('/api/staff', staff.handleStaffPost(db));
+	//server.delete('/api/staff', rides.handleStaffDelete(db));
 
 	server.get('*', (req, res) => {
 		return handle(req, res);

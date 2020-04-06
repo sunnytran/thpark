@@ -92,9 +92,9 @@ app.prepare().then(() => {
 	server.post('/api/login', login.handleLogin(db));
 
 	server.get('/api/rides', rides.handleRideGet(db));
-	//server.post('/api/rides', rides.handleRidePost(db));
-	//server.put('/api/rides', rides.handleRidePut(db));
-	//server.delete('/api/rides', rides.handleRideDelete(db));
+	server.post('/api/rides', rides.handleRidePost(db));
+	server.put('/api/rides', rides.handleRidePut(db));
+	server.delete('/api/rides', rides.handleRideDelete(db));
 
 	server.post('/api/tickets', tickets.handleTicketPost(db));
 
@@ -106,8 +106,8 @@ app.prepare().then(() => {
 	server.post('/api/rainouts', rainouts.handleRainoutsPost(db));
 
 	server.get('/api/staff', staff.handleStaffGet(db));
-	//server.post('/api/staff', staff.handleStaffPost(db));
-	//server.delete('/api/staff', rides.handleStaffDelete(db));
+	server.post('/api/staff', staff.handleStaffPost(db));
+	server.delete('/api/staff', rides.handleStaffDelete(db));
 
 	server.get('*', (req, res) => {
 		return handle(req, res);

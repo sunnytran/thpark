@@ -107,7 +107,7 @@ app.prepare().then(() => {
 
 	server.get('/api/staff', staff.handleStaffGet(db));
 	server.post('/api/staff', staff.handleStaffPost(db));
-	server.delete('/api/staff', rides.handleStaffDelete(db));
+	//server.delete('/api/staff', rides.handleStaffDelete(db));
 
 	server.get('*', (req, res) => {
 		return handle(req, res);

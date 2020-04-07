@@ -13,10 +13,12 @@ const { parse } = require('url');
 //Controllers - Where the SQL queries are made in the code
 const login = require('./server/controllers/login');
 const rides = require('./server/controllers/rides');
+const shops = require('./server/controllers/shops');
 const tickets = require('./server/controllers/tickets');
 const maintenance = require('./server/controllers/maintenance');
 const rainouts = require('./server/controllers/rainouts');
 const staff = require('./server/controllers/staff');
+const customer = require('./server/controllers/customer');
 
 //Database Connection---------------------------------------------------
 //This is where we connect to the database
@@ -96,6 +98,11 @@ app.prepare().then(() => {
 	server.put('/api/rides', rides.handleRidePut(db));
 	server.delete('/api/rides', rides.handleRideDelete(db));
 
+	server.get('/api/shops', shops.handleShopGet(db));
+	server.post('/api/shops', shops.handleShopPost(db));
+	server.delete('/api/shops', shops.handleShopDelete(db));
+
+	server.get('/api/tickets', tickets.handleTicketGet(db));
 	server.post('/api/tickets', tickets.handleTicketPost(db));
 
 	server.get('/api/maintenance', maintenance.handleMaintenanceGet(db));
@@ -108,6 +115,9 @@ app.prepare().then(() => {
 	server.get('/api/staff', staff.handleStaffGet(db));
 	server.post('/api/staff', staff.handleStaffPost(db));
 	//server.delete('/api/staff', rides.handleStaffDelete(db));
+
+	server.get('/api/customer', customer.handleCustomerGet(db));
+	server.post('/api/customer', customer.handleCustomerPost(db));
 
 	server.get('*', (req, res) => {
 		return handle(req, res);

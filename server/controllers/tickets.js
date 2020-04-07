@@ -1,3 +1,15 @@
+const handleTicketGet = (db) => (req, res) => {
+	db.query('SELECT * FROM sale WHERE sale_type=\'ticket\' ORDER BY timestamp DESC LIMIT 10')
+	.then(function(data) {
+		console.log(data);
+		res.json(data);
+	})
+	.catch(function(error) {
+		console.log('ERROR: ', error);
+		res.status(400).json('');
+	})
+}
+
 const handleTicketPost = (db) => (req, res) => {
 	//const current_time = Date.now();
 	const values = {sale_type: 'ticket', sale_item: 'Park Ticket', sale_amount: '60', customer_id: req.body.customer_id, sale_from: 'Park Ticket Booth'};
@@ -14,5 +26,6 @@ const handleTicketPost = (db) => (req, res) => {
 }
 
 module.exports = {
+	handleTicketGet: handleTicketGet,
 	handleTicketPost: handleTicketPost
 }

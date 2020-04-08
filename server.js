@@ -17,6 +17,7 @@ const shops = require('./server/controllers/shops');
 const tickets = require('./server/controllers/tickets');
 const maintenance = require('./server/controllers/maintenance');
 const rainouts = require('./server/controllers/rainouts');
+const reports = require('./server/controllers/reports');
 const staff = require('./server/controllers/staff');
 const customer = require('./server/controllers/customer');
 
@@ -112,9 +113,11 @@ app.prepare().then(() => {
 	server.get('/api/rainouts', rainouts.handleRainoutsGet(db));
 	server.post('/api/rainouts', rainouts.handleRainoutsPost(db));
 
+	server.get('/api/reports', reports.handleReportsGet(db));
+
 	server.get('/api/staff', staff.handleStaffGet(db));
 	server.post('/api/staff', staff.handleStaffPost(db));
-	//server.delete('/api/staff', rides.handleStaffDelete(db));
+	server.delete('/api/staff', staff.handleStaffDelete(db));
 
 	server.get('/api/customer', customer.handleCustomerGet(db));
 	server.post('/api/customer', customer.handleCustomerPost(db));

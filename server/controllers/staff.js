@@ -10,7 +10,7 @@ const handleStaffGet = (db) => (req, res) => {
 	})
 	.catch(function(error) {
 		//console.log('ERROR: ', error);
-		res.status(400).json('');
+		res.status(400).json('Invalid Input');
 	})
 }
 

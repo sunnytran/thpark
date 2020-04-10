@@ -139,6 +139,9 @@ app.prepare().then(() => {
 	server.put('/api/events', events.handleEventsPut(db));
 	server.delete('/api/events', events.handleEventsDelete(db));
 
+	server.get('/api/attends', attends.handleAttendsGet(db));
+	server.post('/api/attends', attends.handleAttendsPost(db));
+
 	server.get('*', (req, res) => {
 		return handle(req, res);
 	});

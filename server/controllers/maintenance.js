@@ -1,5 +1,5 @@
 const handleMaintenanceGet = (db) => (req, res) => {
-	db.query('SELECT * FROM ride_issue WHERE resolved=false')
+	db.query('SELECT * FROM ride_issue')
 	.then(function(data) {
 		console.log(data);
 		res.json(data);

@@ -59,7 +59,7 @@ class Nav extends React.Component {
 										</MyNavLink>
 									</li>
 									<li>
-										<MyNavLink linkName={"Tickets"} linkUrl={"/tickets"}>
+										<MyNavLink linkName={"Scanner"} linkUrl={"/scanner"}>
 										</MyNavLink>
 									</li>
 									<li>

@@ -134,6 +134,11 @@ app.prepare().then(() => {
 	server.get('/api/customer', customer.handleCustomerGet(db));
 	server.post('/api/customer', customer.handleCustomerPost(db));
 
+	server.get('/api/events', events.handleEventsGet(db));
+	server.post('/api/events', events.handleEventsPost(db));
+	server.put('/api/events', events.handleEventsPut(db));
+	server.delete('/api/events', events.handleEventsDelete(db));
+
 	server.get('*', (req, res) => {
 		return handle(req, res);
 	});

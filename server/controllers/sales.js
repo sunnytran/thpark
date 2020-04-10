@@ -1,6 +1,6 @@
 const handleSalesGet = (db) => (req, res) => {
-	const values = {transaction_id: req.body.transaction_id};
-	db.query('SELECT * FROM sale WHERE transaction_id=${transaction_id}', values)
+	const values = {shop_name: req.body.shop_name};
+	db.query('SELECT * FROM sale WHERE sale_from=${shop_name}', values)
 	.then(function(data) {
 		console.log(data);
 		res.json(data);

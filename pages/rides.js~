@@ -1,8 +1,7 @@
 
 import Layout from '../components/Layout';
 import Popup from '../components/Popup';
-import RideEntry from '../components/RideEntry';
-import MaintenanceButton from '../components/MaintenanceButton';
+import RideEntry from '../components/RideEntry'
 import Moment from 'moment';
 import moment from 'moment';
 
@@ -13,6 +12,8 @@ class Rides extends React.Component {
 		this.state = {
 			rides: [],
 			showRidePop: false,
+			showIssuePop: false,
+			rideIssue: null
 		}
 		
 		this.inputRideName   = React.createRef();
@@ -23,11 +24,18 @@ class Rides extends React.Component {
 		this.inputInspection = React.createRef(); 
 		this.inputInsurance = React.createRef();
 
+		this.inputIssueType = React.createRef();
+		this.inputSeverity = React.createRef();
+		this.issueRide = React.createRef();
+
 		this.toggleRidePop = this.toggleRidePop.bind(this);
+		this.toggleIssuePop = this.toggleIssuePop.bind(this);
 		this.addRide = this.addRide.bind(this);
 		this.removeRide = this.removeRide.bind(this);
 		this.CompleteButton = this.CompleteButton.bind(this);
 		this.completeRide = this.completeRide.bind(this);
+		this.MaintenanceButton = this.MaintenanceButton.bind(this);
+		this.reportIssue = this.reportIssue.bind(this);
 	}
 
 	componentDidMount(){
@@ -49,6 +57,14 @@ class Rides extends React.Component {
 			const newPop = !prev.showRidePop;
 
 			return { showRidePop: newPop };
+		});
+	}
+
+	toggleIssuePop(ride) {
+		this.setState((prev, props) => {
+			const newPop = !prev.showIssuePop;
+
+			return { showIssuePop: newPop };
 		});
 	}
 
@@ -160,57 +176,89 @@ class Rides extends React.Component {
 		);
 	}
 
-	//reportIssue(i) {
-		//var index = this.state.rides.indexOf(i);
+	reportIssue(i) {
+		var index = this.state.rides.indexOf(i);
 
-		//i.ride_status = 'maintenance';
-		//i.last_inspection = moment();
+		i.ride_status = 'maintenance';
+		i.last_inspection = moment();
 
-		//var data = {
-			//"target_name": i.ride_name,
-			//"ride_name": i.ride_name,
-			//"ride_type": i.ride_type,
-			//"creation_date": i.creation_date,
-			//"location": i.location,
-			//"ride_status": i.ride_status,
-			//"last_inspection": i.last_inspection,
-			//"insurance_expiration_date": i.insurance_expiration_date
-		//};
+		var data = {
+			"target_name": i.ride_name,
+			"ride_name": i.ride_name,
+			"ride_type": i.ride_type,
+			"creation_date": i.creation_date,
+			"location": i.location,
+			"ride_status": i.ride_status,
+			"last_inspection": i.last_inspection,
+			"insurance_expiration_date": i.insurance_expiration_date
+		};
 
-		//console.log(data);
+		console.log(data);
 
-		////fetch("https://www.tpmanagement.app/api/rides", {
-			////method: 'PUT', 
-			////headers: {'Content-Type': 'application/json; charset=utf-8'}, 
-			////body: JSON.stringify(data)
-		////})
-		////.then((res) => { console.log(res) })
-		////.catch(error => console.log(error));
+		//fetch("https://www.tpmanagement.app/api/rides", {
+			//method: 'PUT', 
+			//headers: {'Content-Type': 'application/json; charset=utf-8'}, 
+			//body: JSON.stringify(data)
+		//})
+		//.then((res) => { console.log(res) })
+		//.catch(error => console.log(error));
 
 
-		////var tmp = [...this.state.rides];
-		////tmp[index] = i;
-		////this.setState({
-			////rides: tmp
-		////});
+		//var tmp = [...this.state.rides];
+		//tmp[index] = i;
+		//this.setState({
+			//rides: tmp
+		//});
 
-		////data = {
-			////"type": this.inputIssueType.current.value,
-			////"severity": this.inputSeverity.current.value,
-			////"ride_name": i.ride_name
-		////}
-		////fetch("https://www.tpmanagement.app/api/maintenance", {
-			////method: 'PUT', 
-			////headers: {'Content-Type': 'application/json; charset=utf-8'}, 
-			////body: JSON.stringify(data)
-		////})
-		////.then((res) => { console.log(res) })
-		////.catch(error => console.log(error));
+		//data = {
+			//"type": this.inputIssueType.current.value,
+			//"severity": this.inputSeverity.current.value,
+			//"ride_name": i.ride_name
+		//}
+		//fetch("https://www.tpmanagement.app/api/maintenance", {
+			//method: 'PUT', 
+			//headers: {'Content-Type': 'application/json; charset=utf-8'}, 
+			//body: JSON.stringify(data)
+		//})
+		//.then((res) => { console.log(res) })
+		//.catch(error => console.log(error));
 
-		//this.toggleIssuePop();
-	//}
+		this.toggleIssuePop();
+	}
 
 	//const values = {type: req.body.type, severity: req.body.severity, ride_name: req.body.ride_name};
+	MaintenanceButton = (props) => {
+		if (props.ride.ride_status != "running")
+			return null;
+
+
+		return (
+			<div>
+				<button class="button is-small" onClick={this.toggleIssuePop}>
+					<span class="icon">
+						<i class="fa fa-exclamation-triangle"></i>
+					</span>
+				</button>
+
+
+				<Popup closePopup={this.toggleIssuePop} showPop={this.state.showIssuePop} title="Report an issue" submitText="Report" btnFunc={() => this.reportIssue(props.ride)}>
+					<div class="field">
+						<label class="label">Issue type</label>
+						<div class="control">
+							<input ref={this.inputIssueType} class="input" type="text" placeholder="Issue type" />
+						</div>
+					</div>
+
+					<div class="field">
+						<label class="label">Severity</label>
+						<div class="control">
+							<input ref={this.inputSeverity} class="input" type="text" placeholder="Severity" />
+						</div>
+					</div>
+				</Popup>
+			</div>
+		);
+	}
 
 	render() {
 		const rides = this.state.rides;
@@ -312,7 +360,7 @@ class Rides extends React.Component {
 														</span>
 													</button>
 													<this.CompleteButton ride={i} />
-													<MaintenanceButton ride={i} />
+													<this.MaintenanceButton ride={i} />
 												</div>
 											</td>
 										</tr>

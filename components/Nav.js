@@ -23,7 +23,6 @@ class Nav extends React.Component {
 		`
 
 		const Title = styled.h1`
-			color: #fff;
 			background-image: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
@@ -34,8 +33,7 @@ class Nav extends React.Component {
 		return (
 			<div>
 				<head>
-						<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" />
-					</head>
+				</head>
 
 					<aside class="menu">
 						<ul class="menu-list">
@@ -57,19 +55,11 @@ class Nav extends React.Component {
 										</MyNavLink>
 									</li>
 									<li>
-										<MyNavLink linkName={"Concessions"} linkUrl={"/concessions"}>
+										<MyNavLink linkName={"Stores"} linkUrl={"/stores"}>
 										</MyNavLink>
 									</li>
 									<li>
 										<MyNavLink linkName={"Tickets"} linkUrl={"/tickets"}>
-										</MyNavLink>
-									</li>
-									<li>
-										<MyNavLink linkName={"Maintenance"} linkUrl={"/maintenance"}>
-										</MyNavLink>
-									</li>
-									<li>
-										<MyNavLink linkName={"Reports"} linkUrl={"/reports"}>
 										</MyNavLink>
 									</li>
 									<li>

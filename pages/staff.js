@@ -118,47 +118,47 @@ class Staff extends React.Component {
 								<label class="label">First name</label>
 								<div class="control">
 									<input ref={this.inputFirst} class="input" type="text" placeholder="First name" />
-								</div>
-							</div>
-							<div class="field column is-third">
-								<label class="label">Last name</label>
-								<div class="control">
-									<input ref={this.inputLast} class="input" type="text" placeholder="Last name" />
-								</div>
-							</div>
-							<div class="field column is-third">
-								<label class="label">Access level</label>
-								<div class="control">
-									<input ref={this.inputAccess} class="input" type="text" placeholder="Access level" />
-								</div>
-							</div>
-						</div>
-						<div class="columns">
-							<div class="field column is-half">
-								<label class="label">Username</label>
-								<div class="control">
-									<input ref={this.inputUser} class="input" type="text" placeholder="Username" />
-								</div>
-							</div>
-							<div class="field column is-half">
-								<label class="label">Password</label>
-								<div class="control">
-									<input ref={this.inputPass} class="input" type="password" placeholder="Password" />
-								</div>
-							</div>
-						</div>
-					</Popup>
+			</div>
+			</div>
+			<div class="field column is-third">
+			<label class="label">Last name</label>
+			<div class="control">
+			<input ref={this.inputLast} class="input" type="text" placeholder="Last name" />
+			</div>
+			</div>
+			<div class="field column is-third">
+			<label class="label">Access level</label>
+			<div class="control">
+			<input ref={this.inputAccess} class="input" type="text" placeholder="Access level" />
+			</div>
+			</div>
+			</div>
+			<div class="columns">
+			<div class="field column is-half">
+			<label class="label">Username</label>
+			<div class="control">
+			<input ref={this.inputUser} class="input" type="text" placeholder="Username" />
+			</div>
+			</div>
+			<div class="field column is-half">
+			<label class="label">Password</label>
+			<div class="control">
+			<input ref={this.inputPass} class="input" type="password" placeholder="Password" />
+			</div>
+			</div>
+			</div>
+			</Popup>
 
-						<table class="table">
-							<thead>
-								<th>First name</th>
-								<th>Last name</th>
-								<th>Delete</th>
-							</thead>
+			<table class="table">
+			<thead>
+			<th>First name</th>
+			<th>Last name</th>
+			<th>Delete</th>
+			</thead>
 
-							<tbody>
-								{
-									staff.map(i => {
+			<tbody>
+			{
+				staff.map(i => {
 										return (
 											<tr>
 												<td>{i.first_name}</td>

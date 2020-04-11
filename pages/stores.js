@@ -1,13 +1,15 @@
-
+	
 import Layout from '../components/Layout';
 import Popup from '../components/Popup';
 import moment from 'moment';
+import StoreEntry from '../components/StoreEntry';
 
 class Stores extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			stores: [],
+			sales: [],
 			showPop: false
 		}
 	
@@ -27,6 +29,17 @@ class Stores extends React.Component {
 			(result)=> {
 				this.setState({
 					stores: result
+				});
+				console.log(result);
+			}
+		)
+
+		fetch("https://www.tpmanagement.app/api/sales")
+		.then(res => res.json())
+		.then (
+			(result)=> {
+				this.setState({
+					sales: result
 				});
 				console.log(result);
 			}
@@ -62,6 +75,23 @@ class Stores extends React.Component {
 		});
 		this.togglePop();
 	}
+
+	removeStore(i) {
+		fetch("https://www.tpmanagement.app/api/shops", {
+			method: 'DELETE', 
+			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
+      body: JSON.stringify({"name": i.shop_name})
+    })
+		.then((res) => { console.log(res) })
+		.catch(error => console.log(error));
+
+		var index = this.state.stores.indexOf(i);
+		var tmp = [...this.state.stores];
+		tmp.splice(index, 1);
+		this.setState({
+			stores: tmp
+		})
+	};
 
 	togglePop() {
 		this.setState((prev, props) => {
@@ -118,11 +148,11 @@ class Stores extends React.Component {
 									stores.map(i => {
 										return (
 											<tr>
-												<td>{i.shop_name}</td>
+												<td><StoreEntry sales={this.state.sales} shopName={i.shop_name} /></td>
 												<td>{i.shop_type}</td>
 												<td>{i.location}</td>
 												<td>
-													<button class="button is-small" onClick={() => this.removeRide(i)}>
+													<button class="button is-small" onClick={() => this.removeStore(i)}>
 														<span class="icon">
 															<i class="fa fa-times"></i>
 														</span>

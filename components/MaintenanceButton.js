@@ -26,9 +26,8 @@ class MaintenanceButton extends React.Component {
 	}
 
 	reportIssue() {
-		//var index = this.state.rides.indexOf(i);
-
 		const i = this.props.ride;
+		var original = i;
 
 		i.ride_status = 'maintenance';
 		i.last_inspection = moment();
@@ -52,13 +51,6 @@ class MaintenanceButton extends React.Component {
 		.then((res) => { console.log(res) })
 		.catch(error => console.log(error));
 
-
-		////var tmp = [...this.state.rides];
-		////tmp[index] = i;
-		////this.setState({
-			////rides: tmp
-		////});
-
 		data = {
 			"type": this.inputIssueType.current.value,
 			"severity": this.inputSeverity.current.value,
@@ -79,13 +71,11 @@ class MaintenanceButton extends React.Component {
 			.then(res => console.log(res))
 			.catch(error => console.log(error));
 
-
-
-
 		this.togglePop();
+	
+		this.props.updateRideStatus(original, "maintenance", data);
 	}
 
-	//const values = {type: req.body.type, severity: req.body.severity, ride_name: req.body.ride_name};
 
 	render() {
 		if (this.props.ride.ride_status != "running")

@@ -1,6 +1,6 @@
 const handleSalesGet = (db) => (req, res) => {
 	const values = {shop_name: req.body.shop_name};
-	db.query('SELECT * FROM sale WHERE sale_from=${shop_name}', values)
+	db.query('SELECT * FROM sale', values)
 	.then(function(data) {
 		console.log(data);
 		res.json(data);

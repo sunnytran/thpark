@@ -17,12 +17,23 @@ class Scanner extends React.Component {
 			shops: [],
 			shop: null,
 			last10sales: [],
+			sale_type: "food",
+			sale_item: "",
+			"sale_amount" : 0,
 
 			events: [],
 			event: null,
 			last10attendees: [],
 
-			notify: ""
+			notify: "",
+
+			firstNameAdd: "",
+			lastNameAdd: "",
+			customerIdAdd : "",
+
+			firstNameLookup: "",
+			lastNameLookup: "",
+			customerIdLookup: ""
 		};
 
 		this.submitRideson = this.submitRideson.bind(this);
@@ -30,7 +41,8 @@ class Scanner extends React.Component {
 		this.submitMakeSale = this.submitMakeSale.bind(this);
 		this.submitAttendEvent = this.submitAttendEvent.bind(this);
 
-		//this.getLast10Riders = this.getLast10Riders.bind(this);
+		this.submitAddCustomer = this.submitAddCustomer.bind(this);
+		this.submitLookupCustomer = this.submitLookupCustomer.bind(this);
 	}
 
 	componentDidMount(){
@@ -41,6 +53,18 @@ class Scanner extends React.Component {
 				this.setState({
 					rides: result,
 					ride: result[0].ride_name
+				});
+				
+			}
+		)
+
+		fetch("https://www.tpmanagement.app/api/shops")
+		.then(res => res.json())
+		.then (
+			(result)=> {
+				this.setState({
+					shops: result,
+					shop: result[0].shop_name
 				});
 				
 			}
@@ -59,6 +83,9 @@ class Scanner extends React.Component {
 		)
 
 		this.getLast10Riders();
+		this.getLast10Tickets();
+		this.getLast10Sales();
+		this.getLast10Attendees();
 	}
 
 	onChange = (event) => {
@@ -89,13 +116,89 @@ class Scanner extends React.Component {
 			this.setState({
 				last10riders: result
 			});
-			console.log(result);
+		})
+		.catch(error => console.log(error));
+	}
+
+	getLast10Tickets(){
+		const data = {"type" : "tickets"};
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', 'https://www.tpmanagement.app');
+
+		fetch("https://www.tpmanagement.app/api/scanner", {
+			body: JSON.stringify(data),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		})
+		.then(res => res.json())
+		.then (
+			(result)=> {
+			this.setState({
+				last10tickets: result
+			});
+		})
+		.catch(error => console.log(error));
+	}
+
+	getLast10Sales(){
+		const data = {"type" : "attends"};
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', 'https://www.tpmanagement.app');
+
+		fetch("https://www.tpmanagement.app/api/scanner", {
+			body: JSON.stringify(data),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		})
+		.then(res => res.json())
+		.then (
+			(result)=> {
+			this.setState({
+				last10attendees: result
+			});
+		})
+		.catch(error => console.log(error));
+	}
+
+	getLast10Attendees(){
+		const data = {"type" : "sales"};
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', 'https://www.tpmanagement.app');
+
+		fetch("https://www.tpmanagement.app/api/scanner", {
+			body: JSON.stringify(data),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		})
+		.then(res => res.json())
+		.then (
+			(result)=> {
+			this.setState({
+				last10sales: result
+			});
 		})
 		.catch(error => console.log(error));
 	}
 
 	submitRideson(event){
 		event.preventDefault();
+
+		this.setState({
+			notify: "Testing"
+		});
+
 		let customer = this.state.customer;
 		const ride = this.state.ride;
 		if (customer === ""){
@@ -123,7 +226,6 @@ class Scanner extends React.Component {
 					events: result,
 					event: result[0]
 				});
-				console.log(result);
 			}
 		)
 		.catch(error => console.log(error));
@@ -151,17 +253,49 @@ class Scanner extends React.Component {
 			mode: 'cors'
 		})
 		.then(res => console.log(res))
+		.then (
+			(result)=> {
+				
+			}
+		)
 		.catch(error => console.log(error));
+		this.getLast10Tickets();
 	}
 
 	submitMakeSale(event){
 		event.preventDefault();
 
 		let customer = this.state.customer;
+		const shop = this.state.shop;
+		const sale_type = this.state.sale_type
+		const sale_item = this.state.sale_item;
+		const sale_amount = this.state.sale_amount;
 
 		if (customer === ""){
 			customer = null;
 		}
+
+		let data = {"sale_item" : sale_item, "sale_amount" : sale_amount, "sale_type" : sale_type, "customer_id" : customer, "sale_from" : shop};
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', 'https://www.tpmanagement.app');
+
+		fetch("https://www.tpmanagement.app/api/sales", {
+			body: JSON.stringify(data),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		})
+		.then(res => console.log(res))
+		.then (
+			(result)=> {
+				
+			}
+		)
+		.catch(error => console.log(error));
+		this.getLast10Sales();
 	}
 
 	submitAttendEvent(event){
@@ -175,7 +309,6 @@ class Scanner extends React.Component {
 		}
 
 		let data = {"event_id" : event_id, "customer_id" : customer};
-		console.log("EVENT" + event);
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
@@ -188,13 +321,20 @@ class Scanner extends React.Component {
 			method: 'POST',
 			mode: 'cors'
 		})
-		.then(res => console.log(res))
+		.then(res => console.log(res)
+		)
+		.then (
+			(result)=> {
+				
+			}
+		)
 		.catch(error => console.log(error));
-
+		this.getLast10Attendees();
 	}
 
 	renderOperation(){
 		if (this.state.operation === "rideson"){
+			//Notify is important to show our trigger notification!
 			return (
 			<div>
 				<h2>Scan Rider</h2>
@@ -208,9 +348,13 @@ class Scanner extends React.Component {
 					</label>
 					<input type="submit" value="Submit"/>
 				</form>
+				{
+					this.state.notify !== "" ? (<p>NOTIFICATION: {this.state.notify}</p>) : null
+				}
+				<br/>
 				<h2>Rider History</h2>
 				<ul>
-					{this.state.last10riders.map((x,y) => <li key={x}>{x.ride_name} {x.customer_id} {x.timestamp}</li>)}
+					{this.state.last10riders.map((x,y) => <li key={x}>Ride: {x.ride_name} Time: {x.timestamp}</li>)}
 				</ul>
 			</div>
 			);
@@ -218,48 +362,106 @@ class Scanner extends React.Component {
 		else if (this.state.operation === "tickets"){
 			return (
 				<div>
-				<h2>Sell Ticket</h2>
+					<h2>Sell Ticket</h2>
 					<form onSubmit={this.submitSellTicket}>
 						<label>Customer Id: 
 							<input type="text" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 						</label>
 						<input type="submit" value="Submit"/>
 					</form>
-					</div>
-				);}
+					<br/>
+					<h2>Tickets History</h2>
+					<ul>
+						{this.state.last10tickets.map((x,y) => <li key={x}>Ticket Sale Time: {x.timestamp}</li>)}
+					</ul>
+				</div>
+				);
+		}
 		else if (this.state.operation === "sales"){
 			return (
 				<div>
-				<h2>Sell Item</h2>
-				<form onSubmit={this.submitMakeSale}>
-					<label>Customer Id: 
-						<input type="text" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
-					</label>
-					<input type="submit" value="Submit"/>
-				</form>
+					<h2>Sell Item</h2>
+					<select name="ride" onChange={this.onChange}>
+						{this.state.shops.map((x,y) => <option key={x.shop_name}>{x.shop_name}</option>)}
+					</select>
+					<select name="sale_type" onChange={this.onChange}>
+						<option value="food">Food</option>
+						<option value="gift">Gift</option>
+						<option value="game">Game</option>
+					</select>
+					<form onSubmit={this.submitMakeSale}>
+						<label>Sale Item
+							<input type="text" name="sale_item" value={this.state.sale_item} defaultValue="" onChange={this.onChange}/>
+						</label>
+						<label>Sale Amount
+							<input type="number" name="sale_amount" value={this.state.sale_amount} defaultValue={0} onChange={this.onChange}/>
+						</label>
+						<label>Customer Id:
+							<input type="text" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
+						</label>
+						<input type="submit" value="Submit"/>
+					</form>
+					<br/>
+					<h2>Sales History</h2>
+					<ul>
+						{this.state.last10sales.map((x,y) => <li key={x}>Sale: {x.sale_item} Time: {x.timestamp}</li>)}
+					</ul>
 				</div>
 			);
 		}
 		else if (this.state.operation === "attends"){
 			return (
 				<div>
-				<h2>Event Attendee</h2>
-				<select name="ride" onChange={this.onChange}>
-					{this.state.events.map((x,y) => <option key={x}>{x.event_name}</option>)}
-				</select>
-				<form onSubmit={this.submitAttendEvent}>
-					<label>Customer Id: 
-						<input type="text" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
-					</label>
-					<input type="submit" value="Submit"/>
-				</form>
+					<h2>Event Attendee</h2>
+					<select name="ride" onChange={this.onChange}>
+						{this.state.events.map((x,y) => <option key={x}>{x.event_name}</option>)}
+					</select>
+					<form onSubmit={this.submitAttendEvent}>
+						<label>Customer Id: 
+							<input type="text" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
+						</label>
+						<input type="submit" value="Submit"/>
+					</form>
+					<br/>
+					<h2>Attendee History</h2>
+					<ul>
+						{this.state.last10attendees.map((x,y) => <li key={x}>Event: {x.event_name} Time: {x.timestamp}</li>)}
+					</ul>
 				</div>
 			);
 		}
 	}
 
-	addCustomer(){}
-	lookupCustomer(){}
+	submitAddCustomer(){
+		event.preventDefault();
+
+		const data = {"first_name":this.state.firstNameAdd, "last_name":this.state.lastNameAdd};
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', 'https://www.tpmanagement.app');
+
+		fetch("https://www.tpmanagement.app/api/customer", {
+			body: JSON.stringify(data),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		})
+		.then(res => console.log(res)
+		)
+		.then (
+			(result)=> {
+				this.setState({
+					customerIdAdd : ""
+				});
+			}
+		)
+		.catch(error => console.log(error));
+	}
+	submitLookupCustomer(){
+		event.preventDefault();
+	}
 
 	render(){
 		const operationElement = this.renderOperation();
@@ -288,19 +490,34 @@ class Scanner extends React.Component {
 
 				<div>
 					<h2>Add Customer</h2>
+					<form onSubmit={this.submitAddCustomer}>
+						<label>First Name: 
+							<input type="text" name="firstNameAdd" value={this.state.firstNameAdd} defaultValue="" onChange={this.onChange}/>
+						</label>
+						<label>Last Name: 
+							<input type="text" name="lastNameAdd" value={this.state.lastNameAdd} defaultValue="" onChange={this.onChange}/>
+						</label>
+						<input type="submit" value="Submit"/>
+					</form>
+					{
+						this.state.customerIdAdd !== "" ? (<p>New Customer Id: {this.state.customerIdAdd}</p>) : null
+					}
 					<br/>
 				</div>
 				<div>
 					<h2>Lookup Customer</h2>
-					<form onSubmit={this.submitSellTicket}>
+					<form onSubmit={this.submitLookupCustomer}>
 						<label>First Name: 
-							<input type="text" name="customer" value={this.state.customer} defaultValue="" /*onChange={this.onChange}*//>
+							<input type="text" name="firstNameLookup" value={this.state.firstNameLookup} defaultValue="" onChange={this.onChange}/>
 						</label>
 						<label>Last Name: 
-							<input type="text" name="customer" value={this.state.customer} defaultValue="" /*onChange={this.onChange}*//>
+							<input type="text" name="lastNameLookup" value={this.state.lastNameLookup} defaultValue="" onChange={this.onChange}/>
 						</label>
 						<input type="submit" value="Submit"/>
 					</form>
+					{
+						this.state.customerIdLookup !== "" ? (<p>Customer Id Search: {this.state.customerIdLookup}</p>) : null
+					}
 					<br/>
 				</div>
 			</Layout>

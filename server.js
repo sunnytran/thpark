@@ -132,7 +132,7 @@ app.prepare().then(() => {
 	server.post('/api/staff', staff.handleStaffPost(db));
 	server.delete('/api/staff', staff.handleStaffDelete(db));
 
-	server.get('/api/customer', customer.handleCustomerGet(db));
+	server.put('/api/customer', customer.handleCustomerPut(db));
 	server.post('/api/customer', customer.handleCustomerPost(db));
 
 	server.get('/api/events', events.handleEventsGet(db));

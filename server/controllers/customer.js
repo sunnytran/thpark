@@ -1,4 +1,4 @@
-const handleCustomerGet = (db) => (req, res) => {
+const handleCustomerPut = (db) => (req, res) => {
 	const name = {first_name: req.body.first_name, last_name: req.body.last_name};
 	db.query('SELECT * FROM customer WHERE first_name=${first_name} AND last_name=${last_name}', name)
 	.then(function(data) {
@@ -14,7 +14,7 @@ const handleCustomerGet = (db) => (req, res) => {
 const handleCustomerPost = (db) => (req, res) => {
 	const values = {first_name: req.body.first_name, last_name: req.body.last_name};
 
-	db.none('INSERT INTO customer (first_name, last_name) VALUES (${first_name}, ${last_name})', values)
+	db.one('INSERT INTO customer (first_name, last_name) VALUES (${first_name}, ${last_name})', values)
 	.then (function(data){
 		console.log('Data: ', data);
 		res.json(data);
@@ -26,6 +26,6 @@ const handleCustomerPost = (db) => (req, res) => {
 }
 
 module.exports = {
-	handleCustomerGet: handleCustomerGet,
+	handleCustomerPut: handleCustomerPut,
 	handleCustomerPost: handleCustomerPost,
 }

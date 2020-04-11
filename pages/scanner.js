@@ -461,6 +461,30 @@ class Scanner extends React.Component {
 	}
 	submitLookupCustomer(){
 		event.preventDefault();
+
+		const data = {"first_name":this.state.firstNameAdd, "last_name":this.state.lastNameAdd};
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', 'https://www.tpmanagement.app');
+
+		fetch("https://www.tpmanagement.app/api/customer", {
+			body: JSON.stringify(data),
+			headers: headers,
+			method: 'PUT',
+			mode: 'cors'
+		})
+		.then(res => console.log(res)
+		)
+		.then (
+			(result)=> {
+				this.setState({
+					customerIdLookup : result
+				});
+			}
+		)
+		.catch(error => console.log(error));
 	}
 
 	render(){

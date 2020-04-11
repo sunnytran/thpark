@@ -59,6 +59,14 @@ class Nav extends React.Component {
 										</MyNavLink>
 									</li>
 									<li>
+										<MyNavLink linkName={"Events"} linkUrl={"/events"}>
+										</MyNavLink>
+									</li>
+									<li>
+										<MyNavLink linkName={"Rainouts"} linkUrl={"/rainouts"}>
+										</MyNavLink>
+									</li>
+									<li>
 										<MyNavLink linkName={"Scanner"} linkUrl={"/scanner"}>
 										</MyNavLink>
 									</li>

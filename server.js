@@ -110,6 +110,7 @@ app.prepare().then(() => {
 
 	server.get('/api/shops', shops.handleShopGet(db));
 	server.post('/api/shops', shops.handleShopPost(db));
+	server.put('/api/shops', shops.handleShopPut(db));
 	server.delete('/api/shops', shops.handleShopDelete(db));
 
 	server.get('/api/tickets', tickets.handleTicketGet(db));
@@ -130,6 +131,7 @@ app.prepare().then(() => {
 
 	server.get('/api/staff', staff.handleStaffGet(db));
 	server.post('/api/staff', staff.handleStaffPost(db));
+	server.put('/api/staff', staff.handleStaffPut(db));
 	server.delete('/api/staff', staff.handleStaffDelete(db));
 
 	server.put('/api/customer', customer.handleCustomerPut(db));

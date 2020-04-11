@@ -24,6 +24,19 @@ const handleShopPost = (db) => (req, res) => {
 	})
 }
 
+const handleShopPut = (db) => (req, res) => {
+	const values = {target_name: req.body.target_name, shop_name: req.body.shop_name, location: location};
+	db.none('UPDATE employee SET shop_name=${shop_name}, location=${location} WHERE shop_name = ${target_name}', values)
+	.then (function(data){
+		console.log('Data: ', data);
+		res.json(data);
+	})
+	.catch(function(error) {
+		console.log('ERROR: ', error);
+		res.status(400).json('Invalid Input');
+	})
+}
+
 const handleShopDelete = (db) => (req, res) => {
 	const name = {name: req.body.name};
 	db.none('DELETE FROM shop WHERE shop_name = ${name}', name)
@@ -40,5 +53,6 @@ const handleShopDelete = (db) => (req, res) => {
 module.exports = {
 	handleShopGet: handleShopGet,
 	handleShopPost: handleShopPost,
+	handleShopPut: handleShopPut,
 	handleShopDelete: handleShopDelete
 }

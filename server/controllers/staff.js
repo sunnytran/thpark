@@ -14,6 +14,19 @@ const handleStaffGet = (db) => (req, res) => {
 	})
 }
 
+const handleStaffPut = (db) => (req, res) => {
+	const values = {employee_id: req.body.employee_id, password: req.body.password};
+	db.none('UPDATE employee SET password=${password} WHERE employee_id = ${employee_id}', values)
+	.then (function(data){
+		console.log('Data: ', data);
+		res.json(data);
+	})
+	.catch(function(error) {
+		console.log('ERROR: ', error);
+		res.status(400).json('Invalid Input');
+	})
+}
+
 const handleStaffPost = (db) => (req, res) => {
 	const values = {first_name: req.body.first_name, last_name: req.body.last_name, username: req.body.username, password: req.body.password, access_level: req.body.access_level};
 
@@ -43,6 +56,7 @@ const handleStaffDelete = (db) => (req, res) => {
 
 module.exports = {
 	handleStaffGet: handleStaffGet,
+	handleStaffPut: handleStaffPut,
 	handleStaffPost: handleStaffPost,
 	handleStaffDelete: handleStaffDelete
 }

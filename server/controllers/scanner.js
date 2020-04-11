@@ -1,5 +1,5 @@
 const handleScannerPost = (db) => (req, res) => {
-	if (body.req.type === "rideson"){
+	if (req.body.type === "rideson"){
 		db.query('SELECT * FROM rides_on ORDER BY timestamp DESC LIMIT 10')
 		.then(function(data) {
 			console.log(data);
@@ -10,7 +10,7 @@ const handleScannerPost = (db) => (req, res) => {
 			res.status(400).json('');
 		})
 	}
-	else if (body.req.type === "tickets"){
+	else if (req.body.type === "tickets"){
 		db.query('SELECT * FROM sale WHERE sale_type=\'ticket\' ORDER BY timestamp DESC LIMIT 10')
 		.then(function(data) {
 			console.log(data);
@@ -21,7 +21,7 @@ const handleScannerPost = (db) => (req, res) => {
 			res.status(400).json('');
 		})
 	}
-	else if (body.req.type === "sales"){
+	else if (req.body.type === "sales"){
 		db.query('SELECT * FROM sale WHERE sale_type<>\'ticket\' ORDER BY timestamp DESC LIMIT 10')
 		.then(function(data) {
 			console.log(data);
@@ -32,7 +32,7 @@ const handleScannerPost = (db) => (req, res) => {
 			res.status(400).json('');
 		})
 	}
-	else if (body.req.type === "attends"){
+	else if (req.body.type === "attends"){
 		db.query('SELECT * FROM attends ORDER BY timestamp DESC LIMIT 10')
 		.then(function(data) {
 			console.log(data);

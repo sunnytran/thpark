@@ -5,7 +5,7 @@ const handleLogin = (db) => (req, res) => {
 	.then(function(data) {
 		console.log(data);
 		if (data[0] != 'undefined'){
-			res.json(data[0]);
+			res.json(data[0].username);
 			console.log(res);
 		}
 		else {

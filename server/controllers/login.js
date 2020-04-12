@@ -6,7 +6,6 @@ const handleLogin = (db) => (req, res) => {
 		console.log(data);
 		if (data[0] != 'undefined'){
 			res.json(data);
-			console.log(res);
 		}
 		else {
 			res.status(400).json('Wrong credentials');

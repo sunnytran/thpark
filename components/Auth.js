@@ -10,7 +10,6 @@ export function attemptLogin(username, password){
 	headers.append('Accept', 'application/json');
 	headers.append('Origin', 'https://www.tpmanagement.app');
 	
-
 	fetch("https://www.tpmanagement.app/api/login", {
 		body: JSON.stringify(data),
 		headers: headers,
@@ -21,7 +20,7 @@ export function attemptLogin(username, password){
 	.then (
 		(result)=> {
 			console.log(result);
-			Cookies.set("token", result[0], {expires: 1});
+			Cookies.set("token", result[0].username, {expires: 1});
 	})
 	.catch(error => console.log(error));
 }

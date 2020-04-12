@@ -20,7 +20,7 @@ class Scanner extends React.Component {
 			last10sales: [],
 			sale_type: "food",
 			sale_item: "",
-			"sale_amount" : 0,
+			sale_amount : 0,
 
 			events: [],
 			event: null,
@@ -46,7 +46,16 @@ class Scanner extends React.Component {
 		this.submitLookupCustomer = this.submitLookupCustomer.bind(this);
 	}
 
-	componentDidMount(){
+	async componentDidMount(){
+		//This code will redirect to login page if not logged in
+		/*
+		let test = await isLoggedIn();
+		console.log(test);
+		if (test === false){
+			Router.push('/login');
+		}
+		*/
+
 		fetch("https://www.tpmanagement.app/api/rides")
 		.then(res => res.json())
 		.then (
@@ -237,6 +246,7 @@ class Scanner extends React.Component {
 
 	submitSellTicket(event){
 		event.preventDefault();
+
 		let customer = this.state.customer;
 		if (customer === ""){
 			customer = null;
@@ -258,7 +268,10 @@ class Scanner extends React.Component {
 		.then(res => console.log(res))
 		.then (
 			(result)=> {
-				
+			this.setState({
+				tickets: result,
+				ticket: result[0]
+			});
 			}
 		)
 		.catch(error => console.log(error));
@@ -294,7 +307,10 @@ class Scanner extends React.Component {
 		.then(res => console.log(res))
 		.then (
 			(result)=> {
-				
+			this.setState({
+				sales: result,
+				sale: result[0]
+			});
 			}
 		)
 		.catch(error => console.log(error));
@@ -304,7 +320,6 @@ class Scanner extends React.Component {
 	submitAttendEvent(event){
 		event.preventDefault();
 
-		event.preventDefault();
 		let customer = this.state.customer;
 		const event_id = this.state.event.event_id;
 		if (customer === ""){
@@ -328,7 +343,10 @@ class Scanner extends React.Component {
 		)
 		.then (
 			(result)=> {
-				
+				this.setState({
+				events: result,
+				event: result[0]
+			});
 			}
 		)
 		.catch(error => console.log(error));

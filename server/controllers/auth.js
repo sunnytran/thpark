@@ -1,9 +1,9 @@
-const handleLogin = (db) => (req, res) => {
-	const credentials = {username: req.body.username, password: req.body.password};
+/*const handleAuth = (db) => (req, res) => {
+	const token = {token: req.body.token};
 
-	db.query('SELECT * FROM employee WHERE username = ${username} AND password = crypt(${password}, password)', credentials)
+	db.query('SELECT * FROM employee ${token}', token)
 	.then(function(data) {
-		console.log(data);
+		//console.log(data);
 		if (data[0] != 'undefined'){
 			res.json(data[0]);
 		}
@@ -13,11 +13,11 @@ const handleLogin = (db) => (req, res) => {
 		}
 	})
 	.catch(function(error) {
-		console.log('ERROR: ', error);
+		//console.log('ERROR: ', error);
 		res.status(400).json('Wrong credentials');
 	})
 }
 
 module.exports = {
 	handleLogin: handleLogin
-}
+}*/

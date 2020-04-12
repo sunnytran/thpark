@@ -22,7 +22,7 @@ const handleScannerPost = (db) => (req, res) => {
 		})
 	}
 	else if (req.body.type === "sales"){
-		db.query('SELECT * FROM sale WHERE sale_type<>\'sales\' ORDER BY timestamp DESC LIMIT 10')
+		db.query('SELECT * FROM sale WHERE sale_type<>\'ticket\' ORDER BY timestamp DESC LIMIT 10')
 		.then(function(data) {
 			console.log(data);
 			res.json(data);

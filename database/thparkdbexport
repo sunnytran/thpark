@@ -309,6 +309,22 @@ $$;
 ALTER FUNCTION public.check_username_change() OWNER TO postgres;
 
 --
+-- Name: close_rides_raining(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.close_rides_raining() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+UPDATE ride SET ride_status = 'maintenance';
+RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.close_rides_raining() OWNER TO postgres;
+
+--
 -- Name: customer_refunds_raining(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -316,9 +332,10 @@ CREATE FUNCTION public.customer_refunds_raining() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
-DELETE FROM sale WHERE (NEW.timestamp::date = CURRENT_DATE AND SALE.timestamp >= NEW.start_timestamp AND SALE.timestamp <= NEW.end_timestamp);
-RAISE NOTICE 'SALE REFUNDED';
+DELETE FROM sale WHERE(NEW.timestamp::date = CURRENT_DATE AND SALE.timestamp >= NEW.start_timestamp AND sale.timestamp <= NEW.end_timestamp);
+RAISE NOTICE 'TICKET SALE REFUNDED DUE TO RAINING';
 PERFORM pg_notify('event','Customer sale refunded due to rain');
+RETURN NEW;
 END;
 $$;
 
@@ -349,9 +366,10 @@ CREATE FUNCTION public.inform_employee() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
-IF((SELECT ride_status FROM RIDE WHERE NEW.ride_name = ride_name)<>'running')
-THEN PERFORM pg_notify('event',"Customer can't ride, ride not running");
+IF((SELECT ride_status FROM RIDE WHERE NEW.ride_name = ride_name) <> 'running')
+THEN PERFORM pg_notify('event','Customer cant ride, ride not running');
 END IF;
+RETURN NEW;
 END;
 $$;
 
@@ -367,10 +385,10 @@ CREATE FUNCTION public.inform_employee_no_ticket() RETURNS trigger
     AS $$
 BEGIN
 IF((SELECT sale_item FROM SALE WHERE NEW.customer_id = SALE.customer_id AND NEW.timestamp >= SALE.timestamp AND timestamp::date = CURRENT_DATE) <> NEW.ride_name)
-THEN PERFORM pg_notify('event','Customer doesnt have ticket for ride');
+THEN PERFORM pg_notify('event','customer doesnt have ticket for ride');
 END IF;
-END
-;
+RETURN NEW;
+END;
 $$;
 
 
@@ -385,13 +403,62 @@ CREATE FUNCTION public.inform_employee_no_ticket_event() RETURNS trigger
     AS $$
 BEGIN
 IF((SELECT sale_item FROM SALE WHERE NEW.customer_id = SALE.customer_id AND NEW.timestamp >= SALE.timestamp AND timestamp::date = CURRENT_DATE) <> NEW.event_name)
-THEN PERFORM pg_notify('event','Customer doesnt have ticket for event');
+THEN PERFORM pg_notify('event','customer doesnt have ticket for event');
 END IF;
+RETURN NEW;
 END;
 $$;
 
 
 ALTER FUNCTION public.inform_employee_no_ticket_event() OWNER TO postgres;
+
+--
+-- Name: reinitiate_ride(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.reinitiate_ride() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+UPDATE ride SET ride_status = 'running' WHERE ride_name = NEW.ride_name;
+RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.reinitiate_ride() OWNER TO postgres;
+
+--
+-- Name: reopen_rides(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.reopen_rides() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+UPDATE ride SET ride_status = 'running';
+RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.reopen_rides() OWNER TO postgres;
+
+--
+-- Name: shutdown_ride(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.shutdown_ride() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+UPDATE ride SET ride_status = 'maintenance' WHERE ride_name = NEW.ride_name;
+RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.shutdown_ride() OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -889,6 +956,13 @@ ALTER TABLE ONLY public.shop
 
 
 --
+-- Name: rainouts close_rides_rain; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER close_rides_rain AFTER INSERT OR UPDATE ON public.rainouts FOR EACH ROW WHEN ((new.end_timestamp >= CURRENT_TIMESTAMP)) EXECUTE FUNCTION public.close_rides_raining();
+
+
+--
 -- Name: attends customer_cant_attend_event; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -959,10 +1033,31 @@ CREATE TRIGGER issue_id_update_trigger BEFORE UPDATE OF issue_id ON public.ride_
 
 
 --
+-- Name: ride_issue issue_status; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER issue_status AFTER INSERT OR UPDATE ON public.ride_issue FOR EACH ROW WHEN (((new.type = 'breakdown'::public.issue_type) AND (new.resolved = false))) EXECUTE FUNCTION public.shutdown_ride();
+
+
+--
+-- Name: rainouts not_raining; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER not_raining AFTER INSERT OR UPDATE ON public.rainouts FOR EACH ROW WHEN ((new.end_timestamp <= CURRENT_TIMESTAMP)) EXECUTE FUNCTION public.reopen_rides();
+
+
+--
 -- Name: ride_issue resolved_by_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
 CREATE TRIGGER resolved_by_update_trigger AFTER UPDATE OF resolved_by ON public.ride_issue FOR EACH ROW EXECUTE FUNCTION public.check_resolved_by_change();
+
+
+--
+-- Name: ride_issue ride_issue_fixed; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER ride_issue_fixed AFTER INSERT OR UPDATE ON public.ride_issue FOR EACH ROW WHEN ((new.resolved = true)) EXECUTE FUNCTION public.reinitiate_ride();
 
 
 --

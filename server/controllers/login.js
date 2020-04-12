@@ -1,11 +1,11 @@
 const handleLogin = (db) => (req, res) => {
 	const credentials = {username: req.body.username, password: req.body.password};
 
-	db.query('SELECT * FROM employee WHERE username = ${username} AND password = crypt(${password}, password)', credentials)
+	db.query('SELECT username FROM employee WHERE username = ${username} AND password = crypt(${password}, password)', credentials)
 	.then(function(data) {
 		console.log(data);
 		if (data[0] != 'undefined'){
-			res.json(data[0].username);
+			res.json(data);
 			console.log(res);
 		}
 		else {

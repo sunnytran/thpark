@@ -31,10 +31,33 @@ export function logout(){
 }
 
 export function isLoggedIn(){
-	const data = Cookies.get("token");
-	console.log("Cookie: " + data);
+	const token = Cookies.get("token");
+	console.log("Cookie: " + token);
 
 	if (data === undefined) {return false;}
+
+	const data = {"token" : token};
+
+	let headers = new Headers();
+	headers.append('Content-Type', 'application/json');
+	headers.append('Accept', 'application/json');
+	headers.append('Origin', 'https://www.tpmanagement.app');
+
+	fetch("https://www.tpmanagement.app/api/auth", {
+		body: JSON.stringify(data),
+		headers: headers,
+		method: 'POST',
+		mode: 'cors'
+	})
+	.then(res => res.json())
+	.then (
+		(result)=> {
+			console.log(result);
+			if (result === false){
+				return false;
+			}
+	})
+	.catch(error => console.log(error));
 
 	return true;
 }

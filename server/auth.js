@@ -1,18 +1,15 @@
-function isAllowedIn(db, token, role){
+async function isAllowedIn(db, token, role){
 	values = {"token" : token, "role" : role};
-	db.query('SELECT username FROM employee WHERE username = ${token} AND access_level = ${role}', values)
-	.then(function(data) {
-		console.log(data);
-		if (data[0] != 'undefined'){
-			return true;
-		}
-		else {
-			return false;
-		}
-	})
-	.catch(function(error) {
+	
+	const result = await db.oneOrNone('SELECT * FROM employee WHERE username = ${token}', values);
+
+	if (!result){
 		return false;
-	});
+	}
+	else if (result.username === values.token){
+		return true;
+	}
+	//console.log(JSON.stringify(result));
 
 	return false;
 }

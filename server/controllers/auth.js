@@ -1,15 +1,12 @@
 const auth = require('../auth');
 
-const handleAuth = (db) => (req, res) => {
+const handleAuth = (db) => async (req, res) => {
 	
-	const token = {token: req.body.token};
+	const token = req.body.token;
 
-	if (auth.isAllowedIn(db, token, 'none') === true){
-		res.json(true);
-	}
-	else{
-		res.json(false);
-	}
+	const result = await auth.isAllowedIn(db, token, 'none')
+
+	res.json(result);
 }
 
 module.exports = {

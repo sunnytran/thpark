@@ -1,5 +1,6 @@
-
 import Layout from '../components/Layout';
+import Moment from 'moment';
+import moment from 'moment';
 
 class Scanner extends React.Component {
 	constructor(props){
@@ -352,9 +353,9 @@ class Scanner extends React.Component {
 					this.state.notify !== "" ? (<p>NOTIFICATION: {this.state.notify}</p>) : null
 				}
 				<br/>
-				<h2>Rider History</h2>
+				<h2>Ride History</h2>
 				<ul>
-					{this.state.last10riders.map((x,y) => <li key={x}>Ride: {x.ride_name} Time: {x.timestamp}</li>)}
+					{this.state.last10riders.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD h:mm:ss')} Ride: {x.ride_name}</li>)}
 				</ul>
 			</div>
 			);

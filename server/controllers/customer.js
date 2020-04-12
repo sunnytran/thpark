@@ -14,7 +14,7 @@ const handleCustomerPut = (db) => (req, res) => {
 const handleCustomerPost = (db) => (req, res) => {
 	const values = {first_name: req.body.first_name, last_name: req.body.last_name};
 
-	db.one('INSERT INTO customer (first_name, last_name) VALUES (${first_name}, ${last_name})', values)
+	db.one('INSERT INTO customer (first_name, last_name) VALUES (${first_name}, ${last_name} RETURNING customer_id)', values)
 	.then (function(data){
 		console.log('Data: ', data);
 		res.json(data);

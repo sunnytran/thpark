@@ -92,7 +92,7 @@ class Events extends React.Component {
 	};
 
 	rescheduleEvent(i) {
-		var index = this.state.events.indexOf(i);
+		/*var index = this.state.events.indexOf(i);
 
 		fetch("https://www.tpmanagement.app/api/events", {
 			method: 'PUT', 
@@ -102,13 +102,13 @@ class Events extends React.Component {
 			.then((res) => { console.log(res) })
 			.catch(error => console.log(error));
 
-			/*var index = this.state.events.indexOf(i);
+			var index = this.state.events.indexOf(i);
 			var tmp = [...this.state.events];
 			tmp.splice(index, 1);
 			this.setState({
 				events: tmp
-			})*/
-		};
+			})
+		};*/
 	}
 
 	render() {

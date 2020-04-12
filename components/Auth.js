@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 
-//These functions will probably change when we add authentication
+//Please do not mess with these functions
+//Unless you really know what your doing
 
 export function attemptLogin(username, password){
 	const data = {"username" : username, "password" : password};
@@ -9,17 +10,17 @@ export function attemptLogin(username, password){
 	headers.append('Content-Type', 'application/json');
 	headers.append('Accept', 'application/json');
 	headers.append('Origin', 'https://www.tpmanagement.app');
-	
+
 	fetch("https://www.tpmanagement.app/api/login", {
 		body: JSON.stringify(data),
 		headers: headers,
 		method: 'POST',
 		mode: 'cors'
 	})
-	.then(res => console.log(res))
+	.then(res => res.json())
 	.then (
 		(result)=> {
-			console.log(result);
+			//console.log(result);
 			Cookies.set("token", result[0].username, {expires: 1});
 	})
 	.catch(error => console.log(error));
@@ -31,6 +32,7 @@ export function logout(){
 
 export function isLoggedIn(){
 	const data = Cookies.get("token");
+	console.log("Cookie: " + data);
 
 	if (data === undefined) {return false;}
 

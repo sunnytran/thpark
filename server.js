@@ -12,6 +12,7 @@ const { parse } = require('url');
 
 //Controllers - Where the SQL queries are made in the code
 const login = require('./server/controllers/login');
+const auth = require('./server/controllers/auth');
 const rides = require('./server/controllers/rides');
 const rideson = require('./server/controllers/rideson');
 const shops = require('./server/controllers/shops');
@@ -98,6 +99,7 @@ app.prepare().then(() => {
 	server.use(bodyParser.urlencoded({ extended: false }));
 
 	server.post('/api/login', login.handleLogin(db));
+	server.post('/api/auth', auth.handleAuth(db));
 
 	server.get('/api/rides', rides.handleRideGet(db));
 	server.post('/api/rides', rides.handleRidePost(db));

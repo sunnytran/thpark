@@ -155,7 +155,7 @@ class Scanner extends React.Component {
 	}
 
 	getLast10Sales(){
-		const data = {"type" : "attends"};
+		const data = {"type" : "sales"};
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
@@ -172,7 +172,7 @@ class Scanner extends React.Component {
 		.then (
 			(result)=> {
 			this.setState({
-				last10attendees: result
+				last10sales: result
 			});
 		})
 		.catch(error => console.log(error));
@@ -196,7 +196,7 @@ class Scanner extends React.Component {
 		.then (
 			(result)=> {
 			this.setState({
-				last10sales: result
+				last10attendees: result
 			});
 
 			console.log(result);
@@ -204,12 +204,12 @@ class Scanner extends React.Component {
 		.catch(error => console.log(error));
 	}
 
-	submitRideson(event){
+	async submitRideson(event){
 		event.preventDefault();
 
-		this.setState({
+		/*this.setState({
 			notify: "Testing"
-		});
+		});*/
 
 		let customer = this.state.customer;
 		const ride = this.state.ride;
@@ -225,26 +225,19 @@ class Scanner extends React.Component {
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 
-		fetch("https://www.tpmanagement.app/api/rideson", {
+		const res = await fetch("https://www.tpmanagement.app/api/rideson", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'
-		})
-		.then(res => console.log(res))
-		.then (
-			(result)=> {
-				this.setState({
-					events: result,
-					event: result[0]
-				});
-			}
-		)
-		.catch(error => console.log(error));
+		});
+
+		const result = await res.json();
+
 		this.getLast10Riders();
 	}
 
-	submitSellTicket(event){
+	async submitSellTicket(event){
 		event.preventDefault();
 
 		let customer = this.state.customer;
@@ -259,26 +252,18 @@ class Scanner extends React.Component {
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 
-		fetch("https://www.tpmanagement.app/api/tickets", {
+		const res = await fetch("https://www.tpmanagement.app/api/tickets", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'
-		})
-		.then(res => console.log(res))
-		.then (
-			(result)=> {
-			this.setState({
-				tickets: result,
-				ticket: result[0]
-			});
-			}
-		)
-		.catch(error => console.log(error));
+		});
+		const result = await res.json();
+
 		this.getLast10Tickets();
 	}
 
-	submitMakeSale(event){
+	async submitMakeSale(event){
 		event.preventDefault();
 
 		let customer = this.state.customer;
@@ -298,30 +283,22 @@ class Scanner extends React.Component {
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 
-		fetch("https://www.tpmanagement.app/api/sales", {
+		const res = await fetch("https://www.tpmanagement.app/api/sales", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'
-		})
-		.then(res => console.log(res))
-		.then (
-			(result)=> {
-			this.setState({
-				sales: result,
-				sale: result[0]
-			});
-			}
-		)
-		.catch(error => console.log(error));
+		});
+		const result = await res.json();
+
 		this.getLast10Sales();
 	}
 
-	submitAttendEvent(event){
+	async submitAttendEvent(event){
 		event.preventDefault();
 
 		let customer = this.state.customer;
-		const event_id = this.state.event.event_id;
+		const event_id = this.state.event;
 		if (customer === ""){
 			customer = null;
 		}
@@ -333,23 +310,14 @@ class Scanner extends React.Component {
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 
-		fetch("https://www.tpmanagement.app/api/attends", {
+		const res = await fetch("https://www.tpmanagement.app/api/attends", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'
-		})
-		.then(res => console.log(res)
-		)
-		.then (
-			(result)=> {
-				this.setState({
-				events: result,
-				event: result[0]
-			});
-			}
-		)
-		.catch(error => console.log(error));
+		});
+		const result = await res.json();
+
 		this.getLast10Attendees();
 	}
 
@@ -360,7 +328,7 @@ class Scanner extends React.Component {
 			<div>
 				<h2>Scan Rider</h2>
 				<select name="ride" onChange={this.onChange}>
-					{this.state.rides.map((x,y) => <option key={x.ride_name}>{x.ride_name}</option>)}
+					{this.state.rides.map((x,y) => <option value={x.ride_name}>{x.ride_name}</option>)}
 					}
 				</select>
 				<form onSubmit={this.submitRideson}>
@@ -402,8 +370,8 @@ class Scanner extends React.Component {
 			return (
 				<div>
 					<h2>Sell Item</h2>
-					<select name="ride" onChange={this.onChange}>
-						{this.state.shops.map((x,y) => <option key={x.shop_name}>{x.shop_name}</option>)}
+					<select name="sale" onChange={this.onChange}>
+						{this.state.shops.map((x,y) => <option value={x.shop_name}>{x.shop_name}</option>)}
 					</select>
 					<select name="sale_type" onChange={this.onChange}>
 						<option value="food">Food</option>
@@ -434,8 +402,8 @@ class Scanner extends React.Component {
 			return (
 				<div>
 					<h2>Event Attendee</h2>
-					<select name="ride" onChange={this.onChange}>
-						{this.state.events.map((x,y) => <option key={x.event_id}>{x.event_name}</option>)}
+					<select name="event" onChange={this.onChange}>
+						{this.state.events.map((x,y) => <option value={x.event_id}>{x.event_name}</option>)}
 					</select>
 					<form onSubmit={this.submitAttendEvent}>
 						<label>Customer Id: 
@@ -480,6 +448,7 @@ class Scanner extends React.Component {
 		)
 		.catch(error => console.log(error));
 	}
+	
 	submitLookupCustomer(){
 		event.preventDefault();
 

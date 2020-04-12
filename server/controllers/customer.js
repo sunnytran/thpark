@@ -11,18 +11,13 @@ const handleCustomerPut = (db) => (req, res) => {
 	})
 }
 
-const handleCustomerPost = (db) => (req, res) => {
+const handleCustomerPost = (db) => async (req, res) => {
 	const values = {first_name: req.body.first_name, last_name: req.body.last_name};
 
-	db.one('INSERT INTO customer (first_name, last_name) VALUES (${first_name}, ${last_name} RETURNING customer_id)', values)
-	.then (function(data){
-		console.log('Data: ', data);
-		res.json(data);
-	})
-	.catch(function(error) {
-		console.log('ERROR: ', error);
-		res.status(400).json('Invalid Input');
-	})
+	const result = await db.one('INSERT INTO customer (first_name, last_name) VALUES (${first_name}, ${last_name}) RETURNING customer_id', values)
+
+	res.json(result.customer_id);
+	console.log(result);
 }
 
 module.exports = {

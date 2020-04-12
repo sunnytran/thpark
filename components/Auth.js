@@ -30,17 +30,6 @@ export function logout(){
 	Cookies.remove("token");
 }
 
-function authCheck(token){
-	
-	/*.then(res => res.json())
-	.then (
-		(result) => {
-			console.log(result);
-			return result;
-	})
-	.catch(error => console.log(error));*/
-}
-
 export async function isLoggedIn(){
 	const token = await Cookies.get("token");
 	console.log("Cookie: " + token);
@@ -53,8 +42,6 @@ export async function isLoggedIn(){
 	headers.append('Content-Type', 'application/json');
 	headers.append('Accept', 'application/json');
 	headers.append('Origin', 'https://www.tpmanagement.app');
-
-	
 
 	const res = await fetch("https://www.tpmanagement.app/api/auth", {
 		body: JSON.stringify(data),

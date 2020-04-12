@@ -4,6 +4,9 @@ import EventEntry from '../components/EventEntry';
 import Moment from 'moment';
 import moment from 'moment';
 
+import Router from 'next/router';
+import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+
 class Rainouts extends React.Component {
 	constructor(props){
 		super(props);
@@ -11,14 +14,23 @@ class Rainouts extends React.Component {
 		this.state = {
 			rainouts: [],
 			issues: [],
-			showEventPop: false,
+			showEventPop: false
 		}
 
 		this.toggleRainoutPop = this.toggleRainoutPop.bind(this);
 		this.reportRainout = this.reportRainout.bind(this);
 	}
 
-	componentDidMount(){
+	async componentDidMount(){
+		//This code will redirect to login page if not logged in
+		/*
+		let test = await isLoggedIn();
+		console.log(test);
+		if (test === false){
+			Router.push('/login');
+		}
+		*/
+
 		fetch("https://www.tpmanagement.app/api/rainouts")
 		.then(res => res.json())
 		.then (

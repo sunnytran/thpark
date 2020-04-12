@@ -3,6 +3,10 @@ import Head from 'next/head';
 import MyNavLink from './MyNavLink';
 import styled, { keyframes } from 'styled-components';
 
+//These imports are for logout
+import Router from 'next/router';
+import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+
 // login
 // true sticky footer
 
@@ -11,8 +15,13 @@ class Nav extends React.Component {
 		super(props);
 	}
 
-	render() {
+	onClickLogout = async (event) => {
+		await logout();
+		console.log("Logging out...");
+		Router.push('/login');
+	}
 
+	render() {
 		const gradient = keyframes`
 			from {
 				-webkit-filter: hue-rotate(0deg);
@@ -76,7 +85,15 @@ class Nav extends React.Component {
 									</li>
 								</ul>
 							</li>
+							<li>
+								<button onClick={this.onClickLogout}>
+									<h1>
+										Logout
+									</h1>
+								</button>
+							</li>
 						</ul>
+
 					</aside>
 			</div>
 		);

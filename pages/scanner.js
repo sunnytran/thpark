@@ -170,7 +170,7 @@ class Scanner extends React.Component {
 	}
 
 	getLast10Attendees(){
-		const data = {"type" : "sales"};
+		const data = {"type" : "attends"};
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
@@ -189,6 +189,8 @@ class Scanner extends React.Component {
 			this.setState({
 				last10sales: result
 			});
+
+			console.log(result);
 		})
 		.catch(error => console.log(error));
 	}
@@ -355,7 +357,7 @@ class Scanner extends React.Component {
 				<br/>
 				<h2>Ride History</h2>
 				<ul>
-					{this.state.last10riders.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD h:mm:ss')} Ride: {x.ride_name}</li>)}
+					{this.state.last10riders.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Ride: {x.ride_name}</li>)}
 				</ul>
 			</div>
 			);
@@ -373,7 +375,7 @@ class Scanner extends React.Component {
 					<br/>
 					<h2>Tickets History</h2>
 					<ul>
-						{this.state.last10tickets.map((x,y) => <li key={x}>Ticket Sale Time: {x.timestamp}</li>)}
+						{this.state.last10tickets.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Ticket Sale</li>)}
 					</ul>
 				</div>
 				);
@@ -405,7 +407,7 @@ class Scanner extends React.Component {
 					<br/>
 					<h2>Sales History</h2>
 					<ul>
-						{this.state.last10sales.map((x,y) => <li key={x}>Sale: {x.sale_item} Time: {x.timestamp}</li>)}
+						{this.state.last10sales.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Sale: {x.sale_item}</li>)}
 					</ul>
 				</div>
 			);
@@ -415,7 +417,7 @@ class Scanner extends React.Component {
 				<div>
 					<h2>Event Attendee</h2>
 					<select name="ride" onChange={this.onChange}>
-						{this.state.events.map((x,y) => <option key={x}>{x.event_name}</option>)}
+						{this.state.events.map((x,y) => <option key={x.event_id}>{x.event_name}</option>)}
 					</select>
 					<form onSubmit={this.submitAttendEvent}>
 						<label>Customer Id: 
@@ -426,7 +428,7 @@ class Scanner extends React.Component {
 					<br/>
 					<h2>Attendee History</h2>
 					<ul>
-						{this.state.last10attendees.map((x,y) => <li key={x}>Event: {x.event_name} Time: {x.timestamp}</li>)}
+						{this.state.last10attendees.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Event: {x.event_id}</li>)}
 					</ul>
 				</div>
 			);

@@ -30,11 +30,22 @@ export function logout(){
 	Cookies.remove("token");
 }
 
-export function isLoggedIn(){
-	const token = Cookies.get("token");
+function authCheck(token){
+	
+	/*.then(res => res.json())
+	.then (
+		(result) => {
+			console.log(result);
+			return result;
+	})
+	.catch(error => console.log(error));*/
+}
+
+export async function isLoggedIn(){
+	const token = await Cookies.get("token");
 	console.log("Cookie: " + token);
 
-	if (data === undefined) {return false;}
+	if (token === undefined) {return false;}
 
 	const data = {"token" : token};
 
@@ -43,21 +54,16 @@ export function isLoggedIn(){
 	headers.append('Accept', 'application/json');
 	headers.append('Origin', 'https://www.tpmanagement.app');
 
-	fetch("https://www.tpmanagement.app/api/auth", {
+	
+
+	const res = await fetch("https://www.tpmanagement.app/api/auth", {
 		body: JSON.stringify(data),
 		headers: headers,
 		method: 'POST',
 		mode: 'cors'
-	})
-	.then(res => res.json())
-	.then (
-		(result)=> {
-			console.log(result);
-			if (result === false){
-				return false;
-			}
-	})
-	.catch(error => console.log(error));
+	});
+	const result = await res.json();
 
-	return true;
+	console.log("RESULT: " + result);
+	return result;
 }

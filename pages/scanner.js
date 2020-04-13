@@ -421,7 +421,7 @@ class Scanner extends React.Component {
 		}
 	}
 
-	submitAddCustomer(){
+	async submitAddCustomer(){
 		event.preventDefault();
 
 		const data = {"first_name":this.state.firstNameAdd, "last_name":this.state.lastNameAdd};
@@ -431,50 +431,46 @@ class Scanner extends React.Component {
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 
-		fetch("https://www.tpmanagement.app/api/customer", {
+		const res = await fetch("https://www.tpmanagement.app/api/customer", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'
-		})
-		.then(res => console.log(res)
-		)
-		.then (
-			(result)=> {
-				this.setState({
-					customerIdAdd : ""
-				});
-			}
-		)
-		.catch(error => console.log(error));
+		});
+
+		const result = await res.json();
+
+		this.setState({
+			customerIdAdd : result
+		});
 	}
-	
-	submitLookupCustomer(){
+
+	async submitLookupCustomer(){
 		event.preventDefault();
 
-		const data = {"first_name":this.state.firstNameAdd, "last_name":this.state.lastNameAdd};
+		const data = {"first_name":this.state.firstNameLookup, "last_name":this.state.lastNameLookup};
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 
-		fetch("https://www.tpmanagement.app/api/customer", {
+		const res = await fetch("https://www.tpmanagement.app/api/customer", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'PUT',
 			mode: 'cors'
-		})
-		.then(res => console.log(res)
-		)
-		.then (
-			(result)=> {
-				this.setState({
-					customerIdLookup : result
-				});
-			}
-		)
-		.catch(error => console.log(error));
+		});
+
+		const result = await res.json();
+
+		this.setState({
+			customerIdLookup : result
+		});
+
+		console.log(data);
+
+		console.log(result);
 	}
 
 	render(){
@@ -530,14 +526,13 @@ class Scanner extends React.Component {
 						<input type="submit" value="Submit"/>
 					</form>
 					{
-						this.state.customerIdLookup !== "" ? (<p>Customer Id Search: {this.state.customerIdLookup}</p>) : null
+						this.state.customerIdLookup !== "" ? (<div><p>Customer Id Search: </p><ul>{this.state.customerIdLookup.map((x,y) => <li key={x}>{x.first_name} {x.last_name} {x.customer_id}</li>)}</ul></div>) : null
 					}
 					<br/>
 				</div>
 			</Layout>
 		);
 	}
-
 };
 
 export default Scanner;

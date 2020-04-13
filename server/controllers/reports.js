@@ -1,4 +1,4 @@
-const handleReportsGet = (db) => (req, res) => {
+const handleReportsPost = (db) => (req, res) => {
 	if (req.body.report === "visitors"){
 		const values = {report: req.body.report, days: req.body.days};
 		db.query('select CURRENT_DATE - ${days} + d AS date, count(s.timestamp::date = CURRENT_DATE-${days}+d AND sale_type=\'ticket\') as visitor_count FROM generate_series(1, ${days}) d LEFT JOIN sale s ON s.timestamp::date = CURRENT_DATE - ${days} + d AND sale_type=\'ticket\' GROUP by d ORDER by d', values)
@@ -75,5 +75,5 @@ const handleReportsGet = (db) => (req, res) => {
 }
 
 module.exports = {
-	handleReportsGet: handleReportsGet
+	handleReportsPost: handleReportsPost
 }

@@ -13,6 +13,25 @@ const handleRidesOnGet = (db) => (req, res) => {
 //Create
 const handleRidesOnPost = (db) => (req, res) => {
 	const values = {ride_name: req.body.ride_name, customer_id: req.body.customer_id};
+	let sco;
+
+	db.connect()
+	.then(obj => {
+		sco = obj;
+		sco.client.on('notification', data => {
+            console.log('Received:', data);
+            // data.payload = 'my payload string'
+        });
+        //return sco.none('LISTEN $1~', 'event');
+	})
+	.catch(error => {
+        console.log('Error:', error);
+    })
+    .finally(() => {
+        if (sco) {
+            sco.done(); // releasing the connection back to the pool
+        }
+    });
 
 	db.none('INSERT INTO rides_on (ride_name, customer_id, timestamp) VALUES (${ride_name}, ${customer_id}, (SELECT NOW()))', values)
 	.then (function(data){
@@ -22,7 +41,7 @@ const handleRidesOnPost = (db) => (req, res) => {
 	.catch(function(error) {
 		console.log('ERROR: ', error);
 		res.status(400).json('Invalid Input');
-	})
+	});
 }
 
 const handleRidesOnDelete = (db) => (req, res) => {

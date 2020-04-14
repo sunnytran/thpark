@@ -86,10 +86,8 @@ class Nav extends React.Component {
 								</ul>
 							</li>
 							<li>
-								<button onClick={this.onClickLogout}>
-									<h1>
+								<button class="button are-medium is-outlined is-danger" onClick={this.onClickLogout}>
 										Logout
-									</h1>
 								</button>
 							</li>
 						</ul>

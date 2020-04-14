@@ -1,6 +1,6 @@
 import Layout from '../components/Layout';
 import Popup from '../components/Popup';
-import EventEntry from '../components/EventEntry';
+//import EventEntry from '../components/EventEntry';
 import Moment from 'moment';
 import moment from 'moment';
 
@@ -14,7 +14,7 @@ class Rainouts extends React.Component {
 		this.state = {
 			rainouts: [],
 			issues: [],
-			showEventPop: false
+			showRainoutPop: false
 		}
 
 		this.toggleRainoutPop = this.toggleRainoutPop.bind(this);
@@ -31,6 +31,19 @@ class Rainouts extends React.Component {
 		}
 		*/
 
+		this.getRainouts();
+
+	}
+
+	toggleRainoutPop() {
+		this.setState((prev, props) => {
+			const newPop = !prev.showRainoutPop;
+
+			return { showRainoutPop: newPop };
+		});
+	}
+
+	getRainouts() {
 		fetch("https://www.tpmanagement.app/api/rainouts")
 		.then(res => res.json())
 		.then (
@@ -43,31 +56,25 @@ class Rainouts extends React.Component {
 		)
 	}
 
-	toggleRainoutPop() {
-		this.setState((prev, props) => {
-			const newPop = !prev.showEventPop;
-
-			return { showEventPop: newPop };
-		});
-	}
-
-	reportRainout() {
+	async reportRainout() {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 		
-		fetch("https://www.tpmanagement.app/api/rainouts", {
+		const res = await fetch("https://www.tpmanagement.app/api/rainouts", {
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'
-		})
-			.then(res => console.log(res))
-			.catch(error => console.log(error));
-	
-		this.setState({
-			rainouts: [ ...this.state.rainouts, data]
 		});
+
+		console.log(res);
+	
+		/*await this.setState({
+			rainouts: [ ...this.state.rainouts, data]
+		});*/
+
+		this.getRainouts();
 		this.toggleRainoutPop();
 	}
 
@@ -77,7 +84,7 @@ class Rainouts extends React.Component {
 		return (
 			<Layout>
 				<div>
-					<button onClick={this.toggleEventPop} class="button is-link is-outlined">
+					<button onClick={this.toggleRainoutPop} class="button is-link is-outlined">
 						<span class="icon">
 							<i class="fa fa-plus"></i>
 						</span>
@@ -86,9 +93,7 @@ class Rainouts extends React.Component {
 
 					<Popup closePopup={this.toggleRainoutPop} showPop={this.state.showRainoutPop} title="Report rainout" submitText="Report rainout" btnFunc={this.reportRainout}>
 						<div class="columns">
-						</div>
-						
-						<div class="columns">
+							<label class="label">Confirm Rainout Today</label>
 						</div>
 					</Popup>
 

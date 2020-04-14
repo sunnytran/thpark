@@ -22,7 +22,10 @@ class Stores extends React.Component {
 	}
 
 	componentDidMount(){
-		//fetch("http://localhost:3000/api/staff")
+		this.getSetup();
+	}
+
+	getSetup(){
 		fetch("https://www.tpmanagement.app/api/shops")
 		.then(res => res.json())
 		.then (
@@ -46,7 +49,7 @@ class Stores extends React.Component {
 		)
 	}
 
-	addStore() {
+	async addStore() {
 		var data = {
 			"shop_name": this.inputShopName.current.value,
 			"location": this.inputShopLocation.current.value,
@@ -61,28 +64,33 @@ class Stores extends React.Component {
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 		
-		fetch("https://www.tpmanagement.app/api/shops", {
+		const res = await fetch("https://www.tpmanagement.app/api/shops", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'
-		})
-			.then(res => console.log(res))
+		});
+
+		//OLD
+			/*.then(res => console.log(res))
 			.catch(error => console.log(error));
 	
 		this.setState({
 			stores: [ ...this.state.stores, data]
-		});
+		});*/
+		this.getSetup();
 		this.togglePop();
 	}
 
-	removeStore(i) {
-		fetch("https://www.tpmanagement.app/api/shops", {
+	async removeStore(i) {
+		const res = await fetch("https://www.tpmanagement.app/api/shops", {
 			method: 'DELETE', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
-      body: JSON.stringify({"name": i.shop_name})
-    })
-		.then((res) => { console.log(res) })
+		    body: JSON.stringify({"name": i.shop_name})
+		});
+		this.getSetup();
+		//Old 
+		/*.then((res) => { console.log(res) })
 		.catch(error => console.log(error));
 
 		var index = this.state.stores.indexOf(i);
@@ -90,7 +98,7 @@ class Stores extends React.Component {
 		tmp.splice(index, 1);
 		this.setState({
 			stores: tmp
-		})
+		})*/
 	};
 
 	togglePop() {
@@ -100,6 +108,8 @@ class Stores extends React.Component {
 			return { showPop: newPop };
 		});
 	}
+
+	//<input ref={this.inputShopType} class="input" type="text" placeholder="Store type" />
 
 	render() {
 		const stores = this.state.stores;
@@ -125,7 +135,12 @@ class Stores extends React.Component {
 							<div class="field">
 								<label class="label">Store type</label>
 								<div class="control">
-									<input ref={this.inputShopType} class="input" type="text" placeholder="Store type" />
+									<select ref={this.inputShopType} class="input" type="text" placeholder="Store type" defaultValue="restaurant">
+										<option value="restaurant">Restaurant</option>
+										<option value="gift_shop">Gift Shop</option>
+										<option value="game">Game</option>
+										<option value="ticket_store">Ticket Store</option>
+									</select>
 								</div>
 							</div>
 							<div class="field">

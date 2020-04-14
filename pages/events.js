@@ -26,6 +26,10 @@ class Events extends React.Component {
 	}
 
 	componentDidMount(){
+		this.getEvents();
+	}
+
+	getEvents() {
 		fetch("https://www.tpmanagement.app/api/events")
 		.then(res => res.json())
 		.then (
@@ -46,11 +50,12 @@ class Events extends React.Component {
 		});
 	}
 
-	addEvent() {
+	async addEvent() {
+		console.log(this.inputDate.current.value);
 		var data = {
 			"event_name": this.inputEventName.current.value,
 			"event_type": this.inputEventType.current.value,
-			"date": moment(this.inputDate.current.value, 'M/D/YY'),
+			"date": this.inputDate.current.value,
 			"location": this.inputLocation.current.value
 		};
 
@@ -59,36 +64,25 @@ class Events extends React.Component {
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 		
-		fetch("https://www.tpmanagement.app/api/events", {
+		const res = await fetch("https://www.tpmanagement.app/api/events", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'
-		})
-			.then(res => console.log(res))
-			.catch(error => console.log(error));
-	
-		this.setState({
-			events: [ ...this.state.events, data]
 		});
+	
+		this.getEvents();
 		this.toggleEventPop();
 	}
 
-	removeEvent(i) {
-		fetch("https://www.tpmanagement.app/api/events", {
+	async removeEvent(i) {
+		const res = await fetch("https://www.tpmanagement.app/api/events", {
 			method: 'DELETE', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
       		body: JSON.stringify({"event_id": i.event_id})
-    	})
-		.then((res) => { console.log(res) })
-		.catch(error => console.log(error));
+    	});
 
-		var index = this.state.events.indexOf(i);
-		var tmp = [...this.state.events];
-		tmp.splice(index, 1);
-		this.setState({
-			events: tmp
-		})
+		this.getEvents();
 	};
 
 	rescheduleEvent(i) {
@@ -110,6 +104,7 @@ class Events extends React.Component {
 			})
 		};*/
 	}
+	//<input ref={this.inputEventType} class="input" type="text" placeholder="Type" />
 
 	render() {
 		const events = this.state.events;
@@ -135,7 +130,13 @@ class Events extends React.Component {
 							<div class="column is-half field">
 								<label class="label">Type</label>
 								<div class="control">
-									<input ref={this.inputEventType} class="input" type="text" placeholder="Type" />
+									<select ref={this.inputEventType} class="input" type="text" placeholder="Type" defaultValue="holiday">
+										<option value="holiday">Holiday</option>
+										<option value="party">Party</option>
+										<option value="parade">Parade</option>
+										<option value="musical">Musical</option>
+										<option value="magic_show">Magic Show</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -150,7 +151,7 @@ class Events extends React.Component {
 							<div class="column is-third field">
 								<label class="label">Date</label>
 								<div class="control">
-									<input ref={this.inputDate} class="input" type="text" placeholder="Date" />
+									<input ref={this.inputDate} class="input" type="date" placeholder="Date" />
 								</div>
 							</div>
 						</div>
@@ -176,15 +177,16 @@ class Events extends React.Component {
 											<td>{i.event_type}</td>
 											<td>{Moment(i.date).format('M/D/YY')}</td>
 											<td>{i.location}</td>
-											<button class="button-is-small" onClick={() => this.rescheduleEvent(i)}>
-												<span class="icon">
-													<i class="fa fa-calendar"></i>
-												</span>
-											</button>
 											<td>
-
+												<button class="button-is-small" onClick={() => this.rescheduleEvent(i)}>
+													<span class="icon has-text-info">
+														<i class="fa fa-calendar"></i>
+													</span>
+												</button>
+											</td>
+											<td>
 												<button class="button is-small" onClick={() => this.removeEvent(i)}>
-													<span class="icon">
+													<span class="icon has-text-danger">
 														<i class="fa fa-times"></i>
 													</span>
 												</button>

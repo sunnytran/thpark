@@ -99,7 +99,7 @@ class RideEntry extends React.Component {
 								<th>Issue type</th>
 								<th>Date issued</th>
 								<th>Date resolved</th>
-								<th>Resolved by</th>
+								{/*<th>Resolved by</th> REMOVED FROM DATABASE*/}
 								<th>Severity</th>
 								<th>Fix issue</th>	
 							</thead>
@@ -121,7 +121,7 @@ class RideEntry extends React.Component {
 												<td><b>{i.type}</b></td>
 												<td>{Moment(i.start_timestamp).format('M/D/YY')}</td>
 												<td>{Moment(i.end_timestamp).format('M/D/YY')}</td>
-												<td>{i.resolved_by}</td>
+												{/*<td>{i.resolved_by}</td>*/}
 												<td>{i.severity}</td>
 												<td>
 													<button class="button is-small" onClick={() => this.fixIssue(i.issue_id)}>

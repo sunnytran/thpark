@@ -76,6 +76,8 @@ class MaintenanceButton extends React.Component {
 		this.props.updateRideStatus(original, "maintenance", data);
 	}
 
+	//<input ref={this.inputIssueType} class="input" type="text" placeholder="Issue type" />
+	//<input ref={this.inputSeverity} class="input" type="text" placeholder="Severity" />
 
 	render() {
 		if (this.props.ride.ride_status != "running")
@@ -94,14 +96,22 @@ class MaintenanceButton extends React.Component {
 					<div class="field">
 						<label class="label">Issue type</label>
 						<div class="control">
-							<input ref={this.inputIssueType} class="input" type="text" placeholder="Issue type" />
+							<select ref={this.inputIssueType} class="input" type="text" placeholder="Type" defaultValue="breakdown">
+								<option value="breakdown">Breakdown</option>
+								<option value="cleanup">Cleanup</option>
+								<option value="legal">Legal</option>
+							</select>
 						</div>
 					</div>
 
 					<div class="field">
 						<label class="label">Severity</label>
 						<div class="control">
-							<input ref={this.inputSeverity} class="input" type="text" placeholder="Severity" />
+							<select ref={this.inputSeverity} class="input" type="text" placeholder="Type" defaultValue="low">
+								<option value="low">Low</option>
+								<option value="moderate">Moderate</option>
+								<option value="high">High</option>
+							</select>
 						</div>
 					</div>
 				</Popup>

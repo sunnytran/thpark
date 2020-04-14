@@ -39,22 +39,22 @@ const initOptions = {
 const pgp = require('pg-promise')(initOptions);
 
 //Local Connection
-/*const cn = {
+const cn = {
 	host: 'localhost',
 	port: 5432,
 	database: 'thparkdb',
 	user: 'postgres',
 	password: 'ezpasswrd123'
-};*/
+};
 
 //Heroku Connection
-const cn = {
+/*const cn = {
 	host: 'ec2-184-72-236-3.compute-1.amazonaws.com',
 	port: 5432,
 	database: 'd5qik25t1apem4',
 	user: 'idlumctkwdprcn',
 	password: 'a22954204b160e52d8c40bab4b8a0d8f3226dd45925df07d28c38b41a8b054ff'
-};
+};*/
 
 const db = pgp(cn);
 

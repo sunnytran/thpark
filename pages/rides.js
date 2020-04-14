@@ -33,7 +33,10 @@ class Rides extends React.Component {
 	}
 
 	componentDidMount(){
-		//fetch("http://localhost:3000/api/staff")
+		this.getSetup();
+	}
+
+	getSetup(){
 		fetch("https://www.tpmanagement.app/api/rides")
 		.then(res => res.json())
 		.then (
@@ -65,44 +68,60 @@ class Rides extends React.Component {
 		});
 	}
 
-	addRide() {
+	async addRide() {
 		var data = {
 			"ride_name": this.inputRideName.current.value,
 			"ride_type": this.inputRideType.current.value,
-			"creation_date": moment(this.inputBuildDate.current.value, 'M/D/YY'),
+			"creation_date": this.inputBuildDate.current.value,
 			"location": this.inputLocation.current.value,
 			"ride_status": this.inputStatus.current.value,
-			"last_inspection": moment(this.inputInspection.current.value, 'M/D/YY'),
-			"insurance_expiration_date": moment(this.inputInsurance.current.value, 'M/D/YY')
+			"last_inspection": this.inputInspection.current.value,
+			"insurance_expiration_date": this.inputInsurance.current.value
 		};
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
+
+		const res = await fetch("https://www.tpmanagement.app/api/rides", {
+			body: JSON.stringify(data),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		});
+
+		this.getSetup();
 		
-		fetch("https://www.tpmanagement.app/api/rides", {
+		//OLD
+		/*fetch("https://www.tpmanagement.app/api/rides", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'
 		})
-			.then(res => console.log(res))
-			.catch(error => console.log(error));
+		.then(res => console.log(res))
+		.catch(error => console.log(error));
 	
 		this.setState({
 			rides: [ ...this.state.rides, data]
-		});
+		});*/
+
 		this.toggleRidePop();
 	}
 
-	removeRide(i) {
-		fetch("https://www.tpmanagement.app/api/rides", {
+	async removeRide(i) {
+
+		const res = await fetch("https://www.tpmanagement.app/api/rides", {
 			method: 'DELETE', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
-      body: JSON.stringify({"name": i.ride_name})
-    })
-		.then((res) => { console.log(res) })
+     		 body: JSON.stringify({"name": i.ride_name})
+    	});
+
+    	this.getSetup();
+
+		//OLD
+		/*.then((res) => { console.log(res) })
 		.catch(error => console.log(error));
 
 		var index = this.state.rides.indexOf(i);
@@ -110,10 +129,10 @@ class Rides extends React.Component {
 		tmp.splice(index, 1);
 		this.setState({
 			rides: tmp
-		})
+		})*/
 	};
 
-	completeRide(i) {
+	async completeRide(i) {
 		var index = this.state.rides.indexOf(i);
 
 		i.ride_status = 'running';
@@ -132,11 +151,15 @@ class Rides extends React.Component {
 			"insurance_expiration_date": i.insurance_expiration_date
 		};
 
-		fetch("https://www.tpmanagement.app/api/rides", {
+		const res = await fetch("https://www.tpmanagement.app/api/rides", {
 			method: 'PUT', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
-      body: JSON.stringify(data)
-    })
+	      	body: JSON.stringify(data)
+	    });
+
+	    this.getSetup();
+
+	    /* OLD
 		.then((res) => { console.log(res) })
 		.catch(error => console.log(error));
 
@@ -144,7 +167,7 @@ class Rides extends React.Component {
 		tmp[index] = i;
 		this.setState({
 			rides: tmp
-		});
+		});*/
 	}
 
 	CompleteButton(props) {
@@ -161,6 +184,7 @@ class Rides extends React.Component {
 	}
 
 	updateRideStatus(i, status, issue) {
+		
 		var index = this.state.rides.indexOf(i);
 		
 		i.ride_status = status;
@@ -184,6 +208,8 @@ class Rides extends React.Component {
 		});
 	}
 
+	//<input ref={this.inputRideType} class="input" type="text" placeholder="Type" />
+	//<input ref={this.inputStatus} class="input" type="text" placeholder="Status" />
 
 	render() {
 		const rides = this.state.rides;
@@ -209,7 +235,19 @@ class Rides extends React.Component {
 							<div class="column is-half field">
 								<label class="label">Type</label>
 								<div class="control">
-									<input ref={this.inputRideType} class="input" type="text" placeholder="Type" />
+								<select ref={this.inputRideType} class="input" type="text" placeholder="Type" defaultValue="ferris_wheel">
+										<option value="ferris_wheel">Ferris Wheel</option>
+										<option value="bumper_cars">Bumper Cars</option>
+										<option value="roller_coaster">Roller Coasters</option>
+										<option value="carousels">Carousels</option>
+										<option value="water">Water</option>
+										<option value="swing">Swing</option>
+										<option value="slide">Slide</option>
+										<option value="pendulum">Pendulum</option>
+										<option value="drop_tower">Drop Tower</option>
+										<option value="scrambler">Scrambler</option>
+										<option value="other">Other</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -224,7 +262,11 @@ class Rides extends React.Component {
 							<div class="column is-half field">
 								<label class="label">Status</label>
 								<div class="control">
-									<input ref={this.inputStatus} class="input" type="text" placeholder="Status" />
+									<select ref={this.inputStatus} class="input" type="text" placeholder="Type" defaultValue="running">
+										<option value="running">Running</option>
+										<option value="maintenance">Maintenance</option>
+										<option value="construction">Construction</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -233,19 +275,19 @@ class Rides extends React.Component {
 							<div class="column is-third field">
 								<label class="label">Build date</label>
 								<div class="control">
-									<input ref={this.inputBuildDate} class="input" type="text" placeholder="Last inspection" />
+									<input ref={this.inputBuildDate} class="input" type="date" placeholder="Last inspection" />
 								</div>
 							</div>
 							<div class="column is-third field">
 								<label class="label">Last inspection</label>
 								<div class="control">
-									<input ref={this.inputInspection} class="input" type="text" placeholder="Last inspection" />
+									<input ref={this.inputInspection} class="input" type="date" placeholder="Last inspection" />
 								</div>
 							</div>
 							<div class="column is-third field">
 								<label class="label">Insurance expiration</label>
 								<div class="control">
-									<input ref={this.inputInsurance} class="input" type="text" placeholder="Insurance expiration" />
+									<input ref={this.inputInsurance} class="input" type="date" placeholder="Insurance expiration" />
 								</div>
 							</div>
 						</div>

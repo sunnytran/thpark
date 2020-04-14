@@ -22,7 +22,10 @@ class Staff extends React.Component {
 	}
 
 	componentDidMount(){
-		//fetch("http://localhost:3000/api/staff")
+		this.getStaff();
+	}
+
+	getStaff(){
 		fetch("https://www.tpmanagement.app/api/staff")
 		.then(res => res.json())
 		.then (
@@ -43,7 +46,7 @@ class Staff extends React.Component {
 		});
 	}
 
-	addMember() {
+	async addMember() {
 		var data = {
 			"first_name": this.inputFirst.current.value,
 			"last_name": this.inputLast.current.value,
@@ -58,32 +61,41 @@ class Staff extends React.Component {
 		headers.append('Origin', 'https://www.tpmanagement.app');
 	
 
-		fetch("https://www.tpmanagement.app/api/staff", {
+		const res = await fetch("https://www.tpmanagement.app/api/staff", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'
-		})
+		});
+
+		this.getStaff();
+		/* OLD
+
 			.then(res => console.log(res))
 			.catch(error => console.log(error));
 	
 		this.setState({
 			staff: [ ...this.state.staff, data]
 		});
+		*/
 		this.togglePop();
 	}
 
-	removeMember(i) {
+	async removeMember(i) {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 
-		fetch("https://www.tpmanagement.app/api/staff", {
+		const res = await fetch("https://www.tpmanagement.app/api/staff", {
 			method: 'DELETE', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
             body: JSON.stringify({"employee_id": i.employee_id})
-        })
+        });
+
+        this.getStaff();
+
+        /* OLD
 		.then(res => res.json())
 		.then ( (result)=> {	
 			console.log("DELETE RESULT: " + result);
@@ -96,11 +108,12 @@ class Staff extends React.Component {
 		tmp.splice(index, 1);
 		this.setState({
 			staff: tmp
-		});
+		});*/
 	}
 
 	render() {
 		const staff = this.state.staff;
+		//<input ref={this.inputAccess} class="input" type="text" placeholder="Access level" />
 
 		return (
 			<Layout>
@@ -129,7 +142,12 @@ class Staff extends React.Component {
 			<div class="field column is-third">
 			<label class="label">Access level</label>
 			<div class="control">
-			<input ref={this.inputAccess} class="input" type="text" placeholder="Access level" />
+			<select ref={this.inputAccess} class="input" type="text" placeholder="Type" defaultValue="basic">
+				<option value="none">None</option>
+				<option value="basic">Basic</option>
+				<option value="manager">Manager</option>
+				<option value="admin">Admin</option>
+			</select>
 			</div>
 			</div>
 			</div>

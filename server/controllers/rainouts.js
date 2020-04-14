@@ -1,5 +1,5 @@
 const handleRainoutsGet = (db) => (req, res) => {
-	db.query('SELECT * FROM rainouts ORDER BY timestamp DESC LIMIT 10')
+	db.query('SELECT * FROM rainouts ORDER BY date DESC LIMIT 10')
 	.then(function(data) {
 		console.log(data);
 		res.json(data);

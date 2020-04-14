@@ -13,7 +13,6 @@ class Rainouts extends React.Component {
 		
 		this.state = {
 			rainouts: [],
-			issues: [],
 			showRainoutPop: false
 		}
 
@@ -21,7 +20,7 @@ class Rainouts extends React.Component {
 		this.reportRainout = this.reportRainout.bind(this);
 	}
 
-	async componentDidMount(){
+	componentDidMount(){
 		//This code will redirect to login page if not logged in
 		/*
 		let test = await isLoggedIn();

@@ -62,7 +62,6 @@ const handleReportsPost = (db) => async (req, res) => {
 			res.status(400).json('Error');
 		})
 	}
-	//Not a really complete Report
 	else if (req.body.report === "rainouts"){
 		const values = {report: req.body.report, months: req.body.months};
 		let data = [];
@@ -81,7 +80,9 @@ const handleReportsPost = (db) => async (req, res) => {
 		await data.push(total);
 
 		res.json(data);
-		/*const values = {report: req.body.report, start: req.body.start, end: req.body.end};
+	}
+	else if (req.body.report === "rainouts_old"){
+		const values = {report: req.body.report, start: req.body.start, end: req.body.end};
 		console.log(values.start);
 		db.query('select count(*) from rainouts where date >= ${start} AND date <= ${end}', values)
 		.then(function(data) {
@@ -92,10 +93,9 @@ const handleReportsPost = (db) => async (req, res) => {
 			console.log('ERROR: ', error);
 			res.status(400).json('Error');
 		})
-	}
-	else {
-		res.status(400).json("Invalid report: " + req.body.report);
-	}*/
+		else {
+			res.status(400).json("Invalid report: " + req.body.report);
+		}
 	}
 }
 

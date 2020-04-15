@@ -32,7 +32,7 @@ const handleShopPut = (db) => (req, res) => {
 		return;
 	}
 
-	db.none('UPDATE employee SET shop_name=${shop_name}, location=${location} WHERE shop_name = ${target_name}', values)
+	db.none('UPDATE shop SET shop_name=${shop_name}, location=${location} WHERE shop_name = ${target_name}', values)
 	.then (function(data){
 		console.log('Data: ', data);
 		res.json(data);

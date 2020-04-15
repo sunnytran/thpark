@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import Popup from '../components/Popup';
 import RideEntry from '../components/RideEntry';
 import MaintenanceButton from '../components/MaintenanceButton';
+import EditRideButton from '../components/EditRideButton';
 import Moment from 'moment';
 import moment from 'moment';
 
@@ -321,11 +322,7 @@ class Rides extends React.Component {
 											<td>{Moment(i.insurance_expiration_date).format('M/D/YY')}</td>
 											<td>
 												<div class="buttons">
-													<button class="button is-small">
-														<span class="icon">
-															<i class="fa fa-edit"></i>
-														</span>
-													</button>
+													<EditRideButton ride={i} getSetup={this.getSetup.bind(this)}/>
 													<button class="button is-small" onClick={() => this.removeRide(i)}>
 														<span class="icon">
 															<i class="fa fa-times"></i>

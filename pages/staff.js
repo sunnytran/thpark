@@ -1,6 +1,6 @@
-
 import Layout from '../components/Layout';
 import Popup from '../components/Popup';
+import PasswordButton from '../components/PasswordButton';
 
 class Staff extends React.Component {
 	constructor(props){
@@ -183,11 +183,7 @@ class Staff extends React.Component {
 												<td>{i.first_name}</td>
 												<td>{i.last_name}</td>
 												<td class = "has-text-center">
-													<button class="button is-small">
-														<span class="icon">
-															<i class="fa fa-key"></i>
-														</span>
-													</button>
+													<PasswordButton employee={i} getStaff={this.getStaff.bind(this)}/>
 												</td>
 												<td class = "has-text-center">
 													<button class="button is-small" onClick={() => this.removeMember(i)}>

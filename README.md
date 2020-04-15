@@ -1,13 +1,29 @@
-# Team 12
-# Theme Park Management System Database Project
+# Team 12 Theme Park Management System Database Project
 
-node server.js to run
-nodemon server.js to run in development mode
+Website: https://www.tpmanagement.app/
+
+## Where is our database file and frontend code?
+- Our most recent database file is in the database folder with the name thparkdb.dump
+- The client-side code is in the components and pages folders
+- The server-side code in the server.js file and server folder
+
+## Tools Used
+- PostgreSQL for our dbms
+- ReactJS to program the client-side code (A JavaScript library for user interfaces - https://reactjs.org/)
+- ExpressJS to program the server-side code (A JavaScript web framework for node.js - https://expressjs.com/)
+
+## To Install and Run
+1. Install node.js
+2. Use "npm install" in the directory the project is to install all packages required
+3. Enter database credentials in server.js to connect to target database
+3. "node server.js" to run OR "nodemon server.js" to run in development mode
+5. Visit http://localhost:3000
+
+## Team Info
 
 - Team Information: https://docs.google.com/spreadsheets/d/17_FFCro4WTE8n7NICMeMUmBagxfW4iWU0G2M5F5uiqU/edit
 - Schema: https://drive.google.com/file/d/1FbZ7VEMFTgYqHduh2PW3cddNS5oLi2fm/view?usp=sharing
 - Cheat Sheets: https://docs.google.com/spreadsheets/d/1Pk8DjehUrvOqf-8uLE6U_Ur1cjBSC73q30X_FryjGzs/edit?usp=sharing
-- Website: https://www.tpmanagement.app/
 - Web Host URL: https://evening-woodland-76507.herokuapp.com/
 
 ## Useful Info

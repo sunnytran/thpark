@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import Popup from '../components/Popup';
 import moment from 'moment';
 import StoreEntry from '../components/StoreEntry';
+import EditShopButton from '../components/EditShopButton';
 
 class Stores extends React.Component {
 	constructor(props){
@@ -168,11 +169,7 @@ class Stores extends React.Component {
 												<td>{i.shop_type}</td>
 												<td>{i.location}</td>
 												<td class="has-text-centered">
-													<button class="button is-small">
-														<span class="icon">
-															<i class="fa fa-edit"></i>
-														</span>
-													</button>
+													<EditShopButton shop={i} getSetup={this.getSetup.bind(this)} />
 												</td>
 												<td class="has-text-centered">
 													<button class="button is-small" onClick={() => this.removeStore(i)}>

@@ -171,6 +171,7 @@ class Staff extends React.Component {
 			<thead>
 			<th>First name</th>
 			<th>Last name</th>
+			<th>Password</th>
 			<th>Delete</th>
 			</thead>
 
@@ -181,8 +182,14 @@ class Staff extends React.Component {
 											<tr>
 												<td>{i.first_name}</td>
 												<td>{i.last_name}</td>
-												<td>
-
+												<td class = "has-text-center">
+													<button class="button is-small">
+														<span class="icon">
+															<i class="fa fa-key"></i>
+														</span>
+													</button>
+												</td>
+												<td class = "has-text-center">
 													<button class="button is-small" onClick={() => this.removeMember(i)}>
 														<span class="icon">
 															<i class="fa fa-times"></i>

@@ -25,7 +25,13 @@ const handleShopPost = (db) => (req, res) => {
 }
 
 const handleShopPut = (db) => (req, res) => {
-	const values = {target_name: req.body.target_name, shop_name: req.body.shop_name, location: location};
+	const values = {target_name: req.body.target_name, shop_name: req.body.shop_name, location: req.body.location};
+
+	if (values.target_name === "Park Ticket Booth"){
+		res.status(400).json('Cannot Change Park Ticket Booth');
+		return;
+	}
+
 	db.none('UPDATE employee SET shop_name=${shop_name}, location=${location} WHERE shop_name = ${target_name}', values)
 	.then (function(data){
 		console.log('Data: ', data);

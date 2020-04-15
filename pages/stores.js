@@ -156,6 +156,7 @@ class Stores extends React.Component {
 								<th>Store name</th>
 								<th>Store type</th>
 								<th>Location</th>
+								<th>Edit</th>
 								<th>Delete</th>
 							</thead>
 							<tbody>
@@ -166,7 +167,14 @@ class Stores extends React.Component {
 												<td><StoreEntry sales={this.state.sales} shopName={i.shop_name} /></td>
 												<td>{i.shop_type}</td>
 												<td>{i.location}</td>
-												<td>
+												<td class="has-text-centered">
+													<button class="button is-small">
+														<span class="icon">
+															<i class="fa fa-edit"></i>
+														</span>
+													</button>
+												</td>
+												<td class="has-text-centered">
 													<button class="button is-small" onClick={() => this.removeStore(i)}>
 														<span class="icon">
 															<i class="fa fa-times"></i>

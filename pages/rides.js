@@ -321,6 +321,11 @@ class Rides extends React.Component {
 											<td>{Moment(i.insurance_expiration_date).format('M/D/YY')}</td>
 											<td>
 												<div class="buttons">
+													<button class="button is-small">
+														<span class="icon">
+															<i class="fa fa-edit"></i>
+														</span>
+													</button>
 													<button class="button is-small" onClick={() => this.removeRide(i)}>
 														<span class="icon">
 															<i class="fa fa-times"></i>

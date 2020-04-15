@@ -1,6 +1,7 @@
 import Layout from '../components/Layout';
 import Popup from '../components/Popup';
 import EventEntry from '../components/EventEntry';
+import RescheduleButton from '../components/RescheduleButton';
 import Moment from 'moment';
 import moment from 'moment';
 
@@ -19,10 +20,10 @@ class Events extends React.Component {
 		this.inputDate	   = React.createRef();
 		this.inputLocation   = React.createRef();
 
+		this.getEvents = this.getEvents.bind(this);
 		this.toggleEventPop = this.toggleEventPop.bind(this);
 		this.addEvent = this.addEvent.bind(this);
 		this.removeEvent = this.removeEvent.bind(this);
-		this.rescheduleEvent = this.rescheduleEvent.bind(this);
 	}
 
 	componentDidMount(){
@@ -84,27 +85,6 @@ class Events extends React.Component {
 
 		this.getEvents();
 	};
-
-	rescheduleEvent(i) {
-		/*var index = this.state.events.indexOf(i);
-
-		fetch("https://www.tpmanagement.app/api/events", {
-			method: 'PUT', 
-			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
-      		body: JSON.stringify({"event_id": i.event_id, "date": moment(this.inputDate.current.value, 'M/D/YY')})
-	    })
-			.then((res) => { console.log(res) })
-			.catch(error => console.log(error));
-
-			var index = this.state.events.indexOf(i);
-			var tmp = [...this.state.events];
-			tmp.splice(index, 1);
-			this.setState({
-				events: tmp
-			})
-		};*/
-	}
-	//<input ref={this.inputEventType} class="input" type="text" placeholder="Type" />
 
 	render() {
 		const events = this.state.events;
@@ -177,14 +157,10 @@ class Events extends React.Component {
 											<td>{i.event_type}</td>
 											<td>{Moment(i.date).format('M/D/YY')}</td>
 											<td>{i.location}</td>
-											<td>
-												<button class="button-is-small" onClick={() => this.rescheduleEvent(i)}>
-													<span class="icon has-text-info">
-														<i class="fa fa-calendar"></i>
-													</span>
-												</button>
+											<td class="has-text-centered">
+												<RescheduleButton event={i} getEvents={this.getEvents.bind(this)} />
 											</td>
-											<td>
+											<td class="has-text-centered">
 												<button class="button is-small" onClick={() => this.removeEvent(i)}>
 													<span class="icon has-text-danger">
 														<i class="fa fa-times"></i>

@@ -95,7 +95,7 @@ app.prepare().then(() => {
 
 	let sco;
 
-	db.connect()
+	/*db.connect()
 	.then(obj => {
 		sco = obj;
 		sco.client.on('notification', function (data) {
@@ -106,7 +106,7 @@ app.prepare().then(() => {
 	})
 	.catch(error => {
 	    console.log('Error:', error);
-	});
+	});*/
 
 	server.use(logger('dev'));
 	server.use(allowCrossDomain);

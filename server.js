@@ -58,16 +58,6 @@ const cn = {
 
 const db = pgp(cn);
 
-//Example query
-/*db.query('SELECT * FROM employee WHERE username = ${username} AND password = crypt(${password}, password)', 
-{username: 'av21', password: 'monster'})
-.then(function(data) {
-	console.log(data);
-})
-.catch(function(error) {
-	console.log('ERROR: ', error);
-})
-.finally(db.$pool.end);*/
 //---------------------------------------------------------------------
 
 /**********************************************************************

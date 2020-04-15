@@ -1,11 +1,14 @@
 const handleReportsPost = (db) => async (req, res) => {
 	if (req.body.report === "visitors"){
-		const values = {report: req.body.report, days: req.body.days};
-		let data = await db.query('select CURRENT_DATE - ${days} + d AS date, count(s.timestamp::date = CURRENT_DATE-${days}+d AND sale_type=\'ticket\') as visitor_count FROM generate_series(1, ${days}) d LEFT JOIN sale s ON s.timestamp::date = CURRENT_DATE - ${days} + d AND sale_type=\'ticket\' GROUP by d ORDER by d', values);
+		const values = {report: req.body.report, days: req.body.days}
+		let pack = [];
+
+		const data = await db.query('select CURRENT_DATE - ${days} + d AS date, count(s.timestamp::date = CURRENT_DATE-${days}+d AND sale_type=\'ticket\') as visitor_count FROM generate_series(1, ${days}) d LEFT JOIN sale s ON s.timestamp::date = CURRENT_DATE - ${days} + d AND sale_type=\'ticket\' GROUP by d ORDER by d', values);
 		//const average = await db.one('SELECT CAST (COUNT(*) AS FLOAT) / $(days) as average FROM sale WHERE sale_type=\'ticket\' AND timestamp::date >= CURRENT_DATE-${days}', values);
 		const measures = await db.query('select AVG(r.visitor_count) as average, min(r.visitor_count), max(r.visitor_count), median(r.visitor_count), mode() WITHIN GROUP (ORDER BY r.visitor_count), stddev(r.visitor_count) from (select CURRENT_DATE - ${days} + d AS date, count(s.timestamp::date = CURRENT_DATE-${days}+d AND sale_type=\'ticket\') as visitor_count FROM generate_series(1, ${days}) d LEFT JOIN sale s ON s.timestamp::date = CURRENT_DATE - ${days} + d AND sale_type=\'ticket\' GROUP by d ORDER by d) as r', values);
-		data.push(measures);
-		res.json(data);
+		pack.push(data);
+		pack.push(measures[0]);
+		res.json(pack);
 
 		/*db.query('select CURRENT_DATE - ${days} + d AS date, count(s.timestamp::date = CURRENT_DATE-${days}+d AND sale_type=\'ticket\') as visitor_count FROM generate_series(1, ${days}) d LEFT JOIN sale s ON s.timestamp::date = CURRENT_DATE - ${days} + d AND sale_type=\'ticket\' GROUP by d ORDER by d', values)
 		.then(function(data) {
@@ -30,7 +33,6 @@ const handleReportsPost = (db) => async (req, res) => {
 			console.log('ERROR: ', error);
 			res.status(400).json('Error');
 		})*/
-
 	}
 	else if (req.body.report === "rides_on"){
 		const start = new Date(req.body.start+"Z");

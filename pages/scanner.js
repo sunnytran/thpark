@@ -326,22 +326,34 @@ class Scanner extends React.Component {
 			//Notify is important to show our trigger notification!
 			return (
 			<div>
-				<h2>Scan Rider</h2>
-				<select name="ride" onChange={this.onChange}>
-					{this.state.rides.map((x,y) => <option value={x.ride_name}>{x.ride_name}</option>)}
-					}
-				</select>
+				<label class="label">Scan Rider</label>					
+				<div class="field">
+				<div class="control">
+				<div class="select">
+					<select name="ride" onChange={this.onChange}>
+						{this.state.rides.map((x,y) => <option value={x.ride_name}>{x.ride_name}</option>)}
+						}
+					</select>
+				</div>
+				</div>
+				</div>
+				<div class="column is-one-fifths">
+				<div class="field">
+				<div class="control" >
 				<form onSubmit={this.submitRideson}>
-					<label>Customer Id: 
-						<input type="text" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
-					</label>
-					<input type="submit" value="Submit"/>
+						<label class="label">Customer Id: 
+							<input type="text" class="input" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
+						</label>
+					<input type="submit" class="button" value="Submit"/>
 				</form>
+				</div>
+				</div>
+				</div>
 				{
 					this.state.notify !== "" ? (<p>NOTIFICATION: {this.state.notify}</p>) : null
 				}
 				<br/>
-				<h2>Ride History</h2>
+				<label class="label">Ride History</label>
 				<ul>
 					{this.state.last10riders.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Ride: {x.ride_name}</li>)}
 				</ul>
@@ -351,15 +363,19 @@ class Scanner extends React.Component {
 		else if (this.state.operation === "tickets"){
 			return (
 				<div>
-					<h2>Sell Ticket</h2>
+					<label class="label">Sell Ticket</label>
+					<div class="field column is-one-fifths">
+					<div class="control" >
 					<form onSubmit={this.submitSellTicket}>
-						<label>Customer Id: 
-							<input type="text" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
+						<label class="label">Customer Id: 
+							<input type="text" class="input" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<input type="submit" value="Submit"/>
+						<input type="submit" class="button" value="Submit"/>
 					</form>
+					</div>
+					</div>
 					<br/>
-					<h2>Tickets History</h2>
+					<label class="label">Tickets History</label>
 					<ul>
 						{this.state.last10tickets.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Ticket Sale</li>)}
 					</ul>
@@ -369,29 +385,48 @@ class Scanner extends React.Component {
 		else if (this.state.operation === "sales"){
 			return (
 				<div>
-					<h2>Sell Item</h2>
-					<select name="sale" onChange={this.onChange}>
-						{this.state.shops.map((x,y) => <option value={x.shop_name}>{x.shop_name}</option>)}
-					</select>
-					<select name="sale_type" onChange={this.onChange}>
-						<option value="food">Food</option>
-						<option value="gift">Gift</option>
-						<option value="game">Game</option>
-					</select>
+					<label  class="label">Sell Item</label>
+
+					<div class="field">
+					<div class="control">
+					<div class="select">
+						<select name="sale" onChange={this.onChange}>
+							{this.state.shops.map((x,y) => <option value={x.shop_name}>{x.shop_name}</option>)}
+						</select>
+					</div>
+					</div>
+					</div>
+
+					<div class="field">
+					<div class="control">
+					<div class="select">
+						<select name="sale_type" onChange={this.onChange}>
+							<option value="food">Food</option>
+							<option value="gift">Gift</option>
+							<option value="game">Game</option>
+						</select>
+					</div>
+					</div>
+					</div>
+
+					<div class="field column is-one-fifths">
+					<div class="control" >
 					<form onSubmit={this.submitMakeSale}>
-						<label>Sale Item
-							<input type="text" name="sale_item" value={this.state.sale_item} defaultValue="" onChange={this.onChange}/>
+						<label class="label">Sale Item
+							<input type="text" class="input" name="sale_item" value={this.state.sale_item} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<label>Sale Amount
-							<input type="number" name="sale_amount" value={this.state.sale_amount} defaultValue={0} onChange={this.onChange}/>
+						<label class="label">Sale Amount
+							<input type="text" class="input" name="sale_amount" value={this.state.sale_amount} defaultValue={0} onChange={this.onChange}/>
 						</label>
-						<label>Customer Id:
-							<input type="text" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
+						<label class="label">Customer Id:
+							<input type="text" class="input" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<input type="submit" value="Submit"/>
+						<input type="submit" class="button" value="Submit"/>
 					</form>
+					</div>
+					</div>
 					<br/>
-					<h2>Sales History</h2>
+					<label class="label">Sales History</label>
 					<ul>
 						{this.state.last10sales.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Sale: {x.sale_item}</li>)}
 					</ul>
@@ -401,18 +436,30 @@ class Scanner extends React.Component {
 		else if (this.state.operation === "attends"){
 			return (
 				<div>
-					<h2>Event Attendee</h2>
-					<select name="event" onChange={this.onChange}>
-						{this.state.events.map((x,y) => <option value={x.event_id}>{x.event_name}</option>)}
-					</select>
-					<form onSubmit={this.submitAttendEvent}>
-						<label>Customer Id: 
-							<input type="text" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
-						</label>
-						<input type="submit" value="Submit"/>
-					</form>
+					<label class="label">Event Attendee</label>
+					<div class="field">
+					<div class="control">
+					<div class="select">
+						<select name="event" onChange={this.onChange}>
+							{this.state.events.map((x,y) => <option value={x.event_id}>{x.event_name}</option>)}
+						</select>
+					</div>
+					</div>
+					</div>
+					<div class="column is-one-fifths">
+					<div class="field column is-one-fifths">
+					<div class="control" >
+						<form onSubmit={this.submitAttendEvent}>
+							<label class="label">Customer Id: 
+								<input type="text" class="input" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
+							</label>
+							<input type="submit" class="button" value="Submit"/>
+						</form>
+					</div>
+					</div>
+					</div>
 					<br/>
-					<h2>Attendee History</h2>
+					<label class="label">Attendee History</label>
 					<ul>
 						{this.state.last10attendees.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Event: {x.event_id}</li>)}
 					</ul>
@@ -483,14 +530,19 @@ class Scanner extends React.Component {
 				</div>
 
 				<div>
-					<h2>Set Scanning Operation</h2>
+				<div class="field">
+				<div class="control">
+					<label class="label">Operation</label>
+					<div class="select">
 					<select name="operation" onChange={this.onChange}>
 						<option value="rideson">Ride Check</option>
 						<option value="tickets">Sell Tickets</option>
 						<option value="sales">Sell Items</option>
 						<option value="attends">Check In Attendee</option>
 					</select>
-					
+				</div>
+				</div>
+				</div>
 				</div>
 				<div>
 					<br/>
@@ -498,32 +550,32 @@ class Scanner extends React.Component {
 					<br/>
 				</div>
 
-				<div>
-					<h2>Add Customer</h2>
+				<div class="column is-one-fifth">
+					<label class="label">Add Customer</label>
 					<form onSubmit={this.submitAddCustomer}>
-						<label>First Name: 
-							<input type="text" name="firstNameAdd" value={this.state.firstNameAdd} defaultValue="" onChange={this.onChange}/>
+						<label class="label">First Name: 
+							<input type="text" class="input" name="firstNameAdd" value={this.state.firstNameAdd} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<label>Last Name: 
-							<input type="text" name="lastNameAdd" value={this.state.lastNameAdd} defaultValue="" onChange={this.onChange}/>
+						<label class="label">Last Name: 
+							<input type="text" class="input" name="lastNameAdd" value={this.state.lastNameAdd} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<input type="submit" value="Submit"/>
+						<input type="submit" class="button" value="Submit"/>
 					</form>
 					{
 						this.state.customerIdAdd !== "" ? (<p>New Customer Id: {this.state.customerIdAdd}</p>) : null
 					}
 					<br/>
 				</div>
-				<div>
-					<h2>Lookup Customer</h2>
+				<div class="column is-one-fifth">
+					<label class="label">Lookup Customer</label>
 					<form onSubmit={this.submitLookupCustomer}>
-						<label>First Name: 
-							<input type="text" name="firstNameLookup" value={this.state.firstNameLookup} defaultValue="" onChange={this.onChange}/>
+						<label class="label">First Name: 
+							<input type="text" class="input" name="firstNameLookup" value={this.state.firstNameLookup} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<label>Last Name: 
-							<input type="text" name="lastNameLookup" value={this.state.lastNameLookup} defaultValue="" onChange={this.onChange}/>
+						<label class="label">Last Name: 
+							<input type="text" class="input" name="lastNameLookup" value={this.state.lastNameLookup} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<input type="submit" value="Submit"/>
+						<input type="submit" class="button" value="Submit"/>
 					</form>
 					{
 						this.state.customerIdLookup !== "" ? (<div><p>Customer Id Search: </p><ul>{this.state.customerIdLookup.map((x,y) => <li key={x}>{x.first_name} {x.last_name} {x.customer_id}</li>)}</ul></div>) : null

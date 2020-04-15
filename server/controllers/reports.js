@@ -93,9 +93,9 @@ const handleReportsPost = (db) => async (req, res) => {
 			console.log('ERROR: ', error);
 			res.status(400).json('Error');
 		})
-		else {
-			res.status(400).json("Invalid report: " + req.body.report);
-		}
+	}
+	else {
+		res.status(400).json("Invalid report: " + req.body.report);
 	}
 }
 

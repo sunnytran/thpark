@@ -342,9 +342,9 @@ class Scanner extends React.Component {
 				<div class="control" >
 				<form onSubmit={this.submitRideson}>
 						<label class="label">Customer Id: 
-							<input type="text" class="input" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
+							<input type="text" class="input is-small" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 						</label>
-					<input type="submit" class="button" value="Submit"/>
+					<input type="submit" class="button is-small" value="Submit"/>
 				</form>
 				</div>
 				</div>
@@ -368,9 +368,9 @@ class Scanner extends React.Component {
 					<div class="control" >
 					<form onSubmit={this.submitSellTicket}>
 						<label class="label">Customer Id: 
-							<input type="text" class="input" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
+							<input type="text" class="input is-small" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<input type="submit" class="button" value="Submit"/>
+						<input type="submit" class="button is-small" value="Submit"/>
 					</form>
 					</div>
 					</div>
@@ -413,15 +413,15 @@ class Scanner extends React.Component {
 					<div class="control" >
 					<form onSubmit={this.submitMakeSale}>
 						<label class="label">Sale Item
-							<input type="text" class="input" name="sale_item" value={this.state.sale_item} defaultValue="" onChange={this.onChange}/>
+							<input type="text" class="input is-small" name="sale_item" value={this.state.sale_item} defaultValue="" onChange={this.onChange}/>
 						</label>
 						<label class="label">Sale Amount
-							<input type="text" class="input" name="sale_amount" value={this.state.sale_amount} defaultValue={0} onChange={this.onChange}/>
+							<input type="text" class="input is-small" name="sale_amount" value={this.state.sale_amount} defaultValue={0} onChange={this.onChange}/>
 						</label>
 						<label class="label">Customer Id:
-							<input type="text" class="input" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
+							<input type="text" class="input is-small" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<input type="submit" class="button" value="Submit"/>
+						<input type="submit" class="button is-small" value="Submit"/>
 					</form>
 					</div>
 					</div>
@@ -451,9 +451,9 @@ class Scanner extends React.Component {
 					<div class="control" >
 						<form onSubmit={this.submitAttendEvent}>
 							<label class="label">Customer Id: 
-								<input type="text" class="input" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
+								<input type="text" class="input is-small" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 							</label>
-							<input type="submit" class="button" value="Submit"/>
+							<input type="submit" class="button is-small" value="Submit"/>
 						</form>
 					</div>
 					</div>
@@ -554,12 +554,12 @@ class Scanner extends React.Component {
 					<label class="label">Add Customer</label>
 					<form onSubmit={this.submitAddCustomer}>
 						<label class="label">First Name: 
-							<input type="text" class="input" name="firstNameAdd" value={this.state.firstNameAdd} defaultValue="" onChange={this.onChange}/>
+							<input type="text" class="input is-small" name="firstNameAdd" value={this.state.firstNameAdd} defaultValue="" onChange={this.onChange}/>
 						</label>
 						<label class="label">Last Name: 
-							<input type="text" class="input" name="lastNameAdd" value={this.state.lastNameAdd} defaultValue="" onChange={this.onChange}/>
+							<input type="text" class="input is-small" name="lastNameAdd" value={this.state.lastNameAdd} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<input type="submit" class="button" value="Submit"/>
+						<input type="submit" class="button is-small" value="Submit"/>
 					</form>
 					{
 						this.state.customerIdAdd !== "" ? (<p>New Customer Id: {this.state.customerIdAdd}</p>) : null
@@ -570,12 +570,12 @@ class Scanner extends React.Component {
 					<label class="label">Lookup Customer</label>
 					<form onSubmit={this.submitLookupCustomer}>
 						<label class="label">First Name: 
-							<input type="text" class="input" name="firstNameLookup" value={this.state.firstNameLookup} defaultValue="" onChange={this.onChange}/>
+							<input type="text" class="input is-small" name="firstNameLookup" value={this.state.firstNameLookup} defaultValue="" onChange={this.onChange}/>
 						</label>
 						<label class="label">Last Name: 
-							<input type="text" class="input" name="lastNameLookup" value={this.state.lastNameLookup} defaultValue="" onChange={this.onChange}/>
+							<input type="text" class="input is-small" name="lastNameLookup" value={this.state.lastNameLookup} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<input type="submit" class="button" value="Submit"/>
+						<input type="submit" class="button is-small" value="Submit"/>
 					</form>
 					{
 						this.state.customerIdLookup !== "" ? (<div><p>Customer Id Search: </p><ul>{this.state.customerIdLookup.map((x,y) => <li key={x}>{x.first_name} {x.last_name} {x.customer_id}</li>)}</ul></div>) : null

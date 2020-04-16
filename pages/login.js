@@ -55,11 +55,13 @@ class Login extends React.Component {
 		
 		this.state = {
 			username: "",
-			password: ""
+			password: "",
+			message: ""
 		};
 
 		this.onSubmitLogin = this.onSubmitLogin.bind(this);
 		this.onChange = this.onChange.bind(this);
+		this.loginMessage = this.loginMessage.bind(this);
 	}
 
 	//ComponentDidMount is what the webpage does when its loaded or reloaded
@@ -81,11 +83,20 @@ class Login extends React.Component {
 
 	async onSubmitLogin(event){
 		event.preventDefault();
+		this.setState({
+			message: "",
+		});
+
 		await attemptLogin(this.state.username, this.state.password);
 
 		let test = await isLoggedIn();
 		if (test === true){
 			Router.push('/');
+		}
+		else {
+			this.setState({
+				message: "Incorrect Username or Password!",
+			});
 		}
 	}
 
@@ -97,11 +108,15 @@ class Login extends React.Component {
 		);
 	}
 
+	loginMessage() {
+		if (this.state.message === undefined || this.state.message === "") {return null;}
+		return (<label class="has-text-danger">{this.state.message}</label>);
+	}
+
 	render(){
 		return (
 				<Login_Register_Layout>
 					<div className="container">
-
 						<form>
 							<div className="notification">
 								<div className="field">
@@ -124,6 +139,7 @@ class Login extends React.Component {
 								</div>
 							</div>
 						</form>
+						<this.loginMessage/>
 					</div>
 				</Login_Register_Layout>
 		);

@@ -244,6 +244,12 @@ class Index extends React.Component {
 		var visitorsAvg = parseInt(this.state.vAvg["average"]);
 		var rainoutCount = this.state.rainouts["count"];*/
 
+		//const loaded = this.state.loaded;
+
+		/*if (loaded === false){
+			return null;
+		}*/
+
 		Chartkick.options = {
 			library: {animation: {easing: 'easeOutQuart'}}
 		}
@@ -377,6 +383,7 @@ class Index extends React.Component {
 			</Layout>
 		)
 	}
+
 };
 
 export default Index;

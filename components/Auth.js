@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 //Please do not mess with these functions
 //Unless you really know what your doing
 
-export function attemptLogin(username, password){
+export async function attemptLogin(username, password){
 	const data = {"username" : username, "password" : password};
 
 	let headers = new Headers();
@@ -11,7 +11,7 @@ export function attemptLogin(username, password){
 	headers.append('Accept', 'application/json');
 	headers.append('Origin', 'https://www.tpmanagement.app');
 
-	fetch("https://www.tpmanagement.app/api/login", {
+	await fetch("https://www.tpmanagement.app/api/login", {
 		body: JSON.stringify(data),
 		headers: headers,
 		method: 'POST',
@@ -32,7 +32,7 @@ export function logout(){
 
 export async function isLoggedIn(){
 	const token = await Cookies.get("token");
-	console.log("Cookie: " + token);
+	//console.log("Cookie: " + token);
 
 	if (token === undefined) {return false;}
 
@@ -51,6 +51,6 @@ export async function isLoggedIn(){
 	});
 	const result = await res.json();
 
-	console.log("RESULT: " + result);
+	//console.log("RESULT: " + result);
 	return result;
 }

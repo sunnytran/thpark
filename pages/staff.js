@@ -2,6 +2,9 @@ import Layout from '../components/Layout';
 import Popup from '../components/Popup';
 import PasswordButton from '../components/PasswordButton';
 
+import Router from 'next/router';
+import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+
 class Staff extends React.Component {
 	constructor(props){
 		super(props);
@@ -21,7 +24,12 @@ class Staff extends React.Component {
 		this.removeMember = this.removeMember.bind(this);
 	}
 
-	componentDidMount(){
+	async componentDidMount(){
+		let test = await isLoggedIn();
+		console.log(test);
+		if (test === false){
+			Router.push('/login');
+		}
 		this.getStaff();
 	}
 
@@ -171,8 +179,8 @@ class Staff extends React.Component {
 			<thead>
 			<th>First name</th>
 			<th>Last name</th>
-			<th>Password</th>
-			<th>Delete</th>
+			<th>Username</th>
+			<th>Actions</th>
 			</thead>
 
 			<tbody>
@@ -182,15 +190,16 @@ class Staff extends React.Component {
 											<tr>
 												<td>{i.first_name}</td>
 												<td>{i.last_name}</td>
-												<td class = "has-text-center">
+												<td>{i.username}</td>
+												<td>
+												<div class="buttons">
 													<PasswordButton employee={i} getStaff={this.getStaff.bind(this)}/>
-												</td>
-												<td class = "has-text-center">
 													<button class="button is-small" onClick={() => this.removeMember(i)}>
 														<span class="icon">
 															<i class="fa fa-times"></i>
 														</span>
 													</button>
+												</div>
 												</td>
 											</tr>
 										);

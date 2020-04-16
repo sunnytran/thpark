@@ -20,15 +20,31 @@ class Rainouts extends React.Component {
 		this.reportRainout = this.reportRainout.bind(this);
 	}
 
-	componentDidMount(){
+	async componentDidMount(){
 		//This code will redirect to login page if not logged in
-		/*
 		let test = await isLoggedIn();
 		console.log(test);
 		if (test === false){
 			Router.push('/login');
 		}
-		*/
+		
+
+		/*await fetch("https://www.tpmanagement.app/api/reports", {
+			body: JSON.stringify({ "report" : "rainouts_old", "start" : "2000-1-1", "end": today  }),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		})
+		.then(res => res.json())
+		.then (
+			(result)=> {
+				this.setState({
+					rainouts: result[0]
+				});
+				//console.log(JSON.stringify(result) +"<--rainouts");
+			}
+		)
+		.catch(error => console.log(error));*/
 
 		this.getRainouts();
 

@@ -2,6 +2,9 @@ import Layout from '../components/Layout';
 import Moment from 'moment';
 import moment from 'moment';
 
+import Router from 'next/router';
+import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+
 class Scanner extends React.Component {
 	constructor(props){
 		super(props);
@@ -48,13 +51,11 @@ class Scanner extends React.Component {
 
 	async componentDidMount(){
 		//This code will redirect to login page if not logged in
-		/*
 		let test = await isLoggedIn();
 		console.log(test);
 		if (test === false){
 			Router.push('/login');
 		}
-		*/
 
 		fetch("https://www.tpmanagement.app/api/rides")
 		.then(res => res.json())
@@ -337,23 +338,21 @@ class Scanner extends React.Component {
 				</div>
 				</div>
 				</div>
-				<div class="column is-one-fifths">
 				<div class="field">
 				<div class="control" >
 				<form onSubmit={this.submitRideson}>
 						<label class="label">Customer Id: 
 							<input type="text" class="input is-small" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 						</label>
-					<input type="submit" class="button is-small" value="Submit"/>
+					<input type="submit" class="button is-primary is-small" value="Submit"/>
 				</form>
-				</div>
 				</div>
 				</div>
 				{
 					this.state.notify !== "" ? (<p>NOTIFICATION: {this.state.notify}</p>) : null
 				}
 				<br/>
-				<label class="label">Ride History</label>
+				<label class="label">Last 10 Riders</label>
 				<ul>
 					{this.state.last10riders.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Ride: {x.ride_name}</li>)}
 				</ul>
@@ -364,18 +363,16 @@ class Scanner extends React.Component {
 			return (
 				<div>
 					<label class="label">Sell Ticket</label>
-					<div class="field column is-one-fifths">
 					<div class="control" >
 					<form onSubmit={this.submitSellTicket}>
 						<label class="label">Customer Id: 
 							<input type="text" class="input is-small" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<input type="submit" class="button is-small" value="Submit"/>
+						<input type="submit" class="button is-primary is-small" value="Submit"/>
 					</form>
 					</div>
-					</div>
 					<br/>
-					<label class="label">Tickets History</label>
+					<label class="label">Last 10 Tickets Sold</label>
 					<ul>
 						{this.state.last10tickets.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Ticket Sale</li>)}
 					</ul>
@@ -409,7 +406,6 @@ class Scanner extends React.Component {
 					</div>
 					</div>
 
-					<div class="field column is-one-fifths">
 					<div class="control" >
 					<form onSubmit={this.submitMakeSale}>
 						<label class="label">Sale Item
@@ -421,12 +417,11 @@ class Scanner extends React.Component {
 						<label class="label">Customer Id:
 							<input type="text" class="input is-small" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 						</label>
-						<input type="submit" class="button is-small" value="Submit"/>
+						<input type="submit" class="button is-primary is-small" value="Submit"/>
 					</form>
 					</div>
-					</div>
 					<br/>
-					<label class="label">Sales History</label>
+					<label class="label">Last 10 Sales</label>
 					<ul>
 						{this.state.last10sales.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Sale: {x.sale_item}</li>)}
 					</ul>
@@ -446,20 +441,16 @@ class Scanner extends React.Component {
 					</div>
 					</div>
 					</div>
-					<div class="column is-one-fifths">
-					<div class="field column is-one-fifths">
 					<div class="control" >
 						<form onSubmit={this.submitAttendEvent}>
 							<label class="label">Customer Id: 
 								<input type="text" class="input is-small" name="customer" value={this.state.customer} defaultValue="" onChange={this.onChange}/>
 							</label>
-							<input type="submit" class="button is-small" value="Submit"/>
+							<input type="submit" class="button is-primary is-small" value="Submit"/>
 						</form>
 					</div>
-					</div>
-					</div>
 					<br/>
-					<label class="label">Attendee History</label>
+					<label class="label">Last 10 Event Attendees</label>
 					<ul>
 						{this.state.last10attendees.map((x,y) => <li key={x}>{Moment(x.timestamp).format('YYYY/MM/DD hh:mm:ss')} - Event: {x.event_id}</li>)}
 					</ul>
@@ -528,59 +519,56 @@ class Scanner extends React.Component {
 				<div>
 					<h1>Scanner</h1>
 				</div>
+				<div class="columns">
+					<div class="column is-one-third">
+					<div class="field">
+					<div class="control">
+						<label class="label">Operation</label>
+						<div class="select">
+						<select name="operation" onChange={this.onChange}>
+							<option value="rideson">Ride Check</option>
+							<option value="tickets">Sell Tickets</option>
+							<option value="sales">Sell Items</option>
+							<option value="attends">Check In Attendee</option>
+						</select>
+					</div>
+					</div>
+					</div>
+						<br/>
+						{operationElement}
+						<br/>
+					</div>
 
-				<div>
-				<div class="field">
-				<div class="control">
-					<label class="label">Operation</label>
-					<div class="select">
-					<select name="operation" onChange={this.onChange}>
-						<option value="rideson">Ride Check</option>
-						<option value="tickets">Sell Tickets</option>
-						<option value="sales">Sell Items</option>
-						<option value="attends">Check In Attendee</option>
-					</select>
-				</div>
-				</div>
-				</div>
-				</div>
-				<div>
-					<br/>
-					{operationElement}
-					<br/>
-				</div>
-
-				<div class="column is-one-fifth">
-					<label class="label">Add Customer</label>
-					<form onSubmit={this.submitAddCustomer}>
-						<label class="label">First Name: 
-							<input type="text" class="input is-small" name="firstNameAdd" value={this.state.firstNameAdd} defaultValue="" onChange={this.onChange}/>
-						</label>
-						<label class="label">Last Name: 
-							<input type="text" class="input is-small" name="lastNameAdd" value={this.state.lastNameAdd} defaultValue="" onChange={this.onChange}/>
-						</label>
-						<input type="submit" class="button is-small" value="Submit"/>
-					</form>
-					{
-						this.state.customerIdAdd !== "" ? (<p>New Customer Id: {this.state.customerIdAdd}</p>) : null
-					}
-					<br/>
-				</div>
-				<div class="column is-one-fifth">
-					<label class="label">Lookup Customer</label>
-					<form onSubmit={this.submitLookupCustomer}>
-						<label class="label">First Name: 
-							<input type="text" class="input is-small" name="firstNameLookup" value={this.state.firstNameLookup} defaultValue="" onChange={this.onChange}/>
-						</label>
-						<label class="label">Last Name: 
-							<input type="text" class="input is-small" name="lastNameLookup" value={this.state.lastNameLookup} defaultValue="" onChange={this.onChange}/>
-						</label>
-						<input type="submit" class="button is-small" value="Submit"/>
-					</form>
-					{
-						this.state.customerIdLookup !== "" ? (<div><p>Customer Id Search: </p><ul>{this.state.customerIdLookup.map((x,y) => <li key={x}>{x.first_name} {x.last_name} {x.customer_id}</li>)}</ul></div>) : null
-					}
-					<br/>
+					<div class="column is-one-fifth">
+						<label class="label">Add Customer</label>
+						<form onSubmit={this.submitAddCustomer}>
+							<label class="label">First Name: 
+								<input type="text" class="input is-small" name="firstNameAdd" value={this.state.firstNameAdd} defaultValue="" onChange={this.onChange}/>
+							</label>
+							<label class="label">Last Name: 
+								<input type="text" class="input is-small" name="lastNameAdd" value={this.state.lastNameAdd} defaultValue="" onChange={this.onChange}/>
+							</label>
+							<input type="submit" class="button is-primary is-small" value="Submit"/>
+						</form>
+						{
+							this.state.customerIdAdd !== "" ? (<p>New Customer Id: {this.state.customerIdAdd}</p>) : null
+						}
+						<br/>
+						<label class="label">Lookup Customer</label>
+						<form onSubmit={this.submitLookupCustomer}>
+							<label class="label">First Name: 
+								<input type="text" class="input is-small" name="firstNameLookup" value={this.state.firstNameLookup} defaultValue="" onChange={this.onChange}/>
+							</label>
+							<label class="label">Last Name: 
+								<input type="text" class="input is-small" name="lastNameLookup" value={this.state.lastNameLookup} defaultValue="" onChange={this.onChange}/>
+							</label>
+							<input type="submit" class="button is-primary is-small" value="Submit"/>
+						</form>
+						{
+							this.state.customerIdLookup !== "" ? (<div><p>Customer Id Search: </p><ul>{this.state.customerIdLookup.map((x,y) => <li key={x}>{x.first_name} {x.last_name} {x.customer_id}</li>)}</ul></div>) : null
+						}
+						<br/>
+					</div>
 				</div>
 			</Layout>
 		);

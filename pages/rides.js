@@ -7,6 +7,9 @@ import EditRideButton from '../components/EditRideButton';
 import Moment from 'moment';
 import moment from 'moment';
 
+import Router from 'next/router';
+import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+
 class Rides extends React.Component {
 	constructor(props){
 		super(props);
@@ -33,7 +36,12 @@ class Rides extends React.Component {
 		this.completeRide = this.completeRide.bind(this);
 	}
 
-	componentDidMount(){
+	async componentDidMount(){
+		let test = await isLoggedIn();
+		console.log(test);
+		if (test === false){
+			Router.push('/login');
+		}
 		this.getSetup();
 	}
 

@@ -9,6 +9,9 @@ import Chartkick from 'chartkick'
 import { LineChart, BarChart } from 'react-chartkick'
 import 'chart.js'
 
+import Router from 'next/router';
+import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+
 class Index extends React.Component {
 	constructor(props){
 		super(props);
@@ -29,13 +32,18 @@ class Index extends React.Component {
 		this.inputVisitorDays = React.createRef();
 
 		this.handleDatePick = this.handleDatePick.bind(this);
-		this.handleDatePick2 = this.handleDatePick.bind(this);
+		this.handleDatePick2 = this.handleDatePick2.bind(this);
 		this.makeVisitorReport = this.makeVisitorReport.bind(this);
 		this.makeRidesReport = this.makeRidesReport.bind(this);
 		this.makeIssuesReport = this.makeIssuesReport.bind(this);
 	}
 
 	async componentDidMount(){
+		let test = await isLoggedIn();
+		console.log(test);
+		if (test === false){
+			Router.push('/login');
+		}
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
@@ -64,23 +72,6 @@ class Index extends React.Component {
 			}
 		)
 		.catch(error => console.log(error));
-
-		/*await fetch("https://www.tpmanagement.app/api/reports", {
-			body: JSON.stringify({ "report" : "rainouts_old", "start" : "2000-1-1", "end": today  }),
-			headers: headers,
-			method: 'POST',
-			mode: 'cors'
-		})
-		.then(res => res.json())
-		.then (
-			(result)=> {
-				this.setState({
-					rainouts: result[0]
-				});
-				//console.log(JSON.stringify(result) +"<--rainouts");
-			}
-		)
-		.catch(error => console.log(error));*/
 
 		await fetch("https://www.tpmanagement.app/api/reports", {
 			body: JSON.stringify({ "report" : "rides_on", "start" : "2000-12-31", "end": "2020-12-31"}),
@@ -134,32 +125,22 @@ class Index extends React.Component {
 	}
 
 	async handleDatePick(event) {
-		let tstart = new Date(event[0]);
-		let tstop = new Date(event[1]);
+		let start = event[0];
+		let stop = event[1];
 
-		let start = tstart.getUTCFullYear() + "-" + (tstart.getUTCMonth() + 1) + "-" + tstart.getUTCDate();
-		let stop = tstop.getUTCFullYear() + "-" + (tstop.getUTCMonth() + 1) + "-" + tstop.getUTCDate(); 
-
-		console.log("START " + start);
-		console.log("STOP " + stop);
-
-		//await this.setState({ startDate: moment(start).format('YYYY-M-D'), endDate: moment(stop).format('YYYY-M-D') });
-		await this.setState({ startDate: start, endDate: stop});
-		console.log("START " + this.startDate);
-		console.log("STOP " + this.endDate);
+		await this.setState({ startDate: moment(start).format('YYYY-M-D'), endDate: moment(stop).format('YYYY-M-D') });
 		this.makeRidesReport();
 	}
 
 	async handleDatePick2(event) {
-		var start = event[0];
-		var stop = event[1];
+		let start = event[0];
+		let stop = event[1];
 
 		await this.setState({ startDate2: moment(start).format('YYYY-M-D'), endDate2: moment(stop).format('YYYY-M-D') });
 		this.makeIssuesReport();
 	}
 
 	async makeVisitorReport(){
-
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
@@ -220,7 +201,6 @@ class Index extends React.Component {
 	}
 
 	async makeIssuesReport(){
-
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
@@ -245,7 +225,7 @@ class Index extends React.Component {
 		await this.state.rideIssue.map((i) => rideIssue[i.ride_name] = i.ride_issues);
 
 		await this.setState({
-			visitors: rideIssue,
+			rideIssue: rideIssue,
 		});
 	}
 
@@ -277,9 +257,10 @@ class Index extends React.Component {
 								<label class="label">Daily Visitors</label>
 								<LineChart data={ this.state.visitors } />
 								<div class="has-text-centered">
+								<br/>
 								<div class="field">
 									<button type="submit" class="button is-primary is-small" onClick={this.makeVisitorReport}>Make Report</button>
-									<input ref={this.inputVisitorDays} type="text is-primary is-small" defaultValue="30"/>
+									<input ref={this.inputVisitorDays} type="text is-primary is-normal" defaultValue="30"/>
 								</div>
 								</div>
 							</div>
@@ -288,6 +269,12 @@ class Index extends React.Component {
 					<div class="column is-third">
 						<div class="card">
 							<div class="card-content">
+								<p class="title">
+									{this.state.startDate} - {this.state.endDate}
+								</p>
+								<p class="subtitle">
+									<DateRangePicker onOk={this.handleDatePick} />
+								</p>
 								<label class="label">Rides Popularity</label>
 								<BarChart data={ this.state.ridesOn } />
 							</div>
@@ -296,6 +283,12 @@ class Index extends React.Component {
 					<div class="column is-third">
 						<div class="card">
 							<div class="card-content">
+								<p class="title">
+									{this.state.startDate2} - {this.state.endDate2}
+								</p>
+								<p class="subtitle">
+									<DateRangePicker onOk={this.handleDatePick2} />
+								</p>
 								<label class="label">Issues Reported</label>
 								<BarChart data={ this.state.rideIssue } />
 							</div>
@@ -341,12 +334,6 @@ class Index extends React.Component {
 					<div class="column is-4">
 						<div class="card">
 							<div class="card-content">
-								<p class="title">
-									{this.state.startDate} - {this.state.endDate}
-								</p>
-								<p class="subtitle">
-									<DateRangePicker onOk={this.handleDatePick} />
-								</p>
 							</div>
 						</div>
 					</div>
@@ -354,12 +341,7 @@ class Index extends React.Component {
 					<div class="column is-4">
 						<div class="card">
 							<div class="card-content">
-								<p class="title">
-									{this.state.startDate2} - {this.state.endDate2}
-								</p>
-								<p class="subtitle">
-									<DateRangePicker onOk={this.handleDatePick2} />
-								</p>
+								
 							</div>
 						</div>
 					</div>

@@ -24,7 +24,7 @@ class PasswordButton extends React.Component {
 	async changePassword() {
 		const i = this.props.employee;
 
-		const data = {"employee_id": i.event_id, "password": this.inputPassword.current.value};
+		const data = {"employee_id": i.employee_id, "password": this.inputPassword.current.value};
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
@@ -39,7 +39,6 @@ class PasswordButton extends React.Component {
 		});
 
 		this.togglePop();
-		this.props.getStaff();
 	}
 
 	render() {

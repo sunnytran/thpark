@@ -1,9 +1,11 @@
-	
 import Layout from '../components/Layout';
 import Popup from '../components/Popup';
 import moment from 'moment';
 import StoreEntry from '../components/StoreEntry';
 import EditShopButton from '../components/EditShopButton';
+
+import Router from 'next/router';
+import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
 
 class Stores extends React.Component {
 	constructor(props){
@@ -22,7 +24,12 @@ class Stores extends React.Component {
 		this.togglePop = this.togglePop.bind(this);
 	}
 
-	componentDidMount(){
+	async componentDidMount(){
+		let test = await isLoggedIn();
+		console.log(test);
+		if (test === false){
+			Router.push('/login');
+		}
 		this.getSetup();
 	}
 

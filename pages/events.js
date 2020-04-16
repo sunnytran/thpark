@@ -5,6 +5,9 @@ import RescheduleButton from '../components/RescheduleButton';
 import Moment from 'moment';
 import moment from 'moment';
 
+import Router from 'next/router';
+import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+
 class Events extends React.Component {
 	constructor(props){
 		super(props);
@@ -26,7 +29,12 @@ class Events extends React.Component {
 		this.removeEvent = this.removeEvent.bind(this);
 	}
 
-	componentDidMount(){
+	async componentDidMount(){
+		let test = await isLoggedIn();
+		console.log(test);
+		if (test === false){
+			Router.push('/login');
+		}
 		this.getEvents();
 	}
 

@@ -36,7 +36,7 @@ class EditRideButton extends React.Component {
 			this.inputInsurance = i.insurance_expiration_date;
 		}*/
 
-		//console.log("TESTING: " + this.inputInspection.current.value);
+		console.log("TESTING: " + this.inputInsurance.current.value);
 
 		var data = {
 			"target_name": i.ride_name,
@@ -110,13 +110,13 @@ class EditRideButton extends React.Component {
 							<div class="column is-half field">
 								<label class="label">Last inspection</label>
 								<div class="control">
-									<input ref={this.inputInspection} class="input" type="date" value={ride.ride_inspection} />
+									<input ref={this.inputInspection} class="input" type="date" defaultValue={ride.ride_inspection} />
 								</div>
 							</div>
 							<div class="column is-half field">
 								<label class="label">Insurance expiration</label>
 								<div class="control">
-									<input ref={this.inputInsurance} class="input" type="date" value={ride.insurance_expiration_date} />
+									<input ref={this.inputInsurance} class="input" type="date" defaultValue={ride.insurance_expiration_date} />
 								</div>
 							</div>
 						</div>

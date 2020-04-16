@@ -3,7 +3,7 @@
 //Update Employee
 
 const handleStaffGet = (db) => (req, res) => {
-	db.query('SELECT employee_id, first_name, last_name FROM employee')
+	db.query('SELECT employee_id, first_name, last_name, username FROM employee')
 	.then(function(data) {
 		//console.log(data);
 		res.json(data);

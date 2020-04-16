@@ -45,6 +45,8 @@
 
 import React from "react";
 import Login_Register_Layout from '../components/Login_Register_Layout';
+
+import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
 
 class Login extends React.Component {
@@ -54,7 +56,10 @@ class Login extends React.Component {
 		this.state = {
 			username: "",
 			password: ""
-		}
+		};
+
+		this.onSubmitLogin = this.onSubmitLogin.bind(this);
+		this.onChange = this.onChange.bind(this);
 	}
 
 	//ComponentDidMount is what the webpage does when its loaded or reloaded
@@ -62,7 +67,34 @@ class Login extends React.Component {
 	//may finish in order unless you explicitly make it do so
 	async componentDidMount(){
 		let test = await isLoggedIn();
-		console.log("Is logged in? " + test);
+		if (test === true){
+			Router.push('/');
+		}
+	}
+
+	async componentDidUpdate(){
+		let test = await isLoggedIn();
+		if (test === true){
+			Router.push('/');
+		}
+	}
+
+	async onSubmitLogin(event){
+		event.preventDefault();
+		await attemptLogin(this.state.username, this.state.password);
+
+		let test = await isLoggedIn();
+		if (test === true){
+			Router.push('/');
+		}
+	}
+
+	onChange = (event) => {
+		const name = event.target.name;
+		const value = event.target.value;
+		this.setState(
+			{[name]: value},
+		);
 	}
 
 	render(){
@@ -75,19 +107,19 @@ class Login extends React.Component {
 								<div className="field">
 									<label className="label">Username</label>
 									<div className="control">
-										<input className="input" name="username" type="text" placeholder="Username"/>
+										<input class="input" name="username" type="text" value={this.state.username} placeholder="Username" onChange={this.onChange}/>
 									</div>
 								</div>
 								<div className="field">
 									<label className="label">Password</label>
 									<div className="control">
-										<input className="input" name="password" type="text" placeholder="********"/>
+										<input class="input" name="password" type="password" value={this.state.password} placeholder="********" onChange={this.onChange}/>
 									</div>
 								</div>
 
 								<div className="field is-grouped">
 									<div className="control">
-										<input className="button is-link" type="submit" value="Submit"/>
+										<input className="button is-link" type="submit" value="Submit" onClick={this.onSubmitLogin}/>
 									</div>
 								</div>
 							</div>

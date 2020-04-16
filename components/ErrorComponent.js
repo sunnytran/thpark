@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 /*
-This component detects any errors
+This component detects any errors,
 then outputs an error message if an error is detected
 */
 class ErrorComponent extends React.Component {

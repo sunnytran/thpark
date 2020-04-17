@@ -17,7 +17,7 @@ class Layout extends React.Component {
 			margin-left: 2.5%;
 		`
 		const FooterDiv = styled.div`
-			position: absolute;
+			position: fixed;
 			width: 100%;
 			bottom: 0;
 			overflow: hidden;

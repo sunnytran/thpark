@@ -1,4 +1,4 @@
-const handleRidesOnGet = (notifications) => (req, res) => {
+const handleNotifyGet = (notifications) => (req, res) => {
 	let data = [];
 
 

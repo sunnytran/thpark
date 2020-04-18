@@ -58,7 +58,6 @@ const cn = {
 };
 
 const db = pgp(cn);
-
 let notifications = [];
 
 //---------------------------------------------------------------------
@@ -86,7 +85,7 @@ const allowCrossDomain = function(req, res, next) {
 app.prepare().then(() => {
 	const server = express();
 
-	let sco;
+	let sco;	
 
 	db.connect()
 	.then(obj => {

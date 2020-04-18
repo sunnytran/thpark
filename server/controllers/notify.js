@@ -1,12 +1,13 @@
 const handleNotifyGet = (notifications) => (req, res) => {
 	let data = [];
 
-
 	if (notifications.length !== 0){
 		data = notifications;
 	}
 
 	notifications = [];
+
+	console.log(data);
 
 	res.json(data);
 }

@@ -234,11 +234,13 @@ class Scanner extends React.Component {
 			mode: 'cors'
 		});
 
-		const result2 = await res2.json();
+		const result2 = await res2.json()[0];
 
-		this.setState({
-			notify: result2
-		});
+		if (Array.isArray(result2)){
+			this.setState({
+				notify: result2
+			});
+		}
 
 		this.getLast10Riders();
 	}

@@ -106,6 +106,7 @@ app.prepare().then(() => {
 
 	server.post('/api/login', login.handleLogin(db));
 	server.post('/api/auth', auth.handleAuth(db));
+	server.post('/api/role', auth.handleRole(db));
 
 	server.get('/api/rides', rides.handleRideGet(db));
 	server.post('/api/rides', rides.handleRidePost(db));

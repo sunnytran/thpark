@@ -18,6 +18,7 @@ class Rides extends React.Component {
 			rides: [],
 			issues: [],
 			showRidePop: false,
+			loaded: false
 		}
 		
 		this.inputRideName   = React.createRef();
@@ -42,7 +43,10 @@ class Rides extends React.Component {
 		if (test === false){
 			Router.push('/login');
 		}
-		this.getSetup();
+		await this.getSetup();
+		this.setState({
+			loaded: true,
+		});
 	}
 
 	getSetup(){
@@ -221,6 +225,9 @@ class Rides extends React.Component {
 	//<input ref={this.inputStatus} class="input" type="text" placeholder="Status" />
 
 	render() {
+		if (this.state.loaded === false){
+			return null;
+		}
 		const rides = this.state.rides;
 
 		return (

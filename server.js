@@ -39,7 +39,7 @@ const initOptions = {
 
 const pgp = require('pg-promise')(initOptions);
 
-//Local Connection
+//LocalHost Connection
 /*const cn = {
 	host: 'localhost',
 	port: 5432,
@@ -48,7 +48,7 @@ const pgp = require('pg-promise')(initOptions);
 	password: 'ezpasswrd123'
 };*/
 
-//Heroku Connection
+//Server Connection
 const cn = {
 	host: 'ec2-184-72-236-3.compute-1.amazonaws.com',
 	port: 5432,
@@ -58,6 +58,8 @@ const cn = {
 };
 
 const db = pgp(cn);
+
+let notifications = [];
 
 //---------------------------------------------------------------------
 
@@ -85,8 +87,6 @@ app.prepare().then(() => {
 	const server = express();
 
 	let sco;
-
-	let notifications = [];
 
 	db.connect()
 	.then(obj => {

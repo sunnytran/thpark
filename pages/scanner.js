@@ -233,8 +233,9 @@ class Scanner extends React.Component {
 			method: 'GET',
 			mode: 'cors'
 		});
-
-		const result2 = await res2.json()[0];
+		console.log(res2);
+		const result2 = await res2.json();
+		console.log("NOTIFICATION: " + result2);
 
 		if (Array.isArray(result2)){
 			this.setState({

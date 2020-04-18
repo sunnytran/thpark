@@ -94,7 +94,7 @@ app.prepare().then(() => {
 		sco.client.on('notification', function (data) {
 	        console.log('Received:', data);
 
-	        if (notifications.length > 9){ 
+	        if (notifications.length > 4){ 
 	        	notifications = [];
 	        }
 

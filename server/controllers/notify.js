@@ -5,8 +5,6 @@ const handleNotifyGet = (notifications) => (req, res) => {
 		data = notifications;
 	}
 
-	notifications = [];
-
 	console.log("NOTIFICATION DATA: " + data);
 
 	res.json(data);

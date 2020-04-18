@@ -26,6 +26,7 @@ const customer = require('./server/controllers/customer');
 const events = require('./server/controllers/events');
 const attends = require('./server/controllers/attends');
 const scanner = require('./server/controllers/scanner');
+const notify = require('./server/controllers/notify');
 
 //Database Connection---------------------------------------------------
 //This is where we connect to the database
@@ -162,6 +163,8 @@ app.prepare().then(() => {
 	server.post('/api/attends', attends.handleAttendsPost(db));
 
 	server.post('/api/scanner', scanner.handleScannerPost(db));
+
+	server.get('/api/notify', notify.handleNotifyGet(notifications));
 
 	server.get('*', (req, res) => {
 		return handle(req, res);

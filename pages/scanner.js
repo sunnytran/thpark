@@ -29,7 +29,7 @@ class Scanner extends React.Component {
 			event: null,
 			last10attendees: [],
 
-			notify: "",
+			notify: [],
 
 			firstNameAdd: "",
 			lastNameAdd: "",
@@ -37,7 +37,7 @@ class Scanner extends React.Component {
 
 			firstNameLookup: "",
 			lastNameLookup: "",
-			customerIdLookup: ""
+			customerIdLookup: "",
 		};
 
 		this.submitRideson = this.submitRideson.bind(this);
@@ -201,9 +201,9 @@ class Scanner extends React.Component {
 	async submitRideson(event){
 		event.preventDefault();
 
-		/*this.setState({
-			notify: "Testing"
-		});*/
+		this.setState({
+			notify: []
+		});
 
 		let customer = this.state.customer;
 		const ride = this.state.ride;
@@ -227,6 +227,18 @@ class Scanner extends React.Component {
 		});
 
 		const result = await res.json();
+
+		const res2 = await fetch("https://www.tpmanagement.app/api/notify", {
+			headers: headers,
+			method: 'GET',
+			mode: 'cors'
+		});
+
+		const result2 = await res2.json();
+
+		this.setState({
+			notify: result2
+		});
 
 		this.getLast10Riders();
 	}
@@ -342,7 +354,7 @@ class Scanner extends React.Component {
 				</div>
 				</div>
 				{
-					this.state.notify !== "" ? (<p>NOTIFICATION: {this.state.notify}</p>) : null
+					this.state.notify.length !== 0 ? (<p>NOTIFICATION: {this.state.notify[0]}</p>) : null
 				}
 				<br/>
 				<label class="label">Last 10 Riders</label>

@@ -6,6 +6,8 @@ const handleRidesOnGet = (notifications) => (req, res) => {
 		data = notifications;
 	}
 
+	notifications = [];
+
 	res.json(data);
 }
 

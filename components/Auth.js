@@ -54,3 +54,24 @@ export async function isLoggedIn(){
 	//console.log("RESULT: " + result);
 	return result;
 }
+
+export async function getRole(role){
+	const token = await Cookies.get("token");
+	if (token === undefined) {return "none";}
+
+	const data = {"token" : token};
+
+	let headers = new Headers();
+	headers.append('Content-Type', 'application/json');
+	headers.append('Accept', 'application/json');
+	headers.append('Origin', 'https://www.tpmanagement.app');
+
+	const res = await fetch("https://www.tpmanagement.app/api/role", {
+		body: JSON.stringify(data),
+		headers: headers,
+		method: 'POST',
+		mode: 'cors'
+	});
+	const result = await res.json();
+	return result.role;
+}

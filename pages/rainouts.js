@@ -21,14 +21,6 @@ class Rainouts extends React.Component {
 	}
 
 	async componentDidMount(){
-		//This code will redirect to login page if not logged in
-		let test = await isLoggedIn();
-		console.log(test);
-		if (test === false){
-			Router.push('/login');
-		}
-		
-
 		/*await fetch("https://www.tpmanagement.app/api/reports", {
 			body: JSON.stringify({ "report" : "rainouts_old", "start" : "2000-1-1", "end": today  }),
 			headers: headers,

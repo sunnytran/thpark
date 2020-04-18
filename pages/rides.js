@@ -8,7 +8,7 @@ import Moment from 'moment';
 import moment from 'moment';
 
 import Router from 'next/router';
-import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
 class Rides extends React.Component {
 	constructor(props){
@@ -38,11 +38,16 @@ class Rides extends React.Component {
 	}
 
 	async componentDidMount(){
-		let test = await isLoggedIn();
-		console.log(test);
+		/*let test = await isLoggedIn();
 		if (test === false){
 			Router.push('/login');
+		}*/
+
+		let role = await getRole();
+		if (role !== 'admin' && role !== 'manager'){
+			Router.push('/scanner');
 		}
+
 		await this.getSetup();
 		this.setState({
 			loaded: true,
@@ -231,6 +236,7 @@ class Rides extends React.Component {
 		const rides = this.state.rides;
 
 		return (
+
 			<Layout>
 				<div>
 					<button onClick={this.toggleRidePop} class="button is-link is-outlined">

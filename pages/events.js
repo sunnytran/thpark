@@ -30,11 +30,6 @@ class Events extends React.Component {
 	}
 
 	async componentDidMount(){
-		let test = await isLoggedIn();
-		console.log(test);
-		if (test === false){
-			Router.push('/login');
-		}
 		this.getEvents();
 	}
 

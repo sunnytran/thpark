@@ -50,13 +50,6 @@ class Scanner extends React.Component {
 	}
 
 	async componentDidMount(){
-		//This code will redirect to login page if not logged in
-		let test = await isLoggedIn();
-		console.log(test);
-		if (test === false){
-			Router.push('/login');
-		}
-
 		fetch("https://www.tpmanagement.app/api/rides")
 		.then(res => res.json())
 		.then (
@@ -516,17 +509,14 @@ class Scanner extends React.Component {
 
 		return(
 			<Layout>
-				<div>
-					<h1>Scanner</h1>
-				</div>
 				<div class="columns">
 					<div class="column is-one-third">
 					<div class="field">
 					<div class="control">
-						<label class="label">Operation</label>
+						<label class="label">Scan Operation</label>
 						<div class="select">
 						<select name="operation" onChange={this.onChange}>
-							<option value="rideson">Ride Check</option>
+							<option value="rideson">Scan Rider</option>
 							<option value="tickets">Sell Tickets</option>
 							<option value="sales">Sell Items</option>
 							<option value="attends">Check In Attendee</option>

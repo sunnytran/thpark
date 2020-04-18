@@ -10,7 +10,7 @@ import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 // login
 // true sticky footer
 
-class Nav extends React.Component {
+class NavBasic extends React.Component {
 	constructor(props) {
 		super(props);
 		/*this.state = {
@@ -62,30 +62,10 @@ class Nav extends React.Component {
 									<MyNavLink linkName={"Home"} linkUrl={"/"}>
 									</MyNavLink>
 								</li>
-									<li>
-										<MyNavLink linkName={"Rides"} linkUrl={"/rides"}>
-										</MyNavLink>
-									</li>
-									<li>
-										<MyNavLink linkName={"Stores"} linkUrl={"/stores"}>
-										</MyNavLink>
-									</li>
-									<li>
-										<MyNavLink linkName={"Events"} linkUrl={"/events"}>
-										</MyNavLink>
-									</li>
-									<li>
-										<MyNavLink linkName={"Rainouts"} linkUrl={"/rainouts"}>
-										</MyNavLink>
-									</li>
-									<li>
-										<MyNavLink linkName={"Scanner"} linkUrl={"/scanner"}>
-										</MyNavLink>
-									</li>
-									<li>
-										<MyNavLink linkName={"Staff"} linkUrl={"/staff"}>
-										</MyNavLink>
-									</li>
+								<li>
+									<MyNavLink linkName={"Scanner"} linkUrl={"/scanner"}>
+									</MyNavLink>
+								</li>
 							</ul>
 						</li>
 						<li>
@@ -101,5 +81,5 @@ class Nav extends React.Component {
 	}
 }
 
-export default Nav;
+export default NavBasic;
 

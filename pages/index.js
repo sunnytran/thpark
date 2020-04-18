@@ -39,11 +39,11 @@ class Index extends React.Component {
 	}
 
 	async componentDidMount(){
-		let test = await isLoggedIn();
+		/*let test = await isLoggedIn();
 		console.log(test);
 		if (test === false){
 			Router.push('/login');
-		}
+		}*/
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');

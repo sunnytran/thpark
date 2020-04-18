@@ -29,7 +29,7 @@ class Scanner extends React.Component {
 			event: null,
 			last10attendees: [],
 
-			notify: [],
+			notify: "",
 
 			firstNameAdd: "",
 			lastNameAdd: "",
@@ -202,7 +202,7 @@ class Scanner extends React.Component {
 		event.preventDefault();
 
 		this.setState({
-			notify: []
+			notify: ""
 		});
 
 		let customer = this.state.customer;
@@ -239,7 +239,7 @@ class Scanner extends React.Component {
 
 		if (Array.isArray(result2)){
 			this.setState({
-				notify: result2
+				notify: result2[result2.length-1].payload
 			});
 		}
 
@@ -357,7 +357,7 @@ class Scanner extends React.Component {
 				</div>
 				</div>
 				{
-					this.state.notify.length !== 0 ? (<p>NOTIFICATION: {this.state.notify[0]}</p>) : null
+					this.state.notify !== "" ? (<p>NOTIFICATION: {this.state.notify}</p>) : null
 				}
 				<br/>
 				<label class="label">Last 10 Riders</label>

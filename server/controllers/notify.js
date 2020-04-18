@@ -8,6 +8,8 @@ const handleNotifyGet = (notifications) => (req, res) => {
 	console.log("NOTIFICATION DATA: " + data);
 
 	res.json(data);
+
+	notifications = [];
 }
 
 module.exports = {

@@ -1,4 +1,4 @@
-const handleNotifyGet = (notifications) => (req, res) => {
+const handleNotifyGet = (notifications) => async (req, res) => {
 	let data = [];
 
 	if (notifications.length !== 0){
@@ -7,7 +7,7 @@ const handleNotifyGet = (notifications) => (req, res) => {
 
 	console.log("NOTIFICATION DATA: " + data);
 
-	res.json(data);
+	await res.json(data);
 
 	notifications = [];
 }

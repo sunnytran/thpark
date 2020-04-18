@@ -237,7 +237,7 @@ class Scanner extends React.Component {
 		const result2 = await res2.json();
 		console.log("NOTIFICATION: " + result2);
 
-		if (Array.isArray(result2)){
+		if (Array.isArray(result2) && result2.length > 0){
 			this.setState({
 				notify: result2[result2.length-1].payload
 			});

@@ -11,7 +11,7 @@ const handleRainoutsGet = (db) => (req, res) => {
 }
 
 const handleRainoutsPost = (db) => (req, res) => {
-	db.none('INSERT INTO rainouts (date) VALUES (CURRENT_DATE)')
+	db.none('INSERT INTO rainouts (date, start_timestamp) VALUES (CURRENT_DATE, NOW())')
 	.then (function(data){
 		console.log('Data: ', data);
 		res.json(data);

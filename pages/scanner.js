@@ -357,7 +357,7 @@ class Scanner extends React.Component {
 				</div>
 				</div>
 				{
-					this.state.notify !== "" ? (<p>NOTIFICATION: {this.state.notify}</p>) : null
+					this.state.notify !== "" ? (<p class="has-text-danger">NOTIFICATION: {this.state.notify}</p>) : null
 				}
 				<br/>
 				<label class="label">Last 10 Riders</label>

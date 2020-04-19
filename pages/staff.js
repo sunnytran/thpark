@@ -179,6 +179,7 @@ class Staff extends React.Component {
 			<th>First name</th>
 			<th>Last name</th>
 			<th>Username</th>
+			<th>Role</th>
 			<th>Actions</th>
 			</thead>
 
@@ -190,6 +191,7 @@ class Staff extends React.Component {
 												<td>{i.first_name}</td>
 												<td>{i.last_name}</td>
 												<td>{i.username}</td>
+												<td>{i.access_level}</td>
 												<td>
 												<div class="buttons">
 													<PasswordButton employee={i} getStaff={this.getStaff.bind(this)}/>

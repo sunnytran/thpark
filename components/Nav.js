@@ -86,6 +86,10 @@ class Nav extends React.Component {
 										<MyNavLink linkName={"Staff"} linkUrl={"/staff"}>
 										</MyNavLink>
 									</li>
+									<li>
+										<MyNavLink linkName={"Reports"} linkUrl={"/reports"}>
+										</MyNavLink>
+									</li>
 							</ul>
 						</li>
 						<li>

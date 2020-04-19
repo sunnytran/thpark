@@ -12,7 +12,7 @@ import 'chart.js'
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
-class Reports extends React.Component {
+class Index extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -44,11 +44,6 @@ class Reports extends React.Component {
 		if (test === false){
 			Router.push('/login');
 		}*/
-
-		let role = await getRole();
-		if (role !== 'admin' && role !== 'manager'){
-			Router.push('/');
-		}
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
@@ -391,7 +386,5 @@ class Reports extends React.Component {
 
 };
 
-export default Reports;
-
-
+export default Index;
 

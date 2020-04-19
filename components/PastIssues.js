@@ -34,9 +34,8 @@ class PastIssues extends React.Component {
 				</button>
 
 
-				<Popup closePopup={this.togglePop} showPop={this.state.showPop} title="Open Issues" submitText="Close" btnFunc={this.togglePop}>
+				<Popup closePopup={this.togglePop} showPop={this.state.showPop} title="Resolved Issues" submitText="Close" btnFunc={this.togglePop}>
 					<div class="field">
-						<label class="label">Resolved Ride Issues</label>
 						<table class="table">
 							<thead>
 								<th>Issue type</th>

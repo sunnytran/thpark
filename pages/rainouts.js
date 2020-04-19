@@ -5,7 +5,7 @@ import Moment from 'moment';
 import moment from 'moment';
 
 import Router from 'next/router';
-import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
 class Rainouts extends React.Component {
 	constructor(props){
@@ -37,6 +37,10 @@ class Rainouts extends React.Component {
 			}
 		)
 		.catch(error => console.log(error));*/
+		let role = await getRole();
+		if (role !== 'admin' && role !== 'manager'){
+			Router.push('/');
+		}
 
 		this.getRainouts();
 
@@ -114,7 +118,7 @@ class Rainouts extends React.Component {
 						rainouts.map(i => {
 										return (
 											<tr>
-												<td>{Moment(i.date).format('M/D/YY')}</td>
+												<td><b>{Moment(i.date).format('M/D/YY')}</b></td>
 											</tr>
 										);
 									})

@@ -3,7 +3,7 @@ import Moment from 'moment';
 import moment from 'moment';
 
 import Router from 'next/router';
-import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
 class Scanner extends React.Component {
 	constructor(props){

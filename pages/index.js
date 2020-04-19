@@ -10,7 +10,7 @@ import { LineChart, BarChart } from 'react-chartkick'
 import 'chart.js'
 
 import Router from 'next/router';
-import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
 class Index extends React.Component {
 	constructor(props){

@@ -28,13 +28,16 @@ class EditRideButton extends React.Component {
 	async edit() {
 		const i = this.props.ride;
 
-		/*if (this.inputInspection.current.value === ""){
-			this.inputInspection = i.ride_inspection;
+		let inspection = i.ride_inspection;
+		let insurance = i.insurance_expiration_date;
+
+		if (this.inputInspection.current.value){
+			inspection_date = this.inputInspection.current.value;
 		}
 
-		if (this.inputInsurance.current.value === ""){
-			this.inputInsurance = i.insurance_expiration_date;
-		}*/
+		if (this.inputInsurance.current.value){
+			insurance_expiration_date = this.inputInsurance.current.value;
+		}
 
 		console.log("TESTING: " + this.inputInsurance.current.value);
 
@@ -45,8 +48,8 @@ class EditRideButton extends React.Component {
 			"location": this.inputLocation.current.value,
 			"ride_status": this.inputStatus.current.value,
 			"creation_date": i.creation_date,
-			"last_inspection": this.inputInspection.current.value,
-			"insurance_expiration_date": this.inputInsurance.current.value
+			"last_inspection": inspection,
+			"insurance_expiration_date": insurance
 		};
 
 		let headers = new Headers();

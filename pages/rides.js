@@ -4,6 +4,8 @@ import Popup from '../components/Popup';
 import RideEntry from '../components/RideEntry';
 import MaintenanceButton from '../components/MaintenanceButton';
 import EditRideButton from '../components/EditRideButton';
+import IssuesButton from '../components/IssuesButton';
+import PastIssues from '../components/PastIssues';
 import Moment from 'moment';
 import moment from 'moment';
 
@@ -45,7 +47,7 @@ class Rides extends React.Component {
 
 		let role = await getRole();
 		if (role !== 'admin' && role !== 'manager'){
-			Router.push('/scanner');
+			Router.push('/');
 		}
 
 		await this.getSetup();
@@ -54,8 +56,8 @@ class Rides extends React.Component {
 		});
 	}
 
-	getSetup(){
-		fetch("https://www.tpmanagement.app/api/rides")
+	async getSetup(){
+		await fetch("https://www.tpmanagement.app/api/rides")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -66,7 +68,7 @@ class Rides extends React.Component {
 			}
 		)
 
-		fetch("https://www.tpmanagement.app/api/maintenance")
+		await fetch("https://www.tpmanagement.app/api/maintenance")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -325,7 +327,7 @@ class Rides extends React.Component {
 							<th>Status</th>
 							<th>Last inspection</th>
 							<th>Insurance expiration</th>
-							<th>Action</th>
+							<th>Actions</th>
 						</thead>
 
 						<tbody>
@@ -333,24 +335,27 @@ class Rides extends React.Component {
 								rides.map(i => {
 
 									return (
-										<tr class={i.ride_status == "maintenance" ? "has-text-danger" : ""}>
-											<td><RideEntry issues={this.state.issues} ride={i} updateRideStatus={this.updateRideStatus.bind(this)} /></td>
+										<tr class={i.ride_status === "maintenance" ? "has-text-danger" : ""}>
+											{/*<td><RideEntry issues={this.state.issues} ride={i} updateRideStatus={this.updateRideStatus.bind(this)} /></td>*/}
+											<td><b>{i.ride_name}</b></td>
 											<td>{i.ride_type}</td>
 											<td>{Moment(i.creation_date).format('M/D/YY')}</td>
 											<td>{i.location}</td>
 											<td>{i.ride_status}</td>
-											<td>{Moment(i.last_inspection).format('M/D/YY')}</td>
-											<td>{Moment(i.insurance_expiration_date).format('M/D/YY')}</td>
+											<td>{Moment(i.last_inspection).format('M/D/YY') === "Invalid date" ? "Never" : Moment(i.last_inspection).format('M/D/YY')}</td>
+											<td>{Moment(i.insurance_expiration_date).format('M/D/YY') === "Invalid date" ? "Never" : Moment(i.insurance_expiration_date).format('M/D/YY')}</td>
 											<td>
 												<div class="buttons">
-													<EditRideButton ride={i} getSetup={this.getSetup.bind(this)}/>
-													<button class="button is-small" onClick={() => this.removeRide(i)}>
+													<EditRideButton  ride={i} getSetup={this.getSetup.bind(this)}/>
+													<button class="button is-small has-text-danger" onClick={() => this.removeRide(i)}>
 														<span class="icon">
 															<i class="fa fa-times"></i>
 														</span>
 													</button>
 													<this.CompleteButton ride={i} />
-													<MaintenanceButton ride={i} updateRideStatus={this.updateRideStatus.bind(this)} />
+													<IssuesButton issues={this.state.issues} ride={i} getSetup={this.getSetup.bind(this)}/>
+													<PastIssues issues={this.state.issues} ride={i}/>
+													<MaintenanceButton ride={i} getSetup={this.getSetup.bind(this)} />
 												</div>
 											</td>
 										</tr>

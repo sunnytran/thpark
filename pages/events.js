@@ -6,7 +6,7 @@ import Moment from 'moment';
 import moment from 'moment';
 
 import Router from 'next/router';
-import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
 class Events extends React.Component {
 	constructor(props){
@@ -30,6 +30,10 @@ class Events extends React.Component {
 	}
 
 	async componentDidMount(){
+		let role = await getRole();
+		if (role !== 'admin' && role !== 'manager'){
+			Router.push('/');
+		}
 		this.getEvents();
 	}
 
@@ -156,7 +160,7 @@ class Events extends React.Component {
 						events.map(i => {
 									return (
 										<tr>
-											<td>{i.event_name}</td>
+											<td><b>{i.event_name}</b></td>
 											<td>{i.event_type}</td>
 											<td>{Moment(i.date).format('M/D/YY')}</td>
 											<td>{i.location}</td>

@@ -3,7 +3,7 @@ import Popup from '../components/Popup';
 import PasswordButton from '../components/PasswordButton';
 
 import Router from 'next/router';
-import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
 class Staff extends React.Component {
 	constructor(props){
@@ -25,6 +25,10 @@ class Staff extends React.Component {
 	}
 
 	async componentDidMount(){
+		let role = await getRole();
+		if (role !== 'admin' && role !== 'manager'){
+			Router.push('/');
+		}
 		this.getStaff();
 	}
 

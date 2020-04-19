@@ -5,7 +5,7 @@ import StoreEntry from '../components/StoreEntry';
 import EditShopButton from '../components/EditShopButton';
 
 import Router from 'next/router';
-import {attemptLogin, logout, isLoggedIn} from '../components/Auth';
+import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
 class Stores extends React.Component {
 	constructor(props){
@@ -25,10 +25,9 @@ class Stores extends React.Component {
 	}
 
 	async componentDidMount(){
-		let test = await isLoggedIn();
-		console.log(test);
-		if (test === false){
-			Router.push('/login');
+		let role = await getRole();
+		if (role !== 'admin' && role !== 'manager'){
+			Router.push('/');
 		}
 		this.getSetup();
 	}

@@ -25,14 +25,14 @@ class MaintenanceButton extends React.Component {
 		});
 	}
 
-	reportIssue() {
+	async reportIssue() {
 		const i = this.props.ride;
 		var original = i;
 
-		i.ride_status = 'maintenance';
+		//i.ride_status = 'maintenance';
 		i.last_inspection = moment();
 
-		var data = {
+		/*var data = {
 			"target_name": i.ride_name,
 			"ride_name": i.ride_name,
 			"ride_type": i.ride_type,
@@ -43,15 +43,15 @@ class MaintenanceButton extends React.Component {
 			"insurance_expiration_date": i.insurance_expiration_date
 		};
 
-		fetch("https://www.tpmanagement.app/api/rides", {
+		await fetch("https://www.tpmanagement.app/api/rides", {
 			method: 'PUT', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
 			body: JSON.stringify(data)
 		})
 		.then((res) => { console.log(res) })
-		.catch(error => console.log(error));
+		.catch(error => console.log(error));*/
 
-		data = {
+		const data = {
 			"type": this.inputIssueType.current.value,
 			"severity": this.inputSeverity.current.value,
 			"ride_name": i.ride_name
@@ -62,7 +62,7 @@ class MaintenanceButton extends React.Component {
 		headers.append('Accept', 'application/json');
 		headers.append('Origin', 'https://www.tpmanagement.app');
 		
-		fetch("https://www.tpmanagement.app/api/maintenance", {
+		await fetch("https://www.tpmanagement.app/api/maintenance", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -73,19 +73,20 @@ class MaintenanceButton extends React.Component {
 
 		this.togglePop();
 	
-		this.props.updateRideStatus(original, "maintenance", data);
+		//this.props.updateRideStatus(original, "maintenance", data);
+		await this.props.getSetup();
 	}
 
 	//<input ref={this.inputIssueType} class="input" type="text" placeholder="Issue type" />
 	//<input ref={this.inputSeverity} class="input" type="text" placeholder="Severity" />
 
 	render() {
-		if (this.props.ride.ride_status != "running")
-			return null;
+		/*if (this.props.ride.ride_status != "running")
+			return null;*/
 
 		return (
 			<div>
-				<button class="button is-small" onClick={this.togglePop}>
+				<button class="button is-small has-text-danger" onClick={this.togglePop}>
 					<span class="icon">
 						<i class="fa fa-exclamation-triangle"></i>
 					</span>

@@ -99,6 +99,14 @@ class Rides extends React.Component {
 			"insurance_expiration_date": this.inputInsurance.current.value
 		};
 
+		if (data.last_inspection === ''){
+			data.last_inspection = null;
+		}
+
+		if (data.insurance_expiration_date === ''){
+			data.insurance_expiration_date = null;
+		}
+
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');

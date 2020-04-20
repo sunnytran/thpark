@@ -35,7 +35,13 @@ class Login extends React.Component {
 	async componentDidUpdate(){
 		let test = await isLoggedIn();
 		if (test === true){
-			Router.push('/');
+			let role = await getRole();
+			if (role !== 'none'){
+				Router.push('/');
+			}
+			else {
+				await logout();
+			}
 		}
 	}
 
@@ -48,8 +54,19 @@ class Login extends React.Component {
 		await attemptLogin(this.state.username, this.state.password);
 
 		let test = await isLoggedIn();
+		
 		if (test === true){
-			Router.push('/');
+			let role = await getRole();
+
+			if (role !== 'none'){
+				Router.push('/');
+			}
+			else {
+				this.setState({
+					message: "Your account does not have access!",
+				});
+				await logout();
+			}
 		}
 		else {
 			this.setState({

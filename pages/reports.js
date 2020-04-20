@@ -17,7 +17,6 @@ class Reports extends React.Component {
 		super(props);
 		this.state = {
 			visitors: [],
-			rainouts: [],
 			ridesOn: [],
 			rideIssue: [],
 			vAvg: [],
@@ -26,7 +25,6 @@ class Reports extends React.Component {
 			startDate2: "2010-1-1",
 			endDate2: "2020-12-31",
 			pickerValue: [],
-			loaded: false
 		}
 
 		this.inputVisitorDays = React.createRef();
@@ -109,6 +107,8 @@ class Reports extends React.Component {
 		)
 		.catch(error => console.log(error));
 
+		console.log(this.state.rainouts);
+
 		let visitors = {};
 		await this.state.visitors.map((i) => visitors[i.date] = i.visitor_count);
 		
@@ -122,10 +122,6 @@ class Reports extends React.Component {
 			visitors: visitors,
 			ridesOn: ridesOn,
 			rideIssue: rideIssue
-		});
-
-		this.setState({
-			loaded: true
 		});
 	}
 
@@ -352,7 +348,6 @@ class Reports extends React.Component {
 					<div class="column is-4">
 						<div class="card">
 							<div class="card-content">
-								
 							</div>
 						</div>
 					</div>

@@ -13,7 +13,6 @@ class Rainouts extends React.Component {
 		
 		this.state = {
 			rainouts: [],
-			rainoutscount: [],
 			showRainoutPop: false
 		}
 
@@ -42,26 +41,6 @@ class Rainouts extends React.Component {
 		if (role !== 'admin' && role !== 'manager'){
 			Router.push('/');
 		}
-
-		let headers = new Headers();
-		headers.append('Content-Type', 'application/json');
-		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
-
-		await fetch("https://www.tpmanagement.app/api/reports", {
-			body: JSON.stringify({ "report" : "rainouts_old", "start" : moment().subtract(30, 'days').calendar(), "end": moment().calendar() }), headers: headers,
-			method: 'POST',
-			mode: 'cors'
-		})
-		.then(res => res.json())
-		.then (
-			(result)=> {
-				this.setState({
-					rainoutscount: result[0]
-				});
-			}
-		)
-		.catch(error => console.log(error));
 
 		this.getRainouts();
 
@@ -124,57 +103,32 @@ class Rainouts extends React.Component {
 					</button>
 
 					<Popup closePopup={this.toggleRainoutPop} showPop={this.state.showRainoutPop} title="Report rainout" submitText="Report rainout" btnFunc={this.reportRainout}>
-						<columns>
 						<div class="columns">
-							<div class="column is-third">
-							<div class="has-text-centered">
-							<br/>
-							<label class="title is-4">Confirm Rainout Today</label>
-							<br/>
-							</div>
-							</div>
+							<label class="label">Confirm Rainout Today</label>
 						</div>
-						</columns>
 					</Popup>
 
-					<div class= "columns">
-						<div class = "column is-2">
-						<table class="table">
-							<thead>
-								<th>Recent Rainouts</th>
-								{/*<th>Start Time</th>
-								<th>End Time</th>*/}
-							</thead>
+					<table class="table">
+						<thead>
+							<th>Recent Rainouts</th>
+							{/*<th>Start Time</th>
+							<th>End Time</th>*/}
+						</thead>
 
-							<tbody>
-							{
-							rainouts.map(i => {
-											return (
-												<tr>
-													<td><b>{Moment(i.date).format('M/D/YY')}</b></td>
-													{/*<td>{Moment(i.start_timestamp).format('h:mm') !== "Invalid date" ? Moment(i.start_timestamp).format('h:mm') : "Unknown"}</td>
-													<td>{Moment(i.end_timestamp).format('h:mm') !== "Invalid date" ? Moment(i.end_timestamp).format('h:mm') : "Unknown"}</td>*/}
-												</tr>
-											);
-										})
-									}
-								</tbody>
-						</table>
-						</div>
-
-						<div class = "column is-2">
-						<div class="card">
-							<div class="card-content">
-								<p class="title">
-									{this.state.rainoutscount["count"]}
-								</p>
-								<p class="subtitle">
-									Rainouts the last 30 days
-								</p>
-							</div>
-						</div>
-						</div>
-					</div>
+						<tbody>
+						{
+						rainouts.map(i => {
+										return (
+											<tr>
+												<td><b>{Moment(i.date).format('M/D/YY')}</b></td>
+												{/*<td>{Moment(i.start_timestamp).format('h:mm') !== "Invalid date" ? Moment(i.start_timestamp).format('h:mm') : "Unknown"}</td>
+												<td>{Moment(i.end_timestamp).format('h:mm') !== "Invalid date" ? Moment(i.end_timestamp).format('h:mm') : "Unknown"}</td>*/}
+											</tr>
+										);
+									})
+								}
+							</tbody>
+					</table>
 				</div>
 			</Layout>
 		)

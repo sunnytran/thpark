@@ -537,6 +537,7 @@ class Scanner extends React.Component {
 							<option value="attends">Check In Attendee</option>
 						</select>
 					</div>
+
 					</div>
 					</div>
 						<br/>
@@ -544,7 +545,9 @@ class Scanner extends React.Component {
 						<br/>
 					</div>
 
-					<div class="column is-one-fifth">
+					<div class="column is-one-third">
+						<div class="card">
+						<div class="card-content">
 						<label class="label">Add Customer</label>
 						<form onSubmit={this.submitAddCustomer}>
 							<label class="label">First Name: 
@@ -558,7 +561,12 @@ class Scanner extends React.Component {
 						{
 							this.state.customerIdAdd !== "" ? (<p>New Customer Id: {this.state.customerIdAdd}</p>) : null
 						}
-						<br/>
+						</div>
+						</div>
+					</div>
+						<div class="column is-one-third">
+						<div class="card">
+						<div class="card-content">
 						<label class="label">Lookup Customer</label>
 						<form onSubmit={this.submitLookupCustomer}>
 							<label class="label">First Name: 
@@ -572,7 +580,8 @@ class Scanner extends React.Component {
 						{
 							this.state.customerIdLookup !== "" ? (<div><p>Customer Id Search: </p><ul>{this.state.customerIdLookup.map((x,y) => <li key={x}>{x.first_name} {x.last_name} {x.customer_id}</li>)}</ul></div>) : null
 						}
-						<br/>
+						</div>
+						</div>
 					</div>
 				</div>
 			</Layout>

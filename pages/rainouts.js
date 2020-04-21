@@ -4,6 +4,10 @@ import Popup from '../components/Popup';
 import Moment from 'moment';
 import moment from 'moment';
 
+import Chartkick from 'chartkick'
+import { LineChart, BarChart } from 'react-chartkick'
+import 'chart.js'
+
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
@@ -14,7 +18,8 @@ class Rainouts extends React.Component {
 		this.state = {
 			rainouts: [],
 			rainoutscount: [],
-			showRainoutPop: false
+			showRainoutPop: false,
+			monthly_rainouts: [],
 		}
 
 		this.toggleRainoutPop = this.toggleRainoutPop.bind(this);
@@ -49,6 +54,28 @@ class Rainouts extends React.Component {
 		headers.append('Origin', 'https://www.tpmanagement.app');
 
 		await fetch("https://www.tpmanagement.app/api/reports", {
+			body: JSON.stringify({"report" : "rainouts","months": 12}),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		})
+		.then(res => res.json())
+		.then (
+		(result)=> {
+			this.setState({
+			monthly_rainouts: result[0].counts
+			});
+		}
+		)
+		.catch(error => console.log(error));
+		let monthly_rainouts = {};
+		await this.state.monthly_rainouts.map((i)=>monthly_rainouts[i.months_ago]=i.count)
+
+		await this.setState({
+			monthly_rainouts:monthly_rainouts
+		});
+
+		await fetch("https://www.tpmanagement.app/api/reports", {
 			body: JSON.stringify({ "report" : "rainouts_old", "start" : moment().subtract(30, 'days').calendar(), "end": moment().calendar() }), headers: headers,
 			method: 'POST',
 			mode: 'cors'
@@ -62,6 +89,7 @@ class Rainouts extends React.Component {
 			}
 		)
 		.catch(error => console.log(error));
+
 
 		this.getRainouts();
 
@@ -109,6 +137,8 @@ class Rainouts extends React.Component {
 		this.getRainouts();
 		this.toggleRainoutPop();
 	}
+
+	
 
 	render() {
 		const rainouts = this.state.rainouts;
@@ -174,6 +204,14 @@ class Rainouts extends React.Component {
 							</div>
 						</div>
 						</div>
+						<div class="column is-third">
+						<div class="card">
+							<div class="card-content">
+								<label class="label">Monthly Rainout Occurences</label>
+								<LineChart xtitle = "Month (Read from Recent Rainouts downlist)" ytitle = "Number of Days" data = {this.state.monthly_rainouts} />
+							</div>
+						</div>
+						</div>
 					</div>
 				</div>
 			</Layout>
@@ -182,4 +220,3 @@ class Rainouts extends React.Component {
 };
 
 export default Rainouts;
-

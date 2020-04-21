@@ -28,7 +28,7 @@ class EditRideButton extends React.Component {
 	async edit() {
 		const i = this.props.ride;
 
-		let inspection = i.ride_inspection;
+		let inspection = i.last_inspection;
 		let insurance = i.insurance_expiration_date;
 
 		if (this.inputInspection.current.value){

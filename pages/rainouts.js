@@ -208,7 +208,7 @@ class Rainouts extends React.Component {
 						<div class="card">
 							<div class="card-content">
 								<label class="label">Monthly Rainout Occurences</label>
-								<LineChart xtitle = "Month (Read from Recent Rainouts downlist)" ytitle = "Number of Days" data = {this.state.monthly_rainouts} />
+								<LineChart xtitle = "Months Ago" ytitle = "Number of Rainouts" data = {this.state.monthly_rainouts} />
 							</div>
 						</div>
 						</div>

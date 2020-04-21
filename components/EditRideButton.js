@@ -32,11 +32,11 @@ class EditRideButton extends React.Component {
 		let insurance = i.insurance_expiration_date;
 
 		if (this.inputInspection.current.value){
-			inspection_date = this.inputInspection.current.value;
+			inspection = this.inputInspection.current.value;
 		}
 
 		if (this.inputInsurance.current.value){
-			insurance_expiration_date = this.inputInsurance.current.value;
+			insurance = this.inputInsurance.current.value;
 		}
 
 		console.log("TESTING: " + this.inputInsurance.current.value);

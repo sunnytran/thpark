@@ -32,7 +32,7 @@ class DeleteShopButton extends React.Component{
 		return(
 			<div>
 				< button class = "button is-small" onClick = { this.togglePop } >
-					<span class = "icon">
+					<span class = "icon has-text-danger">
 							<i class = "fa fa-times">< / i>
 					< / span>
 				< / button>

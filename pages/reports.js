@@ -262,12 +262,17 @@ class Reports extends React.Component {
 						<div class="card">
 							<div class="card-content">
 								<label class="label">Daily Visitors</label>
-								<LineChart data={ this.state.visitors } />
+								<LineChart xtitle="Date" ytitle="Visitor Count" data={ this.state.visitors } />
 								<div class="has-text-centered">
 								<br/>
+								<div class="control">
 								<div class="field">
-									<button type="submit" class="button is-primary is-small" onClick={this.makeVisitorReport}>Make Report</button>
+									<label>
+									<span class= "tag is-white is-medium" for="report_days" >Number of Days</span>
 									<input ref={this.inputVisitorDays} type="text is-primary is-normal" defaultValue="30"/>
+									<button name="report_days" type="submit" class="button is-primary is-small" onClick={this.makeVisitorReport}>Make Report</button>
+									</label>
+								</div>
 								</div>
 								</div>
 							</div>
@@ -283,7 +288,7 @@ class Reports extends React.Component {
 									<DateRangePicker onOk={this.handleDatePick} />
 								</p>
 								<label class="label">Rides Popularity</label>
-								<BarChart data={ this.state.ridesOn } />
+								<BarChart xtitle="Riders Count" ytitle="Ride" data={ this.state.ridesOn } />
 							</div>
 						</div>
 					</div>
@@ -297,7 +302,7 @@ class Reports extends React.Component {
 									<DateRangePicker onOk={this.handleDatePick2} />
 								</p>
 								<label class="label">Issues Reported</label>
-								<BarChart data={ this.state.rideIssue } />
+								<BarChart xtitle="Issue Count" ytitle="Ride" data={ this.state.rideIssue } />
 							</div>
 						</div>
 					</div>

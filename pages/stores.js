@@ -178,11 +178,11 @@ class Stores extends React.Component {
 												<td class="has-text-centered">
 													<EditShopButton shop={i} getSetup={this.getSetup.bind(this)} />
 												</td>
+												/*
 												<td class="has-text-centered">
 													<DeleteShopButton shop={i} getSetup={this.getSetup.bind(this)} />
 												</td>
-												/*
-												Old Remove Code
+												*/
 												<td class="has-text-centered">
 													<button class="button is-small" onClick={() => this.removeStore(i)}>
 														<span class="icon">
@@ -190,7 +190,6 @@ class Stores extends React.Component {
 														</span>
 													</button>
 												</td>
-												*/
 											</tr>
 										);
 									})

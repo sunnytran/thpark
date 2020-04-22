@@ -3,6 +3,8 @@ import Popup from '../components/Popup';
 import Moment from 'moment';
 import moment from 'moment';
 
+import {url} from '../components/Const';
+
 class MaintenanceButton extends React.Component {
 	constructor(props){
 		super(props);
@@ -60,9 +62,9 @@ class MaintenanceButton extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 		
-		await fetch("https://www.tpmanagement.app/api/maintenance", {
+		await fetch(url + "/api/maintenance", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',

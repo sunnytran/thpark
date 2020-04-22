@@ -3,6 +3,8 @@ import Popup from '../components/Popup';
 import Moment from 'moment';
 import moment from 'moment';
 
+import {url} from '../components/Const';
+
 class IssuesButton extends React.Component {
 	constructor(props){
 		super(props);
@@ -54,7 +56,7 @@ class IssuesButton extends React.Component {
 			"issue_id": id
 		}
 		
-		await fetch("https://www.tpmanagement.app/api/maintenance", {
+		await fetch(url + "/api/maintenance", {
 			method: 'PUT', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
 			body: JSON.stringify(data)

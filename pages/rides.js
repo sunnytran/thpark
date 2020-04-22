@@ -12,6 +12,8 @@ import moment from 'moment';
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
+import {url} from '../components/Const';
+
 class Rides extends React.Component {
 	constructor(props){
 		super(props);
@@ -57,7 +59,7 @@ class Rides extends React.Component {
 	}
 
 	async getSetup(){
-		await fetch("https://www.tpmanagement.app/api/rides")
+		await fetch(url + "/api/rides")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -68,7 +70,7 @@ class Rides extends React.Component {
 			}
 		)
 
-		await fetch("https://www.tpmanagement.app/api/maintenance")
+		await fetch(url + "/api/maintenance")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -110,9 +112,9 @@ class Rides extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		const res = await fetch("https://www.tpmanagement.app/api/rides", {
+		const res = await fetch(url + "/api/rides", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -140,7 +142,7 @@ class Rides extends React.Component {
 
 	async removeRide(i) {
 
-		const res = await fetch("https://www.tpmanagement.app/api/rides", {
+		const res = await fetch(url + "/api/rides", {
 			method: 'DELETE', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
      		 body: JSON.stringify({"name": i.ride_name})
@@ -179,7 +181,7 @@ class Rides extends React.Component {
 			"insurance_expiration_date": i.insurance_expiration_date
 		};
 
-		const res = await fetch("https://www.tpmanagement.app/api/rides", {
+		const res = await fetch(url + "/api/rides", {
 			method: 'PUT', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
 	      	body: JSON.stringify(data)

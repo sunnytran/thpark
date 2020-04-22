@@ -1,4 +1,5 @@
 import Popup from '../components/Popup';
+import {url} from '../components/Const';
 
 class RescheduleButton extends React.Component {
 	constructor(props){
@@ -30,9 +31,9 @@ class RescheduleButton extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		const res = await fetch("https://www.tpmanagement.app/api/events", {
+		const res = await fetch(url + "/api/events", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'PUT',

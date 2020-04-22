@@ -12,6 +12,8 @@ import 'chart.js'
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
+import {url} from '../components/Const';
+
 class Reports extends React.Component {
 	constructor(props){
 		super(props);
@@ -51,7 +53,7 @@ class Reports extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 		
 		/*var earliest = this.state.startDate;
 		var today = this.state.endDate;
@@ -59,7 +61,7 @@ class Reports extends React.Component {
 		console.log(earliest +" " + today + " |||");
 		console.log(gap + "<-- this gap");*/
 
-		await fetch("https://www.tpmanagement.app/api/reports", {
+		await fetch(url + "/api/reports", {
 			body: JSON.stringify({"report" : "visitors", "days" : 30}),
 			headers: headers,
 			method: 'POST',
@@ -76,7 +78,7 @@ class Reports extends React.Component {
 		)
 		.catch(error => console.log(error));
 
-		await fetch("https://www.tpmanagement.app/api/reports", {
+		await fetch(url + "/api/reports", {
 			body: JSON.stringify({ "report" : "rides_on", "start" : "2000-12-31", "end": "2020-12-31"}),
 			headers: headers,
 			method: 'POST',
@@ -92,7 +94,7 @@ class Reports extends React.Component {
 		)
 		.catch(error => console.log(error));
 
-		await fetch("https://www.tpmanagement.app/api/reports", {
+		await fetch(url + "/api/reports", {
 			body: JSON.stringify({ "report" : "ride_issue", "start" : "2000-12-31", "end": "2020-12-31" }), headers: headers,
 			method: 'POST',
 			mode: 'cors'
@@ -145,11 +147,11 @@ class Reports extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 		
 		const data = { "report" : "visitors", "days" : parseInt(this.inputVisitorDays.current.value)  };
 
-		const res = await fetch("https://www.tpmanagement.app/api/reports", {
+		const res = await fetch(url + "/api/reports", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -175,12 +177,12 @@ class Reports extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 		
 		const data = {"report" : "rides_on", "start" : this.state.startDate, "end" : this.state.endDate};
 		console.log("DATES: " + this.state.startDate + " : " + this.state.endDate);
 
-		const res = await fetch("https://www.tpmanagement.app/api/reports", {
+		const res = await fetch(url + "/api/reports", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -205,11 +207,11 @@ class Reports extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 		
 		const data = {"report" : "ride_issue", "start" : this.state.startDate2, "end" : this.state.endDate2};
 
-		const res = await fetch("https://www.tpmanagement.app/api/reports", {
+		const res = await fetch(url + "/api/reports", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',

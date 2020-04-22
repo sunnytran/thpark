@@ -1,8 +1,9 @@
 
 import Popup from './Popup';
-import Report from './Report';
 import Moment from 'moment';
 import moment from 'moment';
+
+import {url} from '../components/Const';
 
 class RideEntry extends React.Component {
 	
@@ -56,7 +57,7 @@ class RideEntry extends React.Component {
 			"insurance_expiration_date": i.insurance_expiration_date
 		};
 
-		fetch("https://www.tpmanagement.app/api/rides", {
+		fetch(url + "/api/rides", {
 			method: 'PUT', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
 			body: JSON.stringify(data)
@@ -68,7 +69,7 @@ class RideEntry extends React.Component {
 			"issue_id": id
 		}
 		
-		fetch("https://www.tpmanagement.app/api/maintenance", {
+		fetch(url + "/api/maintenance", {
 			method: 'PUT', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
 			body: JSON.stringify(data)

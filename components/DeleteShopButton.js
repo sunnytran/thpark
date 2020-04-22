@@ -1,4 +1,5 @@
 import Popup from '../components/Popup';
+import {url} from '../components/Const';
 
 class DeleteShopButton extends React.Component{
 	constructor(props) {
@@ -19,7 +20,7 @@ class DeleteShopButton extends React.Component{
 	}
 
 	async removeStore(i) {
-		const res = await fetch("https://www.tpmanagement.app/api/shops", {
+		const res = await fetch(url + "/api/shops", {
 			method: 'DELETE',
 			headers : {'Content-Type': 'application/json; charset=utf-8'},
 			body : JSON.stringify({"name": i.shop_name})

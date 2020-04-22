@@ -1,12 +1,13 @@
 import Layout from '../components/Layout';
 import Popup from '../components/Popup';
-import EventEntry from '../components/EventEntry';
 import RescheduleButton from '../components/RescheduleButton';
 import Moment from 'moment';
 import moment from 'moment';
 
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
+
+import {url} from '../components/Const';
 
 class Events extends React.Component {
 	constructor(props){
@@ -38,7 +39,7 @@ class Events extends React.Component {
 	}
 
 	getEvents() {
-		fetch("https://www.tpmanagement.app/api/events")
+		fetch(url + "/api/events")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -70,9 +71,9 @@ class Events extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 		
-		const res = await fetch("https://www.tpmanagement.app/api/events", {
+		const res = await fetch(url + "/api/events", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -84,7 +85,7 @@ class Events extends React.Component {
 	}
 
 	async removeEvent(i) {
-		const res = await fetch("https://www.tpmanagement.app/api/events", {
+		const res = await fetch(url + "/api/events", {
 			method: 'DELETE', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
       		body: JSON.stringify({"event_id": i.event_id})

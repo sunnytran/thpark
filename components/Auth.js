@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import {url} from '../components/Const';
 
 //Please do not mess with these functions
 //Unless you really know what your doing
@@ -9,9 +10,9 @@ export async function attemptLogin(username, password){
 	let headers = new Headers();
 	headers.append('Content-Type', 'application/json');
 	headers.append('Accept', 'application/json');
-	headers.append('Origin', 'https://www.tpmanagement.app');
+	headers.append('Origin', url);
 
-	await fetch("https://www.tpmanagement.app/api/login", {
+	await fetch(url + "/api/login", {
 		body: JSON.stringify(data),
 		headers: headers,
 		method: 'POST',
@@ -41,9 +42,9 @@ export async function isLoggedIn(){
 	let headers = new Headers();
 	headers.append('Content-Type', 'application/json');
 	headers.append('Accept', 'application/json');
-	headers.append('Origin', 'https://www.tpmanagement.app');
+	headers.append('Origin', url);
 
-	const res = await fetch("https://www.tpmanagement.app/api/auth", {
+	const res = await fetch(url + "/api/auth", {
 		body: JSON.stringify(data),
 		headers: headers,
 		method: 'POST',
@@ -64,9 +65,9 @@ export async function getRole(role){
 	let headers = new Headers();
 	headers.append('Content-Type', 'application/json');
 	headers.append('Accept', 'application/json');
-	headers.append('Origin', 'https://www.tpmanagement.app');
+	headers.append('Origin', url);
 
-	const res = await fetch("https://www.tpmanagement.app/api/role", {
+	const res = await fetch(url + "/api/role", {
 		body: JSON.stringify(data),
 		headers: headers,
 		method: 'POST',

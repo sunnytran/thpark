@@ -5,6 +5,8 @@ import PasswordButton from '../components/PasswordButton';
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
+import {url} from '../components/Const';
+
 class Staff extends React.Component {
 	constructor(props){
 		super(props);
@@ -33,7 +35,7 @@ class Staff extends React.Component {
 	}
 
 	getStaff(){
-		fetch("https://www.tpmanagement.app/api/staff")
+		fetch(url + "/api/staff")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -65,10 +67,10 @@ class Staff extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 	
 
-		const res = await fetch("https://www.tpmanagement.app/api/staff", {
+		const res = await fetch(url + "/api/staff", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -92,9 +94,9 @@ class Staff extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		const res = await fetch("https://www.tpmanagement.app/api/staff", {
+		const res = await fetch(url + "/api/staff", {
 			method: 'DELETE', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
             body: JSON.stringify({"employee_id": i.employee_id})

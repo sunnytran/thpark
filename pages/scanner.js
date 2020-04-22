@@ -5,6 +5,8 @@ import moment from 'moment';
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
+import {url} from '../components/Const';
+
 class Scanner extends React.Component {
 	constructor(props){
 		super(props);
@@ -50,7 +52,7 @@ class Scanner extends React.Component {
 	}
 
 	async componentDidMount(){
-		fetch("https://www.tpmanagement.app/api/rides")
+		fetch(url + "/api/rides")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -62,7 +64,7 @@ class Scanner extends React.Component {
 			}
 		)
 
-		fetch("https://www.tpmanagement.app/api/shops")
+		fetch(url + "/api/shops")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -74,7 +76,7 @@ class Scanner extends React.Component {
 			}
 		)
 
-		fetch("https://www.tpmanagement.app/api/events")
+		fetch(url + "/api/events")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -106,9 +108,9 @@ class Scanner extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		fetch("https://www.tpmanagement.app/api/scanner", {
+		fetch(url + "/api/scanner", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -130,9 +132,9 @@ class Scanner extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		fetch("https://www.tpmanagement.app/api/scanner", {
+		fetch(url + "/api/scanner", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -154,9 +156,9 @@ class Scanner extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		fetch("https://www.tpmanagement.app/api/scanner", {
+		fetch(url + "/api/scanner", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -178,9 +180,9 @@ class Scanner extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		fetch("https://www.tpmanagement.app/api/scanner", {
+		fetch(url + "/api/scanner", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -217,9 +219,9 @@ class Scanner extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		const res = await fetch("https://www.tpmanagement.app/api/rideson", {
+		const res = await fetch(url + "/api/rideson", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -228,7 +230,7 @@ class Scanner extends React.Component {
 
 		const result = await res.json();
 
-		const res2 = await fetch("https://www.tpmanagement.app/api/notify", {
+		const res2 = await fetch(url + "/api/notify", {
 			headers: headers,
 			method: 'GET',
 			mode: 'cors'
@@ -259,9 +261,9 @@ class Scanner extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		const res = await fetch("https://www.tpmanagement.app/api/tickets", {
+		const res = await fetch(url + "/api/tickets", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -290,9 +292,9 @@ class Scanner extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		const res = await fetch("https://www.tpmanagement.app/api/sales", {
+		const res = await fetch(url + "/api/sales", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -317,9 +319,9 @@ class Scanner extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		const res = await fetch("https://www.tpmanagement.app/api/attends", {
+		const res = await fetch(url + "/api/attends", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -475,9 +477,9 @@ class Scanner extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		const res = await fetch("https://www.tpmanagement.app/api/customer", {
+		const res = await fetch(url + "/api/customer", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -499,9 +501,9 @@ class Scanner extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		const res = await fetch("https://www.tpmanagement.app/api/customer", {
+		const res = await fetch(url + "/api/customer", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'PUT',

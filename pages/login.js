@@ -1,11 +1,10 @@
-//This is old code I removed, you can put it back for testing if you need it
-//<form action="https://wp.zybooks.com/form-viewer.php" target="_blank" method="POST">
-
 import React from "react";
 import Login_Register_Layout from '../components/Login_Register_Layout';
 
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
+
+import {url} from '../components/Const';
 
 class Login extends React.Component {
 	constructor(props){
@@ -30,6 +29,8 @@ class Login extends React.Component {
 		if (test === true){
 			Router.push('/');
 		}
+
+		console.log(url);
 	}
 
 	async componentDidUpdate(){

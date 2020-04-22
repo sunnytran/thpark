@@ -8,6 +8,8 @@ import EditShopButton from '../components/EditShopButton';
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
+import {url} from '../components/Const';
+
 class Stores extends React.Component {
 	constructor(props){
 		super(props);
@@ -34,7 +36,7 @@ class Stores extends React.Component {
 	}
 
 	getSetup(){
-		fetch("https://www.tpmanagement.app/api/shops")
+		fetch(url + "/api/shops")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -45,7 +47,7 @@ class Stores extends React.Component {
 			}
 		)
 
-		fetch("https://www.tpmanagement.app/api/sales")
+		fetch(url + "/api/sales")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -70,9 +72,9 @@ class Stores extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 		
-		const res = await fetch("https://www.tpmanagement.app/api/shops", {
+		const res = await fetch(url + "/api/shops", {
 			body: JSON.stringify(data),
 			headers: headers,
 			method: 'POST',
@@ -91,7 +93,7 @@ class Stores extends React.Component {
 	}
 
 	async removeStore(i) {
-		const res = await fetch("https://www.tpmanagement.app/api/shops", {
+		const res = await fetch(url + "/api/shops", {
 			method: 'DELETE', 
 			headers: {'Content-Type': 'application/json; charset=utf-8'}, 
 		    body: JSON.stringify({"name": i.shop_name})

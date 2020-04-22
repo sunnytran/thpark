@@ -1,8 +1,10 @@
 
 import Popup from './Popup';
-import Report from './Report';
+//import Report from './Report';
 import Moment from 'moment';
 import moment from 'moment';
+
+import {url} from '../components/Const';
 
 class StoreEntry extends React.Component {
 	
@@ -19,7 +21,7 @@ class StoreEntry extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 		
 	}
 

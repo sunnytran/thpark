@@ -6,6 +6,8 @@ import moment from 'moment';
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
+import {url} from '../components/Const';
+
 class Index extends React.Component {
 	constructor(props){
 		super(props);

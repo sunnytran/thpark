@@ -11,6 +11,8 @@ import 'chart.js'
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
 
+import {url} from '../components/Const';
+
 class Rainouts extends React.Component {
 	constructor(props){
 		super(props);
@@ -51,9 +53,9 @@ class Rainouts extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 
-		await fetch("https://www.tpmanagement.app/api/reports", {
+		await fetch(url + "/api/reports", {
 			body: JSON.stringify({"report" : "rainouts","months": 12}),
 			headers: headers,
 			method: 'POST',
@@ -75,7 +77,7 @@ class Rainouts extends React.Component {
 			monthly_rainouts:monthly_rainouts
 		});
 
-		await fetch("https://www.tpmanagement.app/api/reports", {
+		await fetch(url + "/api/reports", {
 			body: JSON.stringify({ "report" : "rainouts_old", "start" : moment().subtract(30, 'days').calendar(), "end": moment().calendar() }), headers: headers,
 			method: 'POST',
 			mode: 'cors'
@@ -104,7 +106,7 @@ class Rainouts extends React.Component {
 	}
 
 	getRainouts() {
-		fetch("https://www.tpmanagement.app/api/rainouts")
+		fetch(url + "/api/rainouts")
 		.then(res => res.json())
 		.then (
 			(result)=> {
@@ -120,9 +122,9 @@ class Rainouts extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'https://www.tpmanagement.app');
+		headers.append('Origin', url);
 		
-		const res = await fetch("https://www.tpmanagement.app/api/rainouts", {
+		const res = await fetch(url + "/api/rainouts", {
 			headers: headers,
 			method: 'POST',
 			mode: 'cors'

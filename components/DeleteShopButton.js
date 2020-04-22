@@ -37,7 +37,7 @@ class DeleteShopButton extends React.Component{
 					< / span>
 				< / button>
 
-				< Popup closePopup = { this.togglePop } showPop = { this.state.showPop } title = "Delete Confirmation" submitText = "Delete" btnFunc = { this.removeStore(i) } >
+				< Popup closePopup = { this.togglePop } showPop = { this.state.showPop } title = "Delete Confirmation" submitText = "Confirm" btnFunc = { this.removeStore(i) } >
 					<div class = "field">
 						<label class="label"> Are you sure you want to delete this shop? < /label>
 					< / div>

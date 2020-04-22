@@ -3,6 +3,7 @@ import Popup from '../components/Popup';
 import moment from 'moment';
 import StoreEntry from '../components/StoreEntry';
 import EditShopButton from '../components/EditShopButton';
+import DeleteShopButton from '../components/DeleteShopButton';
 
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
@@ -178,12 +179,18 @@ class Stores extends React.Component {
 													<EditShopButton shop={i} getSetup={this.getSetup.bind(this)} />
 												</td>
 												<td class="has-text-centered">
+													<DeleteShopButton shop={i} getSetup={this.getSetup.bind(this)} />
+												</td>
+												/*
+												Old Remove Code
+												<td class="has-text-centered">
 													<button class="button is-small" onClick={() => this.removeStore(i)}>
 														<span class="icon">
 															<i class="fa fa-times"></i>
 														</span>
 													</button>
 												</td>
+												*/
 											</tr>
 										);
 									})

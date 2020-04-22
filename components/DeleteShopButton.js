@@ -8,10 +8,6 @@ class DeleteShopButton extends React.Component{
 		}
 
 		this.togglePop = this.togglePop.bind(this);
-		this.edit = this.edit.bind(this);
-
-		this.inputNewName = React.createRef();
-		this.inputNewLocation = React.createRef();
 	}
 
 	togglePop() {

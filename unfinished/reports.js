@@ -1,265 +1,276 @@
-import Layout from "../components/Layout";
-import Popup from "../components/Popup";
-import Moment from "moment";
-import moment from "moment";
+import Layout from '../components/Layout';
+import Popup from '../components/Popup';
+import Moment from 'moment';
+import moment from 'moment';
 
-import { DateRangePicker } from "rsuite";
+import { DateRangePicker } from 'rsuite';
 
-import Chartkick from "chartkick";
-import { LineChart, BarChart } from "react-chartkick";
-import "chart.js";
+import Chartkick from 'chartkick'
+import { LineChart, BarChart } from 'react-chartkick'
+import 'chart.js'
 
-import Router from "next/router";
-import { attemptLogin, logout, isLoggedIn, getRole } from "../components/Auth";
+import Router from 'next/router';
+import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
+
+import {url} from '../components/Const';
 
 class Reports extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visitors: [],
-      ridesOn: [],
-      rideIssue: [],
-      vAvg: [],
-      startDate: "2010-1-1",
-      endDate: "2020-12-31",
-      startDate2: "2010-1-1",
-      endDate2: "2020-12-31",
-      pickerValue: [],
-    };
+	constructor(props){
+		super(props);
+		this.state = {
+			visitors: [],
+			ridesOn: [],
+			rideIssue: [],
+			visitorsCopy: [],
+			ridesOnCopy: [],
+			rideIssueCopy: [],
+			vAvg: [],
+			startDate: "2010-1-1",
+			endDate: "2020-12-31",
+			startDate2: "2010-1-1",
+			endDate2: "2020-12-31",
+			pickerValue: [],
+			loaded: false
+		}
 
-    this.inputVisitorDays = React.createRef();
+		this.inputVisitorDays = React.createRef();
 
-    this.handleDatePick = this.handleDatePick.bind(this);
-    this.handleDatePick2 = this.handleDatePick2.bind(this);
-    this.makeVisitorReport = this.makeVisitorReport.bind(this);
-    this.makeRidesReport = this.makeRidesReport.bind(this);
-    this.makeIssuesReport = this.makeIssuesReport.bind(this);
-  }
+		this.handleDatePick = this.handleDatePick.bind(this);
+		this.handleDatePick2 = this.handleDatePick2.bind(this);
+		this.makeVisitorReport = this.makeVisitorReport.bind(this);
+		this.makeRidesReport = this.makeRidesReport.bind(this);
+		this.makeIssuesReport = this.makeIssuesReport.bind(this);
+	}
 
-  async componentDidMount() {
-    /*let test = await isLoggedIn();
+	async componentDidMount(){
+		/*let test = await isLoggedIn();
 		console.log(test);
 		if (test === false){
 			Router.push('/login');
 		}*/
 
-    let role = await getRole();
-    if (role !== "admin" && role !== "manager") {
-      Router.push("/");
-    }
+		let role = await getRole();
+		if (role !== 'admin' && role !== 'manager'){
+			Router.push('/');
+		}
 
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append("Origin", "https://www.tpmanagement.app");
-
-    /*var earliest = this.state.startDate;
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', url);
+		
+		/*var earliest = this.state.startDate;
 		var today = this.state.endDate;
 		var gap = moment(today).diff(moment(earliest), 'days');
 		console.log(earliest +" " + today + " |||");
 		console.log(gap + "<-- this gap");*/
 
-    await fetch("https://www.tpmanagement.app/api/reports", {
-      body: JSON.stringify({ report: "visitors", days: 30 }),
-      headers: headers,
-      method: "POST",
-      mode: "cors",
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        this.setState({
-          visitors: result[0],
-          vAvg: result[1],
-        });
-      })
-      .catch((error) => console.log(error));
+		await fetch(url + "/api/reports", {
+			body: JSON.stringify({"report" : "visitors", "days" : 30}),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		})
+		.then(res => res.json())
+		.then (
+			(result)=> {
+				this.setState({
+					visitors: result[0],
+					vAvg: result[1]
+				});
+			}
+		)
+		.catch(error => console.log(error));
 
-    await fetch("https://www.tpmanagement.app/api/reports", {
-      body: JSON.stringify({
-        report: "rides_on",
-        start: "2000-12-31",
-        end: "2020-12-31",
-      }),
-      headers: headers,
-      method: "POST",
-      mode: "cors",
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        this.setState({
-          ridesOn: result,
-        });
-      })
-      .catch((error) => console.log(error));
+		await fetch(url + "/api/reports", {
+			body: JSON.stringify({ "report" : "rides_on", "start" : "2000-12-31", "end": "2020-12-31"}),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		})
+		.then(res => res.json())
+		.then (
+			(result)=> {
+				this.setState({
+					ridesOn: result
+				});
+			}
+		)
+		.catch(error => console.log(error));
 
-    await fetch("https://www.tpmanagement.app/api/reports", {
-      body: JSON.stringify({
-        report: "ride_issue",
-        start: "2000-12-31",
-        end: "2020-12-31",
-      }),
-      headers: headers,
-      method: "POST",
-      mode: "cors",
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        this.setState({
-          rideIssue: result,
-        });
-      })
-      .catch((error) => console.log(error));
+		await fetch(url + "/api/reports", {
+			body: JSON.stringify({ "report" : "ride_issue", "start" : "2000-12-31", "end": "2020-12-31" }), headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		})
+		.then(res => res.json())
+		.then (
+			(result)=> {
+				this.setState({
+					rideIssue: result
+				});
+			}
+		)
+		.catch(error => console.log(error));
 
-    console.log(this.state.rainouts);
+		console.log(this.state.rainouts);
 
-    let visitors = {};
-    await this.state.visitors.map((i) => (visitors[i.date] = i.visitor_count));
+		let visitors = {};
+		await this.state.visitors.map((i) => visitors[i.date] = i.visitor_count);
+		
+		let ridesOn = {};
+		await this.state.ridesOn.map((i) => ridesOn[i.ride_name] = i.ride_count);
 
-    let ridesOn = {};
-    await this.state.ridesOn.map((i) => (ridesOn[i.ride_name] = i.ride_count));
+		let rideIssue = {};
+		await this.state.rideIssue.map((i) => rideIssue[i.ride_name] = i.ride_issues);
 
-    let rideIssue = {};
-    await this.state.rideIssue.map(
-      (i) => (rideIssue[i.ride_name] = i.ride_issues)
-    );
+		await this.setState({
+			visitors: visitors,
+			ridesOn: ridesOn,
+			rideIssue: rideIssue,
+		});
 
-    await this.setState({
-      visitors: visitors,
-      ridesOn: ridesOn,
-      rideIssue: rideIssue,
-    });
-  }
+		await this.setState({
+			loaded: true
+		});
+	}
 
-  async handleDatePick(event) {
-    let start = event[0];
-    let stop = event[1];
+	async handleDatePick(event) {
+		let start = event[0];
+		let stop = event[1];
 
-    await this.setState({
-      startDate: moment(start).format("YYYY-M-D"),
-      endDate: moment(stop).format("YYYY-M-D"),
-    });
-    this.makeRidesReport();
-  }
+		await this.setState({ startDate: moment(start).format('YYYY-M-D'), endDate: moment(stop).format('YYYY-M-D') });
+		this.makeRidesReport();
+	}
 
-  async handleDatePick2(event) {
-    let start = event[0];
-    let stop = event[1];
+	async handleDatePick2(event) {
+		let start = event[0];
+		let stop = event[1];
 
-    await this.setState({
-      startDate2: moment(start).format("YYYY-M-D"),
-      endDate2: moment(stop).format("YYYY-M-D"),
-    });
-    this.makeIssuesReport();
-  }
+		await this.setState({ startDate2: moment(start).format('YYYY-M-D'), endDate2: moment(stop).format('YYYY-M-D') });
+		this.makeIssuesReport();
+	}
 
-  async makeVisitorReport() {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append("Origin", "https://www.tpmanagement.app");
+	async makeVisitorReport(){
+		await this.setState({
+			loaded: false
+		});
+		
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', url);
+		
+		const data = { "report" : "visitors", "days" : parseInt(this.inputVisitorDays.current.value)  };
 
-    const data = {
-      report: "visitors",
-      days: parseInt(this.inputVisitorDays.current.value),
-    };
+		const res = await fetch(url + "/api/reports", {
+			body: JSON.stringify(data),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		});
 
-    const res = await fetch("https://www.tpmanagement.app/api/reports", {
-      body: JSON.stringify(data),
-      headers: headers,
-      method: "POST",
-      mode: "cors",
-    });
+		const result = await res.json();
 
-    const result = await res.json();
+		await this.setState({
+			visitors: result[0],
+			vAvg: result[1]
+		});
 
-    await this.setState({
-      visitors: result[0],
-      vAvg: result[1],
-    });
+		let visitors = {};
+		await this.state.visitors.map((i) => visitors[i.date] = i.visitor_count);
 
-    let visitors = {};
-    await this.state.visitors.map((i) => (visitors[i.date] = i.visitor_count));
+		await this.setState({
+			visitors: visitors,
+		});
 
-    await this.setState({
-      visitors: visitors,
-    });
-  }
+		await this.setState({
+			loaded: true
+		});
+	}
 
-  async makeRidesReport() {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append("Origin", "https://www.tpmanagement.app");
+	async makeRidesReport(){
+		await this.setState({
+			loaded: false
+		});
 
-    const data = {
-      report: "rides_on",
-      start: this.state.startDate,
-      end: this.state.endDate,
-    };
-    console.log("DATES: " + this.state.startDate + " : " + this.state.endDate);
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', url);
+		
+		const data = {"report" : "rides_on", "start" : this.state.startDate, "end" : this.state.endDate};
+		console.log("DATES: " + this.state.startDate + " : " + this.state.endDate);
 
-    const res = await fetch("https://www.tpmanagement.app/api/reports", {
-      body: JSON.stringify(data),
-      headers: headers,
-      method: "POST",
-      mode: "cors",
-    });
+		const res = await fetch(url + "/api/reports", {
+			body: JSON.stringify(data),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		});
 
-    const result = await res.json();
+		const result = await res.json();
 
-    await this.setState({
-      ridesOn: result,
-    });
+		await this.setState({
+			ridesOn: result,
+		});
 
-    let ridesOn = {};
-    await this.state.ridesOn.map((i) => (ridesOn[i.ride_name] = i.ride_count));
+		let ridesOn = {};
+		await this.state.ridesOn.map((i) => ridesOn[i.ride_name] = i.ride_count);
 
-    await this.setState({
-      ridesOn: ridesOn,
-    });
-  }
+		await this.setState({
+			ridesOn: ridesOn,
+		});
 
-  async makeIssuesReport() {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append("Origin", "https://www.tpmanagement.app");
+		await this.setState({
+			loaded: true
+		});
+	}
 
-    const data = {
-      report: "ride_issue",
-      start: this.state.startDate2,
-      end: this.state.endDate2,
-    };
+	async makeIssuesReport(){
+		await this.setState({
+			loaded: false
+		});
 
-    const res = await fetch("https://www.tpmanagement.app/api/reports", {
-      body: JSON.stringify(data),
-      headers: headers,
-      method: "POST",
-      mode: "cors",
-    });
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', url);
+		
+		const data = {"report" : "ride_issue", "start" : this.state.startDate2, "end" : this.state.endDate2};
 
-    const result = await res.json();
+		const res = await fetch(url + "/api/reports", {
+			body: JSON.stringify(data),
+			headers: headers,
+			method: 'POST',
+			mode: 'cors'
+		});
 
-    await this.setState({
-      rideIssue: result,
-    });
+		const result = await res.json();
 
-    let rideIssue = {};
-    await this.state.rideIssue.map(
-      (i) => (rideIssue[i.ride_name] = i.ride_issues)
-    );
+		await this.setState({
+			rideIssue: result,
+		});
 
-    await this.setState({
-      rideIssue: rideIssue,
-    });
-  }
+		let rideIssue = {};
+		await this.state.rideIssue.map((i) => rideIssue[i.ride_name] = i.ride_issues);
 
-  render() {
-    const visitors = this.state.visitors;
-    const ridesOn = this.state.ridesOn;
-    const rideIssue = this.state.ridesOn;
-    //Old Code
-    /*var visitors = {};
+		await this.setState({
+			rideIssue: rideIssue,
+		});
+
+		await this.setState({
+			loaded: true
+		});
+	}
+
+	render() {
+		const visitors = this.state.visitors;
+    	const ridesOn = this.state.ridesOn;
+    	const rideIssue = this.state.ridesOn;
+    	console.log(visitors);
+		//Old Code
+		/*var visitors = {};
 		this.state.visitors.map((i) => visitors[i.date] = visitors[i.visitor_count]); //ERROR
 
 		var ridesOn = {};
@@ -272,17 +283,17 @@ class Reports extends React.Component {
 		var visitorsAvg = parseInt(this.state.vAvg["average"]);
 		var rainoutCount = this.state.rainouts["count"];*/
 
-    //const loaded = this.state.loaded;
+		//const loaded = this.state.loaded;
 
-    /*if (loaded === false){
+		/*if (loaded === false){
 			return null;
 		}*/
 
-    Chartkick.options = {
-      library: { animation: { easing: "easeOutQuart" } },
-    };
+		Chartkick.options = {
+			library: {animation: {easing: 'easeOutQuart'}}
+		}
 
-    return (
+		return (
       <Layout>
         <div class="columns">
           <div class="column is-third">
@@ -394,7 +405,6 @@ class Reports extends React.Component {
               <div class="card-content"></div>
             </div>
           </div>
-
           <div class="column is-4">
             <div class="card">
               <div class="card-content"></div>
@@ -427,68 +437,73 @@ class Reports extends React.Component {
         </div>
 
         {/*Tables*/}
-        <div class="columns">
-          <table class="table">
-            <caption>Daily Visitors</caption>
-            <thead>
-              <th>Visitor Count</th>
-              <th>Date</th>
-            </thead>
-            <tbody>
-              {Object.keys(visitors).map((obj, i) => {
-                return (
-                  <tr>
-                    <td>{visitors[obj].visitor_count}</td>
-                    <td>{visitors[obj].date}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        {this.state.loaded === true &&
+	        <div class="columns">
+	            <table class="table">
+	              <caption>Daily Visitors</caption>
+	              <thead>
+	                <th>Visitor Count</th>
+	                <th>Date</th>
+	              </thead>
+	              <tbody>
+	                {Object.keys(this.state.visitors).map((obj, i) => {
+	                  return (
+	                    <tr>
+	                      <td>{this.state.visitors[obj]}</td>
+	                      <td>{obj}</td>
+	                    </tr>
+	                  );
+	                })}
+	              </tbody>
+	            </table>
 
-        <div class="columns">
-          <table class="table">
-            <caption>Rides Popularity</caption>
-            <thead>
-              <th>Ride</th>
-              <th>Rider Count</th>
-            </thead>
-            <tbody>
-              {Object.keys(ridesOn).map((obj, i) => {
-                return (
-                  <tr>
-                    <td>{ridesOn[obj].ride_name}</td>
-                    <td>{ridesOn[obj].ride_count}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+	          {/*<div class="columns is-2">
+	            <table class="table">
+	              <caption>Rides Popularity</caption>
+	              <thead>
+	                <th>Ride</th>
+	                <th>Rider Count</th>
+	              </thead>
+	              <tbody>
+	                {Object.keys(ridesOn).map((obj, i) => {
+	                  return (
+	                    <tr>
+	                      <td>{ridesOn[obj].ride_name}</td>
+	                      <td>{ridesOn[obj].ride_count}</td>
+	                    </tr>
+	                  );
+	                })}
+	              </tbody>
+	            </table>
+	          </div>
 
-        <div class="columns">
-          <table class="table">
-            <caption>Issues Reported</caption>
-            <thead>
-              <th>Ride</th>
-              <th>Issue Count</th>
-            </thead>
-            <tbody>
-              {Object.keys(rideIssue).map((obj, i) => {
-                return (
-                  <tr>
-                    <td>{rideIssue[obj].ride_name}</td>
-                    <td>{rideIssue[obj].ride_issues}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+	          <div class="columns i-3">
+	            <table class="table">
+	              <caption>Issues Reported</caption>
+	              <thead>
+	                <th>Ride</th>
+	                <th>Issue Count</th>
+	              </thead>
+	              <tbody>
+	                {Object.keys(rideIssue).map((obj, i) => {
+	                  return (
+	                    <tr>
+	                      <td>{rideIssue[obj].ride_name}</td>
+	                      <td>{rideIssue[obj].ride_issues}</td>
+	                    </tr>
+	                  );
+	                })}
+	              </tbody>
+	            </table>
+	          </div>*/}
+	        </div>
+	    }
       </Layout>
     );
   }
 }
 
 export default Reports;
+
+
+

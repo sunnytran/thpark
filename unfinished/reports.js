@@ -428,65 +428,63 @@ class Reports extends React.Component {
 
         {/*Tables*/}
         <div class="columns">
-          <div class="columns is-1">
-            <table class="table">
-              <caption>Daily Visitors</caption>
-              <thead>
-                <th>Visitor Count</th>
-                <th>Date</th>
-              </thead>
-              <tbody>
-                {Object.keys(visitors).map((obj, i) => {
-                  return (
-                    <tr>
-                      <td>{visitors[obj].visitor_count}</td>
-                      <td>{visitors[obj].date}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <table class="table">
+            <caption>Daily Visitors</caption>
+            <thead>
+              <th>Visitor Count</th>
+              <th>Date</th>
+            </thead>
+            <tbody>
+              {Object.keys(visitors).map((obj, i) => {
+                return (
+                  <tr>
+                    <td>{visitors[obj].visitor_count}</td>
+                    <td>{visitors[obj].date}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
 
-          <div class="columns is-2">
-            <table class="table">
-              <caption>Rides Popularity</caption>
-              <thead>
-                <th>Ride</th>
-                <th>Rider Count</th>
-              </thead>
-              <tbody>
-                {Object.keys(ridesOn).map((obj, i) => {
-                  return (
-                    <tr>
-                      <td>{ridesOn[obj].ride_name}</td>
-                      <td>{ridesOn[obj].ride_count}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+        <div class="columns">
+          <table class="table">
+            <caption>Rides Popularity</caption>
+            <thead>
+              <th>Ride</th>
+              <th>Rider Count</th>
+            </thead>
+            <tbody>
+              {Object.keys(ridesOn).map((obj, i) => {
+                return (
+                  <tr>
+                    <td>{ridesOn[obj].ride_name}</td>
+                    <td>{ridesOn[obj].ride_count}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
 
-          <div class="columns i-3">
-            <table class="table">
-              <caption>Issues Reported</caption>
-              <thead>
-                <th>Ride</th>
-                <th>Issue Count</th>
-              </thead>
-              <tbody>
-                {Object.keys(rideIssue).map((obj, i) => {
-                  return (
-                    <tr>
-                      <td>{rideIssue[obj].ride_name}</td>
-                      <td>{rideIssue[obj].ride_issues}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+        <div class="columns">
+          <table class="table">
+            <caption>Issues Reported</caption>
+            <thead>
+              <th>Ride</th>
+              <th>Issue Count</th>
+            </thead>
+            <tbody>
+              {Object.keys(rideIssue).map((obj, i) => {
+                return (
+                  <tr>
+                    <td>{rideIssue[obj].ride_name}</td>
+                    <td>{rideIssue[obj].ride_issues}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </Layout>
     );

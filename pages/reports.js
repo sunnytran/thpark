@@ -426,6 +426,9 @@ class Reports extends React.Component {
 		                  ytitle="Ride"
 		                  data={this.state.ridesOn}
 		                />
+		                {Object.keys(ridesOn).length === 0 &&
+			                <p class="has-text-danger">No riders reported for given time range</p>
+			            }
 	             	</div>
             	</div>
 	        </div>
@@ -470,6 +473,9 @@ class Reports extends React.Component {
 			                  ytitle="Ride"
 			                  data={this.state.rideIssue}
 			                />
+			                {Object.keys(rideIssue).length === 0 &&
+			                	<p class="has-text-danger">No ride issues reported for given time range</p>
+			                }
 		              	</div>
 		            </div>
 		        </div>

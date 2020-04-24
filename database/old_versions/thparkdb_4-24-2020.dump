@@ -575,7 +575,6 @@ d022fde3-afff-4bff-aa79-56fb92257142	bf835566-8231-45f4-b98c-aa1ec02aa35b	2018-0
 44c1b7a2-277a-4dbf-b889-bd10f5f9976c	55b45cb1-704a-4a07-b909-3773c8336bf7	2019-10-31 14:44:23
 44c1b7a2-277a-4dbf-b889-bd10f5f9976c	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-10-31 16:50:01
 44c1b7a2-277a-4dbf-b889-bd10f5f9976c	4ae50583-8df3-40f1-88e4-22d08f6420c9	2019-10-31 16:52:22
-fa1266ac-d53d-4f78-b553-9cc23ed2edc3	\N	2020-04-24 16:41:03.836141
 \.
 
 
@@ -603,10 +602,6 @@ f3398ecf-ce16-402a-ad3a-94f3cd822e26	Sir	Vyvin	8
 ce080621-8f6e-4fdc-81f1-eccfb2f39e3d	Bill	Nye	\N
 01803dde-318a-40d2-ae2d-1cf1b4bd64a3	Bob	Bob	\N
 098d7e27-02e4-4b24-b8be-e86fea916cad	Apple	Man	\N
-198580e5-9d1c-4bf9-96e5-ca9e46d738b0	Tester		\N
-0defb08b-204e-411a-9e45-f6d98522a327	jj		\N
-dc835d1c-a143-40b5-8b34-fcde02184c3d	gg		\N
-06cb86b3-9fb8-408a-b5e4-c1a2424131e1	John	Doe	\N
 \.
 
 
@@ -626,10 +621,10 @@ e58b0851-ac71-4085-b46c-36f60a3da596	Esai	Hernandez	eh77	$2a$08$txSkeyy7acqKgEc3
 238c7310-2c73-405c-a150-313646c1321f	William	Lam	wl32	$2a$08$3eb6hA2vV3VfyjqQKu5h5evjEKY9koBD.4UF1eTbUStC00k6Px.aS	admin
 2d6f3436-d89b-48b4-bbb6-27d784acb813	Hector	Mendez	hm30	$2a$08$skYV3hEgD/vRI3o031edr.h1tVmdereOPd3hL.xhyLHb3ElFyguWG	manager
 b8d1acdf-817b-4b83-96b9-c24abc3e994a	Laura	Owens	lo98	$2a$08$k/DOtpv9/JSePE04abjg0.rcTTobxAkeYvgazdT/Tt2JbQgFriSaS	manager
+1b39d872-7829-457c-85f8-f216ff0ed135	Timmy	Watts	tw64	$2a$08$7kGtRdUmiY8Z70vU3VBqyOzYC3rcRUbVt.caeB.PfnFaVHfMS7I1m	basic
 b8376c9b-0af4-48dc-9707-afe6212ef9bb	Andrew	Vieira	av21	$2a$08$6FQgdodCmNcjgVplV84QA.ZaTmKBGi6c2DJuh0aTDaSZj7.T4Cq5W	admin
 16601659-eed6-492d-9c6a-2b97c4c121cc	Uma	Ramamurthy	ur40	$2a$08$gzwoxJyAmosCeZSitT23.ONEhkf6TCibwGMrcB9o15Y3JPSOViETm	admin
 176d86ab-ed4b-440a-b4f3-c3ed077bbef6	Brock	Lee	bl12	$2a$08$0GxvEn5XkbJOXLwh1v3iluW99i/TkYem95laXakqfF4i71vixKyGG	none
-78fc005c-d855-46ea-9682-eb01bcedb903	tu	tu	tu	$2a$08$JiqdXxs2i00TKjAJ4iu8fOFqbkt.eE8hVLQo7Nt7stFBGc3ZqiF76	basic
 \.
 
 
@@ -646,9 +641,11 @@ d022fde3-afff-4bff-aa79-56fb92257142	Park Play	musical	2018-07-20	Theater
 9717dcd8-ac02-4de6-9fc3-bcce84e847f1	The Great Genie	magic_show	2019-07-12	Theater
 91659b10-e516-42ed-a989-7b1aa9a8c8e5	The Great Genie	magic_show	2019-07-14	Theater
 fdf92c02-bd0b-4da7-a9ea-7257f5881a25	City Parade	parade	2017-10-31	Everywhere
-fa1266ac-d53d-4f78-b553-9cc23ed2edc3	Magic Time	magic_show	2020-06-05	No
-29217bd5-f214-495b-aa25-0932128792c8	Cool Event	holiday	2020-05-26	Here
-042fab9b-f59d-4965-b39a-044c730e4b3a	Holiday Fun	holiday	2020-05-27	Yeah
+57ff0ecf-f95b-49cc-ad67-aac3e3945e37	Park 5 Year Anniversary	party	2020-05-01	Everywhere
+042fab9b-f59d-4965-b39a-044c730e4b3a	Holiday Fun	holiday	2020-04-29	Yeah
+23ee5154-f462-4c48-871f-42080bad927c	Party Hard	party	2020-04-28	My House
+29217bd5-f214-495b-aa25-0932128792c8	Cool Event	holiday	2020-04-30	Here
+fa1266ac-d53d-4f78-b553-9cc23ed2edc3	Magic Time	magic_show	2020-04-25	No
 \.
 
 
@@ -670,10 +667,6 @@ COPY public.rainouts (date, start_timestamp, end_timestamp) FROM stdin;
 2020-04-15	\N	\N
 2020-04-18	\N	\N
 2020-04-19	2020-04-19 18:50:55.886999	\N
-2020-04-20	2020-04-20 19:29:51.942368	\N
-2020-04-21	2020-04-21 18:07:19.702371	\N
-2020-04-22	2020-04-22 18:54:24.360614	\N
-2020-04-24	2020-04-24 16:37:57.1107	\N
 \.
 
 
@@ -682,16 +675,18 @@ COPY public.rainouts (date, start_timestamp, end_timestamp) FROM stdin;
 --
 
 COPY public.ride (ride_name, ride_type, creation_date, location, ride_status, last_inspection, insurance_expiration_date) FROM stdin;
-Waster	other	2020-04-01	Park Gates	running	\N	2020-04-30
 Vroom	bumper_cars	2016-10-10	East Quadrant	running	2019-08-12	2021-08-12
 Caterpillar	roller_coaster	2016-08-10	East Quadrant	running	2020-03-02	2022-03-02
-Tower of Doom	drop_tower	2016-09-21	East Quadrant	running	\N	2022-02-21
 Wheely	ferris_wheel	2020-04-14	North Quadrant	running	2020-04-18	2020-04-30
-Merry-Go-Round	carousels	2016-10-12	East Quadrant	running	2020-04-18	2020-06-01
-Scrambler	scrambler	2018-02-19	North Quadrant	maintenance	2020-04-18	2022-02-18
 Monster Coaster	roller_coaster	2018-09-21	West Quadrant	running	2020-04-18	2020-04-30
+Merry-Go-Round	carousels	2016-10-12	East Quadrant	running	2020-04-18	2020-06-01
+TestRideU	drop_tower	2018-04-18	Test	running	2019-04-18	2023-04-18
 Shark Slide	water	2019-05-01	West Quadrant	maintenance	\N	2021-01-14
+Tower of Doom	drop_tower	2016-09-21	East Quadrant	running	\N	2022-02-21
 Little Slide	slide	2018-05-24	West Quadrant	running	\N	\N
+Scrambler	scrambler	2018-02-19	North Quadrant	running	2020-04-18	2022-02-18
+Waster	other	2020-04-01	Park Gates	running	\N	2020-04-30
+The Great Wheel	ferris_wheel	2016-08-10	East Quadrant	running	\N	2022-03-02
 \.
 
 
@@ -706,7 +701,6 @@ ae8af202-183b-4285-a151-4684ebab50b8	breakdown	moderate	2018-05-09 11:22:11	2018
 b7e5d532-d866-409f-b8b3-088402edb0f4	cleanup	low	2019-08-09 12:33:00	2019-08-09 18:20:00	t	Caterpillar
 95978412-3710-44ee-a614-06fb7329ff1f	legal	low	2017-02-09 15:45:43	2017-03-12 11:00:00	t	Merry-Go-Round
 56f94f2f-20b9-4baf-9524-127c8ae918ce	breakdown	moderate	2018-05-06 09:56:31	2018-05-24 12:00:00	t	Scrambler
-1df88f79-f5cc-4a0e-8cd3-f843e83a1f54	cleanup	low	2020-04-21 09:47:33.896561	2020-04-21 09:47:39.411648	t	Tower of Doom
 fc307818-80a3-47e5-8e6a-4f111ca7500e	breakdown	low	2020-04-14 01:03:21.079745	2020-04-14 01:05:52.937213	t	Wheely
 14686886-023c-47e7-a094-dd8731d50ebc	breakdown	low	2020-04-14 01:05:48.504893	2020-04-14 01:05:55.364163	t	Wheely
 22b02595-a08e-488b-ab05-6173192f839f	breakdown	low	2020-04-14 01:06:01.809632	2020-04-14 01:06:15.42609	t	Wheely
@@ -719,11 +713,7 @@ b0445485-3071-4477-8cbc-f216b2f8cd4a	breakdown	low	2020-04-14 01:06:11.361731	20
 c5cadacc-8472-4e71-b168-0020a68b4fa8	breakdown	moderate	2020-03-09 09:12:20	2020-04-18 10:07:39.027325	t	Shark Slide
 fa4e6f49-c143-4f14-a925-c543886a9ae7	breakdown	high	2020-04-13 03:59:56.097883	2020-04-18 14:13:39.612926	t	Scrambler
 24ac5518-4b53-4009-8812-0fc7035b1565	breakdown	high	2020-02-09 09:12:20	2020-04-18 14:13:44.111487	t	Tower of Doom
-df541b72-4672-45d9-8017-4c1737b48d27	breakdown	low	2020-04-21 09:47:29.417445	2020-04-21 09:47:42.197486	t	Tower of Doom
-f78769a3-8045-457b-8e41-22942f88761a	legal	low	2020-04-21 09:47:37.025603	2020-04-21 09:47:44.26766	t	Tower of Doom
-6fc93d7d-e042-4135-ab35-74af75c6be85	breakdown	low	2020-04-21 16:59:10.979614	2020-04-21 16:59:17.237055	t	Merry-Go-Round
-eb01a172-0087-43dd-96e8-cce8930a9780	cleanup	low	2020-04-21 17:57:02.560084	\N	f	Scrambler
-ccf246d6-4e59-4087-9cd1-566598515e1d	breakdown	low	2020-04-21 17:57:22.784805	\N	f	Scrambler
+64cbe981-6f28-4993-9f50-ee1ca73cb17a	breakdown	high	2020-03-08 22:22:22	2020-04-18 14:13:51.147675	t	The Great Wheel
 f0771b20-5ec3-4639-92ce-23ae9edab6d0	cleanup	low	2020-04-14 01:43:45.830216	2020-04-18 16:37:33.002106	t	Wheely
 847a1529-8d12-4373-9663-cea8dd5519eb	breakdown	high	2020-04-14 01:44:55.235889	2020-04-18 16:37:34.098057	t	Wheely
 3dd0a20a-14c1-442b-8e03-9dcd214b7c8a	breakdown	low	2020-04-18 16:37:47.870467	2020-04-18 16:37:57.765066	t	Waster
@@ -741,10 +731,10 @@ b22d9937-5aeb-47fe-b88e-a693bee19354	breakdown	moderate	2020-04-18 16:54:13.2788
 d14df312-3f7f-45bb-a646-63b7d763ea07	cleanup	low	2020-04-19 17:31:48.247864	2020-04-19 17:31:53.864145	t	Scrambler
 b3c2d47b-2d25-45ee-8a11-0b89c75746b6	breakdown	low	2020-04-19 17:31:58.710245	2020-04-19 17:32:05.098783	t	Tower of Doom
 a5ddc0d0-691d-47e7-a1a0-28a569cef809	breakdown	low	2020-04-20 11:19:36.645975	2020-04-20 11:19:40.129162	t	Waster
+25f7636a-0347-4002-b588-743b90928269	breakdown	low	2020-04-20 11:20:04.986955	2020-04-20 11:20:07.623198	t	The Great Wheel
 ba27845b-d5e6-460c-9bff-0098c0beb03e	legal	low	2020-04-20 11:20:00.575518	2020-04-20 11:20:10.767637	t	Waster
 835bfbef-9487-49ab-b998-c14f1021a6a1	breakdown	low	2020-04-20 11:19:55.22516	2020-04-20 11:20:11.785874	t	Waster
 74cd405a-ee5c-4294-83b1-e4174ccb1f83	cleanup	low	2020-04-20 11:19:58.050442	2020-04-20 11:20:12.706694	t	Waster
-25aa24e3-dde6-44d3-8d4d-975eadfeebde	legal	low	2020-04-24 12:50:48.825442	\N	f	Shark Slide
 \.
 
 
@@ -758,12 +748,14 @@ Scrambler	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 10:30:00
 Scrambler	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 10:40:00
 Monster Coaster	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 10:50:00
 Caterpillar	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 11:20:00
+The Great Wheel	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 11:30:00
 Tower of Doom	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 12:50:00
 Tower of Doom	f3398ecf-ce16-402a-ad3a-94f3cd822e26	2019-08-08 13:11:00
 Monster Coaster	bf835566-8231-45f4-b98c-aa1ec02aa35b	2019-07-02 11:10:00
 Monster Coaster	bf835566-8231-45f4-b98c-aa1ec02aa35b	2019-07-02 11:22:00
 Monster Coaster	bf835566-8231-45f4-b98c-aa1ec02aa35b	2019-07-02 11:44:00
 Vroom	bf835566-8231-45f4-b98c-aa1ec02aa35b	2019-07-02 12:03:00
+The Great Wheel	bf835566-8231-45f4-b98c-aa1ec02aa35b	2019-07-02 12:41:00
 Scrambler	\N	2020-04-13 04:00:10.329743
 Scrambler	\N	2020-04-13 04:00:55.97852
 Shark Slide	\N	2020-04-16 11:01:03.574326
@@ -790,6 +782,7 @@ Monster Coaster	\N	2020-04-18 12:13:47.599974
 Monster Coaster	\N	2020-04-18 12:15:48.023153
 Monster Coaster	\N	2020-04-18 12:15:57.233854
 Monster Coaster	\N	2020-04-18 12:16:09.707939
+The Great Wheel	\N	2020-04-18 12:17:11.697697
 Monster Coaster	\N	2020-04-18 12:18:10.249273
 Monster Coaster	\N	2020-04-18 12:18:21.975415
 Monster Coaster	\N	2020-04-18 12:19:04.193622
@@ -826,6 +819,7 @@ Monster Coaster	\N	2020-04-18 13:23:20.2154
 Vroom	\N	2020-04-18 13:23:24.579618
 Vroom	\N	2020-04-18 13:23:25.054536
 Caterpillar	\N	2020-04-18 13:23:26.954528
+The Great Wheel	\N	2020-04-18 13:23:29.155435
 Tower of Doom	\N	2020-04-18 13:23:31.794274
 Merry-Go-Round	\N	2020-04-18 13:23:33.696448
 Scrambler	\N	2020-04-18 13:23:36.244296
@@ -834,12 +828,6 @@ Waster	\N	2020-04-18 13:23:40.264832
 Shark Slide	\N	2020-04-18 13:23:43.542227
 Monster Coaster	\N	2020-04-18 15:20:57.527208
 Tower of Doom	\N	2020-04-20 11:22:46.348868
-Vroom	\N	2020-04-20 11:27:20.45152
-Vroom	198580e5-9d1c-4bf9-96e5-ca9e46d738b0	2020-04-20 11:27:43.976426
-Vroom	198580e5-9d1c-4bf9-96e5-ca9e46d738b0	2020-04-20 11:27:44.887616
-Caterpillar	198580e5-9d1c-4bf9-96e5-ca9e46d738b0	2020-04-20 11:27:47.191033
-Vroom	\N	2020-04-20 16:18:45.894388
-Waster	\N	2020-04-21 16:58:16.841328
 Vroom	\N	2020-04-19 12:40:04.919832
 Shark Slide	\N	2020-04-19 12:40:10.642566
 Little Slide	\N	2020-04-16 16:37:41.491193
@@ -857,17 +845,6 @@ Vroom	\N	2020-04-19 18:36:34.51725
 Vroom	\N	2020-04-19 18:36:44.109872
 Vroom	65cf8cad-86ee-4301-966e-39dd08092477	2020-04-19 22:36:11.010563
 Vroom	098d7e27-02e4-4b24-b8be-e86fea916cad	2020-04-20 11:21:29.396227
-Wheely	\N	2020-04-21 16:58:18.721548
-Vroom	\N	2020-04-21 17:59:19.236634
-Waster	\N	2020-04-24 12:42:14.157818
-Wheely	\N	2020-04-24 12:42:16.686632
-Monster Coaster	\N	2020-04-24 12:42:21.857212
-Waster	\N	2020-04-24 16:38:22.915369
-Vroom	\N	2020-04-24 16:38:24.681621
-Caterpillar	\N	2020-04-24 16:38:26.489337
-Tower of Doom	\N	2020-04-24 16:38:27.992156
-Wheely	\N	2020-04-24 16:38:29.807919
-Merry-Go-Round	\N	2020-04-24 16:38:31.571507
 \.
 
 
@@ -1198,16 +1175,6 @@ dc946a3e-4c02-4ca6-aa0d-99eaf7f16cd8	ticket	Park Ticket	60	2020-04-17 17:29:43.1
 21ff51a6-c43f-4fd7-a47f-31d244b38321	ticket	Park Ticket	60	2020-04-20 11:21:20.241115	098d7e27-02e4-4b24-b8be-e86fea916cad	Park Ticket Booth
 c027fc95-4187-4f12-8d32-47e2ce173531	ticket	Park Ticket	60	2020-04-20 11:21:39.976343	098d7e27-02e4-4b24-b8be-e86fea916cad	Park Ticket Booth
 fbd24ee7-7a00-427c-a3ef-cbce010dc9e4	ticket	Park Ticket	60	2020-04-20 11:22:03.01134	098d7e27-02e4-4b24-b8be-e86fea916cad	Park Ticket Booth
-363618ad-b617-419b-838e-1b29856eb98f	ticket	Park Ticket	60	2020-04-20 11:27:50.848579	198580e5-9d1c-4bf9-96e5-ca9e46d738b0	Park Ticket Booth
-ef4fe010-77e0-42fe-9f51-15b621abfc7a	ticket	Park Ticket	60	2020-04-21 16:58:09.207599	\N	Park Ticket Booth
-2e8851a6-b510-418c-98b6-a5426fba5800	ticket	Park Ticket	60	2020-04-21 16:58:10.591147	\N	Park Ticket Booth
-45ed232a-c4a2-430d-8def-dd13a669607e	ticket	Park Ticket	60	2020-04-21 16:58:12.362427	\N	Park Ticket Booth
-c10fa5c3-390f-478c-83c8-1e2eb1151b98	ticket	Park Ticket	60	2020-04-24 12:42:03.998257	\N	Park Ticket Booth
-d9d9dc93-83be-474d-ac66-3e7e4dc70931	ticket	Park Ticket	60	2020-04-24 12:42:04.628549	\N	Park Ticket Booth
-3a561e18-58a7-45dd-a6d8-10c7c7bb4212	ticket	Park Ticket	60	2020-04-24 12:42:06.900582	\N	Park Ticket Booth
-5d84b221-5c97-45e2-a13c-01444d1a3950	ticket	Park Ticket	60	2020-04-24 16:40:43.629913	\N	Park Ticket Booth
-942294bd-f14f-49cb-b2e7-dd63c5dab79f	ticket	Park Ticket	60	2020-04-24 16:40:44.212713	\N	Park Ticket Booth
-e1170179-354e-40a9-92ab-5670de39e239	food	Apple	1	2020-04-24 16:40:52.326567	\N	Park Ticket Booth
 \.
 
 

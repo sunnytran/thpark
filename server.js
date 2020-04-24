@@ -40,13 +40,13 @@ const initOptions = {
 const pgp = require('pg-promise')(initOptions);
 
 //Database Connection
-/*const cn = {
+const cn = {
 	host: 'localhost',
 	port: 5432,
 	database: 'thparkdb',
 	user: 'postgres',
 	password: 'ezpasswrd123'
-};*/
+};
 
 const db = pgp(cn);
 let notifications = [];

@@ -51,7 +51,7 @@ class EditShopButton extends React.Component {
 
 		return (
 			<div>
-				<button class="button is-small" onClick={this.togglePop}>
+				<button title="Edit Store" class="button is-small" onClick={this.togglePop}>
 					<span class="icon has-text-info">
 						<i class="fa fa-edit"></i>
 					</span>

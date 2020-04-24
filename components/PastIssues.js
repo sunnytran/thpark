@@ -27,7 +27,7 @@ class PastIssues extends React.Component {
 
 		return (
 			<div>
-				<button class="button is-small" onClick={this.togglePop}>
+				<button class="button is-small" title="Resolved Ride Issues" onClick={this.togglePop}>
 					<span class="icon has-text-info">
 						<i class="fa fa-book"></i>
 					</span>

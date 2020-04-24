@@ -45,7 +45,7 @@ class PasswordButton extends React.Component {
 	render() {
 		return (
 			<div>
-				<button class="button is-small" onClick={this.togglePop}>
+				<button title="Change Password" class="button is-small" onClick={this.togglePop}>
 					<span class="icon has-text-info">
 						<i class="fa fa-key"></i>
 					</span>

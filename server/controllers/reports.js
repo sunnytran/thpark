@@ -39,7 +39,7 @@ const handleReportsPost = (db) => async (req, res) => {
 		const end = new Date(req.body.end+"Z");
 		const values = {report: req.body.report, start: req.body.start, end: req.body.end};
 		console.log(values.start);
-		db.query('select rides_on.ride_name, count(*) as ride_count from rides_on where timestamp::date >= ${start} and timestamp::date < ${end} GROUP BY rides_on.ride_name;', values)
+		db.query('select rides_on.ride_name, count(*) as ride_count from rides_on where timestamp::date >= ${start} and timestamp::date <= ${end} GROUP BY rides_on.ride_name;', values)
 		.then(function(data) {
 			res.json(data);
 			console.log(data);
@@ -54,7 +54,7 @@ const handleReportsPost = (db) => async (req, res) => {
 		const end = new Date(req.body.end+"Z");
 		const values = {report: req.body.report, start: req.body.start, end: req.body.end};
 		console.log(values.start);
-		db.query('select ride_issue.ride_name, count(*) as ride_issues from ride_issue where start_timestamp::date >= ${start} and start_timestamp::date < ${end} GROUP BY ride_issue.ride_name;', values)
+		db.query('select ride_issue.ride_name, count(*) as ride_issues from ride_issue where start_timestamp::date >= ${start} and start_timestamp::date <= ${end} GROUP BY ride_issue.ride_name;', values)
 		.then(function(data) {
 			res.json(data);
 			console.log(data);

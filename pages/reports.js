@@ -27,6 +27,7 @@ class Reports extends React.Component {
 			startDate2: "2010-1-1",
 			endDate2: "2020-12-31",
 			pickerValue: [],
+			loaded: false
 		}
 
 		this.inputVisitorDays = React.createRef();
@@ -53,6 +54,7 @@ class Reports extends React.Component {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
+		headers.append('Origin', url);
 		headers.append('Origin', url);
 		
 		/*var earliest = this.state.startDate;
@@ -123,7 +125,11 @@ class Reports extends React.Component {
 		await this.setState({
 			visitors: visitors,
 			ridesOn: ridesOn,
-			rideIssue: rideIssue
+			rideIssue: rideIssue,
+		});
+
+		await this.setState({
+			loaded: true
 		});
 	}
 
@@ -144,6 +150,10 @@ class Reports extends React.Component {
 	}
 
 	async makeVisitorReport(){
+		await this.setState({
+			loaded: false
+		});
+
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
@@ -171,9 +181,17 @@ class Reports extends React.Component {
 		await this.setState({
 			visitors: visitors,
 		});
+
+		await this.setState({
+			loaded: true
+		});
 	}
 
 	async makeRidesReport(){
+		await this.setState({
+			loaded: false
+		});
+
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
@@ -201,9 +219,17 @@ class Reports extends React.Component {
 		await this.setState({
 			ridesOn: ridesOn,
 		});
+
+		await this.setState({
+			loaded: true
+		});
 	}
 
 	async makeIssuesReport(){
+		await this.setState({
+			loaded: false
+		});
+
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
@@ -230,9 +256,17 @@ class Reports extends React.Component {
 		await this.setState({
 			rideIssue: rideIssue,
 		});
+
+		await this.setState({
+			loaded: true
+		});
 	}
 
 	render() {
+		const visitors = this.state.visitors;
+    	const ridesOn = this.state.ridesOn;
+    	const rideIssue = this.state.rideIssue;
+    	console.log(visitors);
 		//Old Code
 		/*var visitors = {};
 		this.state.visitors.map((i) => visitors[i.date] = visitors[i.visitor_count]); //ERROR
@@ -258,140 +292,213 @@ class Reports extends React.Component {
 		}
 
 		return (
-			<Layout>
-				<div class="columns">
-					<div class="column is-third">
-						<div class="card">
-							<div class="card-content">
-								<label class="label">Daily Visitors</label>
-								<LineChart xtitle="Date" ytitle="Visitor Count" data={ this.state.visitors } />
-								<div class="has-text-centered">
-								<br/>
-								<div class="control">
-								<div class="field">
-									<label>
-									<span class= "tag is-white is-medium" for="report_days" >Number of Days</span>
-									<input ref={this.inputVisitorDays} type="text is-primary is-normal" defaultValue="30"/>
-									<button name="report_days" type="submit" class="button is-primary is-small" onClick={this.makeVisitorReport}>Make Report</button>
-									</label>
-								</div>
-								</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="column is-third">
-						<div class="card">
-							<div class="card-content">
-								<p class="title">
-									{this.state.startDate} - {this.state.endDate}
-								</p>
-								<p class="subtitle">
-									<DateRangePicker onOk={this.handleDatePick} />
-								</p>
-								<label class="label">Rides Popularity</label>
-								<BarChart xtitle="Riders Count" ytitle="Ride" data={ this.state.ridesOn } />
-							</div>
-						</div>
-					</div>
-					<div class="column is-third">
-						<div class="card">
-							<div class="card-content">
-								<p class="title">
-									{this.state.startDate2} - {this.state.endDate2}
-								</p>
-								<p class="subtitle">
-									<DateRangePicker onOk={this.handleDatePick2} />
-								</p>
-								<label class="label">Issues Reported</label>
-								<BarChart xtitle="Issue Count" ytitle="Ride" data={ this.state.rideIssue } />
-							</div>
-						</div>
-					</div>
-				</div>
+      <Layout>
+        <div class="columns">
+          <div class="column is-two-thirds">
+            <div class="card">
+              <div class="card-content">
+                <label class="label">Daily Visitors</label>
+                <LineChart
+                  xtitle="Date"
+                  ytitle="Visitor Count"
+                  data={this.state.visitors}
+                />
+                <div class="has-text-centered">
+                  <br />
+                  <div class="control">
+                    <div class="field">
+                      <label>
+                        <span class="tag is-white is-medium" for="report_days">
+                          Number of Days
+                        </span>
+                        <input
+                          ref={this.inputVisitorDays}
+                          type="text is-primary is-normal"
+                          defaultValue="30"
+                        />
+                        <button
+                          name="report_days"
+                          type="submit"
+                          class="button is-primary is-small"
+                          onClick={this.makeVisitorReport}
+                        >
+                          Make Report
+                        </button>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br/>
+            <div class="columns">
+	          <div class="column is-half">
+	            <div class="card">
+	              <div class="card-content">
+	                <p class="title">
+	                  {parseFloat(this.state.vAvg["average"]).toFixed(2)}
+	                </p>
+	                <p class="subtitle">Average</p>
+	              </div>
+	            </div>
+	          </div>
 
-				<div class="columns">
-					<div class="column is-2">
-						<div class="card">
-							<div class="card-content">
-								<p class="title">
-									{parseFloat(this.state.vAvg["average"]).toFixed(2)}
-								</p>
-								<p class="subtitle">
-									Average
-								</p>
-							</div>
-						</div>
-					</div>
+	        <div class="column is-half">
+	            <div class="card">
+	              <div class="card-content">
+	                {/*<p class="title">
+										{this.state.rainouts["count"]}
+									</p>
+									<p class="subtitle">
+										Rainouts
+									</p>*/}
+	                <p class="title">
+	                  {parseFloat(this.state.vAvg["median"]).toFixed(0)}
+	                </p>
+	                <p class="subtitle">Median</p>
+	              </div>
+	            </div>
+	        </div>
+	        </div>
+	        <div class="columns">
+	          <div class="column is-half">
+	            <div class="card">
+	              <div class="card-content">
+	                <p class="title">
+	                  {parseFloat(this.state.vAvg["min"]).toFixed(0)}
+	                </p>
+	                <p class="subtitle">Lowest</p>
+	              </div>
+	            </div>
+	          </div>
 
+	          <div class="column is-half">
+	            <div class="card">
+	              <div class="card-content">
+	                <p class="title">
+	                  {parseFloat(this.state.vAvg["max"]).toFixed(0)}
+	                </p>
+	                <p class="subtitle">Highest</p>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+          </div>
+        <div class="column is-third">
+          	{this.state.loaded === true &&
+          	    <div class = "table-container">
+		            <table class="table">
+		              <caption>Daily Visitors</caption>
+		              <thead>
+		              	<th style={{"width":"125px"}}>Date</th>
+		                <th style={{"width":"125px"}}>Count</th>
+		              </thead>
+		              <tbody style={{"overflow-y" :"auto", "position" : "absolute"}} height="640px">
+		                {Object.keys(this.state.visitors).map((obj, i) => {
+		                  return (
+		                    <tr>
+		                      <td style={{"width":"125px"}}>{moment(obj).format('M/D/YY')}</td>
+		                      <td style={{"width":"125px"}}>{this.state.visitors[obj]}</td>
+		                    </tr>
+		                  );
+		                })}
+		              </tbody>
+		            </table>
+		        </div>
+		    }            
+        </div>
 
-					<div class="column is-2">
-						<div class="card">
-							<div class="card-content">
-								{/*<p class="title">
-									{this.state.rainouts["count"]}
-								</p>
-								<p class="subtitle">
-									Rainouts
-								</p>*/}
-								<p class="title">
-									{parseFloat(this.state.vAvg["median"]).toFixed(0)}
-								</p>
-								<p class="subtitle">
-									Median
-								</p>
-							</div>
-						</div>
-					</div>
-
-					
-					<div class="column is-4">
-						<div class="card">
-							<div class="card-content">
-							</div>
-						</div>
-					</div>
-
-					<div class="column is-4">
-						<div class="card">
-							<div class="card-content">
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="columns">
-					<div class="column is-2">
-						<div class="card">
-							<div class="card-content">
-								<p class="title">
-									{parseFloat(this.state.vAvg["min"]).toFixed(0)}
-								</p>
-								<p class="subtitle">
-									Lowest
-								</p>
-							</div>
-						</div>
-					</div>
-
-
-					<div class="column is-2">
-						<div class="card">
-							<div class="card-content">
-								<p class="title">
-									{parseFloat(this.state.vAvg["max"]).toFixed(0)}
-								</p>
-								<p class="subtitle">
-									Highest
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</Layout>
-		)
-	}
-
-};
+        </div>
+        	
+	        <div class="columns">
+	        	<div class="column is-two-thirds">
+	        	<div class="card">
+              		<div class="card-content">
+		                <p class="title">
+		                  {this.state.startDate} - {this.state.endDate}
+		                </p>
+		                <p class="subtitle">
+		                  <DateRangePicker onOk={this.handleDatePick} />
+		                </p>
+		                <label class="label">Rides Popularity</label>
+		                <BarChart
+		                  xtitle="Riders Count"
+		                  ytitle="Ride"
+		                  data={this.state.ridesOn}
+		                />
+	             	</div>
+            	</div>
+	        </div>
+        	
+	        <div class="column is-third">
+		        {this.state.loaded === true &&
+	            	<div class = "table-container">
+			            <table class="table">
+			              <caption>Rides Popularity</caption>
+			              <thead>
+			                <th style={{"width":"125px"}}>Ride</th>
+			                <th style={{"width":"125px"}}>Rider Count</th>
+			              </thead>
+			              <tbody style={{"overflow-y" :"auto", "position" : "absolute"}} height="400px">
+			                {Object.keys(ridesOn).map((obj, i) => {
+			                  return (
+			                    <tr>
+			                      <td style={{"width":"125px"}}>{obj}</td>
+			                      <td style={{"width":"125px"}}>{ridesOn[obj]}</td>
+			                    </tr>
+			                  );
+			                })}
+			              </tbody>
+			            </table>
+		            </div>
+	        	}
+	        </div>
+	        </div>
+	        <div class="columns">
+		        <div class="column is-two-thirds">
+		            <div class="card">
+		              	<div class="card-content">
+			                <p class="title">
+			                  {this.state.startDate2} - {this.state.endDate2}
+			                </p>
+			                <p class="subtitle">
+			                  <DateRangePicker onOk={this.handleDatePick2} />
+			                </p>
+			                <label class="label">Issues Reported</label>
+			                <BarChart
+			                  xtitle="Issue Count"
+			                  ytitle="Ride"
+			                  data={this.state.rideIssue}
+			                />
+		              	</div>
+		            </div>
+		        </div>
+		          <div class="column is-third">
+		          {this.state.loaded === true &&
+		            <table class="table">
+		              <caption>Issues Reported</caption>
+		              <thead>
+		                <th style={{"width":"125px"}}>Ride</th>
+		                <th style={{"width":"125px"}}>Issue Count</th>
+		              </thead>
+		              <tbody style={{"overflow-y" :"auto", "position" : "absolute"}} height="400px">
+		                {Object.keys(rideIssue).map((obj, i) => {
+		                  return (
+		                    <tr>
+		                      <td style={{"width":"125px"}}>{obj}</td>
+		                      <td style={{"width":"125px"}}>{rideIssue[obj]}</td>
+		                    </tr>
+		                  );
+		                })}
+		              </tbody>
+		            </table>
+		        }
+	         	</div>
+	    	</div>		    
+      </Layout>
+    );
+  }
+}
 
 export default Reports;
 

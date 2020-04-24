@@ -74,7 +74,7 @@ class IssuesButton extends React.Component {
 
 		return (
 			<div>
-				<button class="button is-small" onClick={this.togglePop}>
+				<button class="button is-small" title="Open Ride Issues" onClick={this.togglePop}>
 					<span class="icon has-text-primary">
 						<i class="fa fa-wrench"></i>
 					</span>

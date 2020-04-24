@@ -16,10 +16,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@creativebulma/bulma-divider": "^1.1.0",
     "animejs": "^3.1.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "bulma-calendar": "^6.0.7",
+    "bulma-divider": "^0.2.0",
+    "bulma-extensions": "^6.2.7",
+    "bulma-tooltip": "^3.0.2",
     "chart.js": "^2.9.3",
     "chartkick": "^3.2.0",
     "cookie-parser": "^1.4.5",
@@ -52,6 +56,7 @@
     "node": "12.x"
   },
   "devDependencies": {
+    "@creativebulma/bulma-tooltip": "^1.0.2",
     "bulma": "^0.8.1",
     "node-sass": "^4.13.1",
     "nodemon": "^2.0.2",

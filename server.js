@@ -39,7 +39,7 @@ const initOptions = {
 
 const pgp = require('pg-promise')(initOptions);
 
-//LocalHost Connection
+//Database Connection
 /*const cn = {
 	host: 'localhost',
 	port: 5432,
@@ -62,12 +62,6 @@ let notifications = [];
 
 //---------------------------------------------------------------------
 
-/**********************************************************************
-* IMPORTANT!
-* If a request is commented out, it has not been secured with
-* authentication yet. Be aware of the risks on uncommenting and using
-* the code on the heroku server.
-***********************************************************************/
 const allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');

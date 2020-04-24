@@ -1,6 +1,7 @@
 import Layout from '../components/Layout';
 import Popup from '../components/Popup';
 import PasswordButton from '../components/PasswordButton';
+import DeleteStaffButton from '../components/DeleteStaffButton';
 
 import Router from 'next/router';
 import {attemptLogin, logout, isLoggedIn, getRole} from '../components/Auth';
@@ -197,11 +198,12 @@ class Staff extends React.Component {
 												<td>
 												<div class="buttons">
 													<PasswordButton employee={i} getStaff={this.getStaff.bind(this)}/>
-													<button class="button is-small" onClick={() => this.removeMember(i)}>
-														<span class="icon">
+													{/*<button title="Delete Employee" class="button is-small" onClick={() => this.removeMember(i)}>
+														<span class="icon has-text-danger">
 															<i class="fa fa-times"></i>
 														</span>
-													</button>
+													</button>*/}
+													<DeleteStaffButton employee={i} getStaff={this.getStaff.bind(this)} removeStaff={this.removeMember.bind(this)}/>
 												</div>
 												</td>
 											</tr>

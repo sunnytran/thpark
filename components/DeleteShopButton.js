@@ -1,49 +1,52 @@
 import Popup from '../components/Popup';
 import {url} from '../components/Const';
 
-class DeleteShopButton extends React.Component{
-	constructor(props) {
+class DeleteShopButton extends React.Component {
+	constructor(props){
 		super(props);
 		this.state = {
 			showPop: false
 		}
-
+		
 		this.togglePop = this.togglePop.bind(this);
+		this.delete = this.delete.bind(this);
 	}
 
 	togglePop() {
-		this.setState((prev, props) = > {
+		this.setState((prev, props) => {
 			const newPop = !prev.showPop;
 
 			return { showPop: newPop };
 		});
 	}
 
-	async removeStore(i) {
-		const res = await fetch(url + "/api/shops", {
-			method: 'DELETE',
-			headers : {'Content-Type': 'application/json; charset=utf-8'},
-			body : JSON.stringify({"name": i.shop_name})
-		});
-		this.getSetup();
-	};
+	async delete() {
+		const i = this.props.shop;
+		await this.props.removeStore(i);
+		this.togglePop();
+		this.props.getSetup();
+	}
 
 	render() {
-		const shop = this.props.shop;
-		return(
+		return (
 			<div>
-				< button class = "button is-small" onClick = { this.togglePop } >
-					<span class = "icon has-text-danger">
-							<i class = "fa fa-times">< / i>
-					< / span>
-				< / button>
+				<button title="Delete Store" class="button is-small" onClick={this.togglePop}>
+					<span class="icon has-text-danger">
+						<i class="fa fa-times" ></i>
+					</span>
+				</button>
 
-				< Popup closePopup = { this.togglePop } showPop = { this.state.showPop } title = "Delete Confirmation" submitText = "Confirm" btnFunc = { this.removeStore(i) } >
-					<div class = "field">
-						<label class="label"> Are you sure you want to delete this shop? < /label>
-					< / div>
-				< / Popup>
-			< / div>
+
+				<Popup closePopup={this.togglePop} showPop={this.state.showPop} title="Delete Store" submitText="Delete" btnFunc={this.delete}>
+					<div class="columns">
+							<div class="column has-text-centered">
+								<h1 class="title">Did you want to delete this store?</h1>
+							</div>
+						</div>
+				</Popup>
+			</div>
 		);
 	}
 };
+
+export default DeleteShopButton;

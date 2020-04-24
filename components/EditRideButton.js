@@ -74,9 +74,9 @@ class EditRideButton extends React.Component {
 
 		return (
 			<div>
-				<button class="button is-small" onClick={this.togglePop}>
+				<button class="button is-small" title="Edit Ride" onClick={this.togglePop}>
 					<span class="icon has-text-info">
-						<i class="fa fa-edit"></i>
+						<i class="fa fa-edit" ></i>
 					</span>
 				</button>
 

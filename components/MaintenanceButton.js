@@ -88,7 +88,7 @@ class MaintenanceButton extends React.Component {
 
 		return (
 			<div>
-				<button class="button is-small has-text-danger" onClick={this.togglePop}>
+				<button class="button is-small has-text-danger" title="Report Issue" onClick={this.togglePop}>
 					<span class="icon">
 						<i class="fa fa-exclamation-triangle"></i>
 					</span>

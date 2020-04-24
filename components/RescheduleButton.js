@@ -47,7 +47,7 @@ class RescheduleButton extends React.Component {
 	render() {
 		return (
 			<div>
-				<button class="button is-small" onClick={this.togglePop}>
+				<button title="Reschedule Event" class="button is-small" onClick={this.togglePop}>
 					<span class="icon has-text-info">
 						<i class="fa fa-calendar"></i>
 					</span>

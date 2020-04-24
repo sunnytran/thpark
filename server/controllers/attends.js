@@ -2,7 +2,7 @@ const handleAttendsGet = (db) => (req, res) => {
 	const values = {event_id: req.body.event_id};
 	db.query('SELECT * FROM attends WHERE event_id=${event_id}', values)
 	.then(function(data) {
-		console.log(data);
+		//console.log(data);
 		res.json(data);
 	})
 	.catch(function(error) {

@@ -82,7 +82,7 @@ class Scanner extends React.Component {
 			(result)=> {
 				this.setState({
 					events: result,
-					event: result[0]
+					event: result[0].event_id
 				});
 				console.log(result);
 			}

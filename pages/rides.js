@@ -6,6 +6,7 @@ import MaintenanceButton from '../components/MaintenanceButton';
 import EditRideButton from '../components/EditRideButton';
 import IssuesButton from '../components/IssuesButton';
 import PastIssues from '../components/PastIssues';
+import DeleteRideButton from '../components/DeleteRideButton';
 import Moment from 'moment';
 import moment from 'moment';
 
@@ -205,7 +206,7 @@ class Rides extends React.Component {
 			return null;
 
 		return (
-			<button class="button is-small" onClick={() => this.completeRide(props.ride)}>
+			<button class="button is-small" title="Construct Ride" onClick={() => this.completeRide(props.ride)}>
 				<span class="icon">
 					<i class="fa fa-check"></i>
 				</span>
@@ -356,12 +357,13 @@ class Rides extends React.Component {
 											<td>{Moment(i.insurance_expiration_date).format('M/D/YY') === "Invalid date" ? "Never" : Moment(i.insurance_expiration_date).format('M/D/YY')}</td>
 											<td>
 												<div class="buttons">
-													<EditRideButton  ride={i} getSetup={this.getSetup.bind(this)}/>
-													<button class="button is-small has-text-danger" onClick={() => this.removeRide(i)}>
+													<EditRideButton ride={i} getSetup={this.getSetup.bind(this)}/>
+													{/*<button class="button is-small has-text-danger tooltip" title="Delete Ride" onClick={() => this.removeRide(i)}>
 														<span class="icon">
 															<i class="fa fa-times"></i>
 														</span>
-													</button>
+													</button>*/}
+													<DeleteRideButton ride={i} getSetup={this.getSetup.bind(this)} removeRide={this.removeRide.bind(this)}/>
 													<this.CompleteButton ride={i} />
 													<IssuesButton issues={this.state.issues} ride={i} getSetup={this.getSetup.bind(this)}/>
 													<PastIssues issues={this.state.issues} ride={i}/>

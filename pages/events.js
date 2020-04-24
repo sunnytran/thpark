@@ -1,6 +1,7 @@
 import Layout from '../components/Layout';
 import Popup from '../components/Popup';
 import RescheduleButton from '../components/RescheduleButton';
+import DeleteEventButton from '../components/DeleteEventButton';
 import Moment from 'moment';
 import moment from 'moment';
 
@@ -168,13 +169,14 @@ class Events extends React.Component {
 											<td class="has-text-centered">
 												<RescheduleButton event={i} getEvents={this.getEvents.bind(this)} />
 											</td>
-											<td class="has-text-centered">
-												<button class="button is-small" onClick={() => this.removeEvent(i)}>
+											{/*<td class="has-text-centered">
+												<button title="Cancel Event" class="button is-small" onClick={() => this.removeEvent(i)}>
 													<span class="icon has-text-danger">
 														<i class="fa fa-times"></i>
 													</span>
 												</button>
-											</td>
+											</td>*/}
+											<td><DeleteEventButton event={i} getEvents={this.getEvents.bind(this)} cancelEvent={this.removeEvent.bind(this)}/></td>
 										</tr>
 									);
 								})

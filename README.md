@@ -7,7 +7,7 @@
 - Erin Nebres
 - William Lam
 
-Website: https://www.tpmanagement.app/
+Website: https://www.tpmanagement.app/login
 
 Github Repository: https://github.com/AndrewVieira/thpark
 

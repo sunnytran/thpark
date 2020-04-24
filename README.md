@@ -40,7 +40,7 @@ The package.json file contains information about the project environment, includ
 2. Install Node.js (https://nodejs.org/en/)
 3. Open command prompt, and change the directory to where you saved the repository (where the package.json file is)
 4. Enter "npm install" in the command prompt where the directory the project is to automatically install all packages required
-5. Enter "npm install nodemon", the nodemon package is required to run the project on the localhost
+5. Enter "npm install -g nodemon", the nodemon package is required to run the project on the localhost
 6. Open the server.js file, starting on line 43, type in your credentials for your localhost database.
 The code should look something like this:
 ```

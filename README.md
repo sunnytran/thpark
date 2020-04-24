@@ -53,5 +53,5 @@ const cn = {
 };
 ```
 7. To run, in the directory where the server.js file is, enter the command "nodemon server.js" in the command prompt
-This command will run the project in development mode. Pages load slowly while in development mode.
+This command will run the project in development mode. Pages load slowly while in development mode. Wait for the command prompt to say "Server is ready on port: 3000"
 8. Visit http://localhost:3000 to see the project
